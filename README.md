@@ -9,7 +9,7 @@
 `py -3 -m pip install -U discord.py`
 `py -m pip install -U discord.py[voice]`
 
-### You need FFmpeg
+### FFmpeg installation
 
 ##### Go to: `https://ffmpeg.org/download.html#build-windows`
 
@@ -34,7 +34,7 @@
 `python3 -m pip install -U discord.py`
 `python3 -m pip install -U discord.py[voice]`
 
-### You need FFmpeg
+### FFmpeg installation
 
 ##### Steps:
 * Open your Terminal, type the following: `sudo apt install ffmpeg`
