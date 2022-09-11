@@ -53,4 +53,4 @@ async def main():
 
 asyncio.run(main())
 
-ChetBot.run(discordBotAPIKey(), log_handler=None)
+ChetBot.run(discordBotAPIKey, log_handler=None)

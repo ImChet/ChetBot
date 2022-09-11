@@ -86,7 +86,7 @@ To do this, make sure that you have cloned the ChetBot files from my GitHub.
 ##### Steps:
 * Follow the instructions on the [GitHub docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) if you are unfamiliar with cloning repositories
   * ChetBot repository Link: `https://github.com/ImChet/ChetBot.git`
-* In the newly cloned ChetBot repository, find the apikeys.py file, navigate to the discordBotAPIKey function and place your Discord Bot API Key in the return statement 
+* In the newly cloned ChetBot repository, find the apikeys.py file, navigate to the discordBotAPIKey string definition and place your Discord Bot API Key in it.
 
 You are now ready to use your Discord Bot. 
 
