@@ -3,6 +3,8 @@ import asyncio
 import discord
 from discord.ext import commands
 import logging.handlers
+
+from apikeys import discordBotAPIKey
 from functions import getDateTime
 
 # Specifies intents
@@ -53,4 +55,4 @@ async def main():
 
 asyncio.run(main())
 
-ChetBot.run('MTAxNTM2MDg2MDcxOTQxOTYwMg.GrwLSY.dzXQUO7MW3iuBehPx5CEQ1Kh5hOC9QV6VnkC_w', log_handler=None)
+ChetBot.run(discordBotAPIKey(), log_handler=None)
