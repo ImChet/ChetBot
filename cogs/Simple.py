@@ -3,7 +3,7 @@ from discord.ext import commands
 from functions import getDateTime, to_lower, to_upper
 
 
-class Simple(commands.Cog):
+class Simple(commands.Cog, name='Simple Commands'):
 
     def __init__(self, ChetBot):
         self.ChetBot = ChetBot

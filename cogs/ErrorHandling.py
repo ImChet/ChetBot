@@ -15,6 +15,7 @@ class ErrorHandling(commands.Cog):
             await ctx.send(f'{ctx.author.mention}, your inputted arguments are invalid.')
         elif isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f'{ctx.author.mention}, the command you chose requires arguments that are missing.')
+        # Add file not found
 
 
 async def setup(ChetBot):

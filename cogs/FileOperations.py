@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 
-class FileOperations(commands.Cog):
+class FileOperations(commands.Cog, name='File Commands'):
 
     def __init__(self, ChetBot):
         self.ChetBot = ChetBot

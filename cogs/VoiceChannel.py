@@ -4,7 +4,7 @@ from discord import FFmpegPCMAudio
 from functions import check_queue, queues
 
 
-class VoiceChannel(commands.Cog):
+class VoiceChannel(commands.Cog, name='Voice Channel Commands'):
 
     def __init__(self, ChetBot):
         self.ChetBot = ChetBot

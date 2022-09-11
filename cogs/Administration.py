@@ -9,14 +9,14 @@ class Administration(commands.Cog):
         self.ChetBot = ChetBot
 
     # Kick command
-    @commands.command(name='kick')
+    @commands.command(name='kick', hidden=True)
     @has_permissions(kick_members=True)
     async def _kick_(self, ctx, member: discord.Member, *, reason=None):
         await member.kick(reason=reason)
         await ctx.send(f'{member} has been kicked.')
 
     # Ban command
-    @commands.command(name='ban')
+    @commands.command(name='ban', hidden=True)
     @has_permissions(ban_members=True)
     async def _ban_(self, ctx, member: discord.Member, *, reason=None):
         await member.ban(reason=reason)
