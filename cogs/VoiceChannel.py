@@ -15,7 +15,7 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands'):
         if ctx.author.voice:
             await ctx.message.author.voice.channel.connect()
         else:
-            await ctx.send(f'{ctx.author.mention}, you are not in a voice channel.')
+            await ctx.send(f'{ctx.author.mention}, you are not in a voice channel.', delete_after=5)
 
     # Leave voice channel
     @commands.command(pass_context=True)
@@ -23,7 +23,7 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands'):
         if ctx.voice_client:
             await ctx.guild.voice_client.disconnect()
         else:
-            await ctx.send(f'{ctx.author.mention}, I am not in a voice channel.')
+            await ctx.send(f'{ctx.author.mention}, I am not in a voice channel.', delete_after=5)
 
     # Play file located at arg
     @commands.command(pass_context=True)
@@ -33,7 +33,7 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands'):
             source = FFmpegPCMAudio(arg)
             voice.play(source, after=lambda x=None: check_queue(ctx, ctx.message.guild.id))
         else:
-            await ctx.send(f'{ctx.author.mention}, I am not in a voice channel. Use the "/join" command.')
+            await ctx.send(f'{ctx.author.mention}, I am not in a voice channel.', delete_after=5)
 
     # Queues file located at arg to play next
     @commands.command(pass_context=True)
@@ -44,7 +44,7 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands'):
             queues[guild_id].append(source)
         else:
             queues[guild_id] = [source]
-        await ctx.send(f'{ctx.author.mention}, your request is added to the queue.')
+        await ctx.send(f'{ctx.author.mention}, your request is added to the queue.', delete_after=5)
 
     # Pause file currently being played
     @commands.command(pass_context=True)
@@ -53,7 +53,7 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands'):
         if voice.is_playing():
             voice.pause()
         else:
-            await ctx.send(f'{ctx.author.mention}, there is currently no audio being played.')
+            await ctx.send(f'{ctx.author.mention}, there is currently no audio being played.', delete_after=5)
 
     # Resume file currently paused
     @commands.command(pass_context=True)
@@ -62,7 +62,7 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands'):
         if voice.is_paused():
             voice.resume()
         else:
-            await ctx.send(f'{ctx.author.mention}, there is currently no audio paused.')
+            await ctx.send(f'{ctx.author.mention}, there is currently no audio paused.', delete_after=5)
 
     # Stop file that is being played
     @commands.command(pass_context=True)

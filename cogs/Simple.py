@@ -41,7 +41,7 @@ class Simple(commands.Cog, name='Simple Commands'):
         elif fn == 'd':
             await ctx.send(f'{a}/{b} = {a / b}')
         else:
-            await ctx.send(f'Unexpected expression after calc, try again {ctx.author.mention}')
+            await ctx.send(f'Unexpected expression after calc, try again {ctx.author.mention}', delete_after=5)
 
     # Random range based on two arguments
     @commands.command(name='rr')
