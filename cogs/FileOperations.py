@@ -12,34 +12,34 @@ class FileOperations(commands.Cog, name='File Commands'):
     # Makes and uploads files bases on user's decision
     @commands.command(name='file')
     async def _makeFile_(self, ctx, fileType, *args):
-        # .typing() makes it look like ChetBot is typing
-        async with ctx.channel.typing():
-            if fileType == 'csv':
-                userArgs = ','.join(args)
-                f = open("WorkingFiles/ChetBot.csv", "w")
-                f.write(userArgs)
-                f.close()
-                myfile = discord.File('WorkingFiles/ChetBot.csv')
-                await ctx.send(f'{ctx.author.mention} here is the file that you wanted me to create:\n')
-                await ctx.send(file=myfile)
-            elif fileType == 'tab':
-                userArgs = '\t'.join(args)
-                f = open("WorkingFiles/ChetBot.csv", "w")
-                f.write(userArgs)
-                f.close()
-                myfile = discord.File('WorkingFiles/ChetBot.csv')
-                await ctx.send(f'{ctx.author.mention} here is the file that you wanted me to create:\n')
-                await ctx.send(file=myfile)
-            elif fileType == 'n':
-                userArgs = '\n'.join(args)
-                f = open("WorkingFiles/ChetBot.csv", "w")
-                f.write(userArgs)
-                f.close()
-                myfile = discord.File('WorkingFiles/ChetBot.csv')
-                await ctx.send(f'{ctx.author.mention} here is the file that you wanted me to create:\n')
-                await ctx.send(file=myfile)
-            else:
-                await ctx.send(f'Unexpected argument.\nThe options for this command are \"csv\", \"tab\", and \"n\".\n')
+        await ctx.typing()
+
+        if fileType == 'csv':
+            userArgs = ','.join(args)
+            f = open("WorkingFiles/ChetBot.csv", "w")
+            f.write(userArgs)
+            f.close()
+            myfile = discord.File('WorkingFiles/ChetBot.csv')
+            await ctx.send(f'{ctx.author.mention} here is the file that you wanted me to create:\n')
+            await ctx.send(file=myfile)
+        elif fileType == 'tab':
+            userArgs = '\t'.join(args)
+            f = open("WorkingFiles/ChetBot.csv", "w")
+            f.write(userArgs)
+            f.close()
+            myfile = discord.File('WorkingFiles/ChetBot.csv')
+            await ctx.send(f'{ctx.author.mention} here is the file that you wanted me to create:\n')
+            await ctx.send(file=myfile)
+        elif fileType == 'n':
+            userArgs = '\n'.join(args)
+            f = open("WorkingFiles/ChetBot.csv", "w")
+            f.write(userArgs)
+            f.close()
+            myfile = discord.File('WorkingFiles/ChetBot.csv')
+            await ctx.send(f'{ctx.author.mention} here is the file that you wanted me to create:\n')
+            await ctx.send(file=myfile)
+        else:
+            await ctx.send(f'Unexpected argument.\nThe options for this command are \"csv\", \"tab\", and \"n\".\n')
 
     # Coverts user attachments to desired type
     @commands.command(name='convert')
@@ -62,15 +62,12 @@ class FileOperations(commands.Cog, name='File Commands'):
             for in_progress in range(0, limit + 1):
                 working_attachment = str(ctx.message.attachments[in_progress].content_type)
                 if initial_check in working_attachment:
-                    type_check = True
+                    type_check = initial_check in working_attachment
                     print(ctx.message.attachments[in_progress].content_type)  # Testing
                     counter = counter + 1
                 elif initial_check not in working_attachment:
-                    type_check = False
                     await ctx.send(
-                        f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of '
-                        f'the attachment.',
-                        delete_after=5)
+                        f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of the attachment.', delete_after=5)
                     break
 
                 if counter == limit:
@@ -88,7 +85,7 @@ class FileOperations(commands.Cog, name='File Commands'):
         else:
             await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=5)
 
-        # Must sleep (15s) to prevent errors
+        # Must sleep (10s) to prevent errors
         await asyncio.sleep(10)
         # After output is sent, delete WorkingFiles/FilesToConvert/*
         working_directory = 'WorkingFiles/FilesToConvert'
