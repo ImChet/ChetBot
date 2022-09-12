@@ -74,6 +74,13 @@ class FileOperations(commands.Cog, name='File Commands'):
                 if check_counter == limit:
                     break
 
+            # Ensures the FilesToConvert directory exists
+            path = f'WorkingFiles/FilesToConvert/'
+            if os.path.exists(path):
+                return
+            else:
+                os.mkdir(path)
+
             if type_check:
                 for attachment in ctx.message.attachments:
                     # Download the user attachments on iterator through list
