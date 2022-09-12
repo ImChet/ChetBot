@@ -11,8 +11,8 @@ class FileOperations(commands.Cog, name='File Commands'):
         self.ChetBot = ChetBot
 
     # Makes and uploads files bases on user's decision
-    @commands.command(name='file')
-    async def _makeFile_(self, ctx, fileType, *args):
+    @commands.command(name='create')
+    async def _create_file_(self, ctx, fileType, *args):
         await ctx.typing()
 
         if fileType == 'csv':
@@ -43,60 +43,81 @@ class FileOperations(commands.Cog, name='File Commands'):
             await ctx.send(f'Unexpected argument.\nThe options for this command are \"csv\", \"tab\", and \"n\".\n')
 
     # Coverts user attachments to desired type
-    @commands.command(name='convert')
-    async def _convert_(self, ctx, initial: str, desired: str):
+    @commands.command(name='file')
+    async def _convert_files_(self, ctx, initial: str, desired: str):
         if ctx.message.attachments:
+            print(f'{ctx.message.attachments[0].content_type} Test 1')  # testing
+            print(f'{ctx.message.attachments[1].content_type} Test 1')  # testing
+            print(f'{ctx.message.attachments[2].content_type} Test 1')  # testing
+
             await ctx.typing()
-            # Check if file type of the attachment matched the declared initial value
+
+            # Defining variables in use
             initial_check = f'/{initial}'
-            jpg_check = ['/jpeg', '/jpg']
+            allowed_files = ['/pdf', '/jpeg', '/jpg', '/docx']
+            jpg_files = ['/jpeg', '/jpg']
+            pdf_file = ['/pdf']
+            docx_file = ['/docx']
             check_counter = 0
-            file_increment = 1
             limit = len(ctx.message.attachments)
 
-            # .jpeg and .jpg is the same
-            if initial_check in jpg_check:
-                initial_check = '/jpeg'
+            # Conditional variable definitions
+            supported_file_check = initial_check in allowed_files
+            jpg_check = initial_check in jpg_files
+            pdf_check = initial_check in pdf_file
+            docx_check = initial_check in docx_file
 
-            # Checks if the initial declared value matched actual uploaded attachment file type
-            for in_progress in range(0, limit + 1):
-                working_attachment = str(ctx.message.attachments[in_progress].content_type)
-                if initial_check in working_attachment:
-                    type_check = initial_check in working_attachment
-                    print(ctx.message.attachments[in_progress].content_type)  # Testing
-                    check_counter = check_counter + 1
-                elif initial_check not in working_attachment:
-                    await ctx.send(
-                        f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of the attachment.', delete_after=10)
-                    break
+            # Content_types are either ['application/pdf',
+            # 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/png']
+            # Cleaning up user input
+            if supported_file_check:
+                if jpg_check:
+                    initial_check = 'image/jpeg'
+                elif pdf_check:
+                    initial_check = 'application/pdf'
+                elif docx_check:
+                    initial_check = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                else:
+                    await ctx.send(f'{ctx.author.mention}, the type of file attached is not currently supported.', delete_after=10)
 
-                if check_counter == limit:
-                    break
+                # Checks if the initial declared value matched actual uploaded attachment file type
+                for working_file in range(0, limit + 1):
+                    working_file_attachment = str(ctx.message.attachments[working_file].content_type)
+                    if initial_check in working_file_attachment:
+                        type_check = initial_check in working_file_attachment
+                        print(ctx.message.attachments[working_file].content_type)  # Testing
+                        check_counter = check_counter + 1
+                    elif initial_check not in working_file_attachment:
+                        await ctx.send(
+                            f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of the attachment.', delete_after=10)
+                        break
 
-            # Ensures the FilesToConvert directory exists
-            path = 'WorkingFiles/FilesToConvert/'
-            directory_exists = os.path.exists(path)
-            if directory_exists is False:
-                os.mkdir(path)
+                    if check_counter == limit:
+                        break
 
-            if type_check:
-                for attachment in ctx.message.attachments:
-                    # Download the user attachments on iterator through list
-                    await attachment.save(f'WorkingFiles/FilesToConvert/{attachment.filename}')
+                # Ensures the FilesToConvert directory exists
+                path = 'WorkingFiles/FilesToConvert/'
+                directory_exists = os.path.exists(path)
+                if directory_exists is False:
+                    os.mkdir(path)
 
-                    # Converter logic goes here
-                    to_convert = f'WorkingFiles/FilesToConvert/{attachment.filename}'
+                if type_check:
+                    for attachment in ctx.message.attachments:
+                        # Download the user attachments on iterator through list
+                        await attachment.save(f'WorkingFiles/FilesToConvert/{attachment.filename}')
+                        # Download the user attachments on iterator through list
+                        await attachment.save(f'WorkingFiles/FilesToConvert/{attachment.filename}')
+                        # Retaining the name of the file uploaded by the user without the previous extension
+                        trimmed_filename = (os.path.splitext(str(attachment.filename))[0])
+                        # Input file
+                        input_filepath = f'WorkingFiles/FilesToConvert/{attachment.filename}'
+                        # Output file
+                        output_filepath = f'WorkingFiles/FilesToConvert/{trimmed_filename}.{desired}'
 
-                    # Set output type as desired
-                    output_filepath = f'WorkingFiles/FilesToConvert/ChetBot_Converted_{file_increment}.{desired}'
-                    # Save(output_filepath)
+                        # Converter logic goes here
 
-                    await ctx.send(f'{ctx.author.mention}, here is your converted file from .{initial} to .{desired}:')
-                    await ctx.send(file=discord.File(to_convert))  # Testing
-                    # await ctx.send(file=output_filepath)
-
-                    # Increment file names by 1 to keep filenames unique
-                    file_increment = file_increment+1
+                        await ctx.send(f'{ctx.author.mention}, here is your converted file from .{initial} to .{desired}:')
+                        await ctx.send(file=discord.File(output_filepath))
             else:
                 await ctx.send(f'{ctx.author.mention}, the declared file type doesn\'t match what was uploaded.', delete_after=10)
         else:
@@ -110,7 +131,7 @@ class FileOperations(commands.Cog, name='File Commands'):
             os.remove(file.path)
             print(f'I removed {file.name}')  # Testing
 
-    @_convert_.error
+    @_convert_files_.error
     async def _convert_error(self, ctx, error):
         if isinstance(error, discord.HTTPException):
             await ctx.send(f'{ctx.author.mention}, saving your attachment failed.', delete_after=10)
@@ -130,17 +151,16 @@ class FileOperations(commands.Cog, name='File Commands'):
             mp3_file = ['/mp3']
             wav_file = ['/wav']
             check_counter = 0
-            file_increment = 1
             limit = len(ctx.message.attachments)
 
             # Conditional variable definitions
-            audio_check = initial_check in audio_types
+            supported_audio_check = initial_check in audio_types
             mp4_check = initial_check in mp4_file
             mp3_check = initial_check in mp3_file
             wav_check = initial_check in wav_file
 
             # Content_types are either ['video/mp4', 'audio/mpeg', 'audio/x-wav'], cleaning up user input
-            if audio_check:
+            if supported_audio_check:
                 if mp4_check:
                     initial_check = 'video/mp4'
                 elif mp3_check:
@@ -186,8 +206,6 @@ class FileOperations(commands.Cog, name='File Commands'):
                         # Setting the conversion as the downloaded user file, to the desired user file type
                         out_file = ff.convert(input_filepath, output_filepath)
                         await ctx.send(file=discord.File(out_file))
-                        # Increment file names by 1 to keep filenames unique
-                        file_increment = file_increment+1
             else:
                 await ctx.send(f'{ctx.author.mention}, the declared file type doesn\'t match what was uploaded.', delete_after=10)
         else:
