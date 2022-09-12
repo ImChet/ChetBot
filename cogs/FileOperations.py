@@ -51,7 +51,8 @@ class FileOperations(commands.Cog, name='File Commands'):
             # Check if file type of the attachment matched the declared initial value
             initial_check = f'/{initial}'
             jpg_check = ['/jpeg', '/jpg']
-            counter = 0
+            check_counter = 0
+            file_increment = 1
             limit = len(ctx.message.attachments)
 
             # .jpeg and .jpg is the same
@@ -64,13 +65,13 @@ class FileOperations(commands.Cog, name='File Commands'):
                 if initial_check in working_attachment:
                     type_check = initial_check in working_attachment
                     print(ctx.message.attachments[in_progress].content_type)  # Testing
-                    counter = counter + 1
+                    check_counter = check_counter + 1
                 elif initial_check not in working_attachment:
                     await ctx.send(
                         f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of the attachment.', delete_after=5)
                     break
 
-                if counter == limit:
+                if check_counter == limit:
                     break
 
             if type_check:
@@ -79,8 +80,16 @@ class FileOperations(commands.Cog, name='File Commands'):
                     await attachment.save(f'WorkingFiles/FilesToConvert/{attachment.filename}')
 
                     # Converter logic goes here
-                    # Need to set input type as attachment.filename
+                    to_convert = f'WorkingFiles/FilesToConvert/{attachment.filename}'
                     # Set output type as desired
+                    output_filepath = f'WorkingFiles/FilesToConvert/ChetBot_Converted_{file_increment}.{desired}'
+                    # Save(output_filepath)
+
+                    await ctx.send(f'{ctx.author.mention}, here is your converted file from .{initial} to .{desired}:')
+                    await ctx.send(file=output_filepath)
+
+                    # Increment file names by 1 to keep filenames unique
+                    file_increment = file_increment+1
 
         else:
             await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=5)
