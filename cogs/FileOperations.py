@@ -61,6 +61,8 @@ class FileOperations(commands.Cog, name='File Commands'):
                         print(ctx.message.attachments[x].content_type)  # Testing
                         await ctx.send(f'The attachment file type matches what you said')  # Testing
 
+                        # Need to download the user attachments to WorkingFiles/FilesToConvert
+                        # Attachment.save
                         # Converter logic goes here, use ConvertAPI
                         # Need to set input type as working_attachment
                         # Set output type as desired
