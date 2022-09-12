@@ -119,7 +119,7 @@ class FileOperations(commands.Cog, name='File Commands'):
                         await ctx.send(f'{ctx.author.mention}, here is your converted file from .{initial} to .{desired}:')
                         await ctx.send(file=discord.File(output_filepath))
             else:
-                await ctx.send(f'{ctx.author.mention}, the declared file type doesn\'t match what was uploaded.', delete_after=10)
+                await ctx.send(f'{ctx.author.mention}, the type of file attached is not currently supported.', delete_after=10)
         else:
             await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=10)
 
@@ -207,7 +207,7 @@ class FileOperations(commands.Cog, name='File Commands'):
                         out_file = ff.convert(input_filepath, output_filepath)
                         await ctx.send(file=discord.File(out_file))
             else:
-                await ctx.send(f'{ctx.author.mention}, the declared file type doesn\'t match what was uploaded.', delete_after=10)
+                await ctx.send(f'{ctx.author.mention}, the type of file attached is not currently supported.', delete_after=10)
         else:
             await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=10)
 
