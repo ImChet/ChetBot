@@ -44,32 +44,39 @@ class FileOperations(commands.Cog, name='File Commands'):
     # Coverts user attachments to desired type
     @commands.command(name='convert')
     async def _convert_(self, ctx, initial: str, desired: str):
-        async with ctx.channel.typing():
-            if ctx.message.attachments:
+        if ctx.message.attachments:
 
-                # Check if file type of the attachment matched the declared initial value
-                initial_check = f'/{initial}'
-                jpg_check = ['/jpeg', '/jpg']
-                counter = 0
-                limit = len(ctx.message.attachments)
+            await ctx.typing()
 
-                # .jpeg and .jpg is the same
-                if initial_check in jpg_check:
-                    initial_check = '/jpeg'
+            # Check if file type of the attachment matched the declared initial value
+            initial_check = f'/{initial}'
+            jpg_check = ['/jpeg', '/jpg']
+            counter = 0
+            limit = len(ctx.message.attachments)
 
-                # Checks if the initial declared value matched actual uploaded attachment file type
-                for in_progress in range(0, limit+1):
-                    working_attachment = str(ctx.message.attachments[in_progress].content_type)
-                    if initial_check in working_attachment:
-                        print(ctx.message.attachments[in_progress].content_type)  # Testing
-                        counter = counter+1
-                    elif initial_check not in working_attachment:
-                        ctx.send(f'The initial file type you declared doesn\'t match the file type of the attachment.', delete_after=5)
-                        break
+            # .jpeg and .jpg is the same
+            if initial_check in jpg_check:
+                initial_check = '/jpeg'
 
-                    if counter == limit:
-                        break
+            # Checks if the initial declared value matched actual uploaded attachment file type
+            for in_progress in range(0, limit + 1):
+                working_attachment = str(ctx.message.attachments[in_progress].content_type)
+                if initial_check in working_attachment:
+                    type_check = True
+                    print(ctx.message.attachments[in_progress].content_type)  # Testing
+                    counter = counter + 1
+                elif initial_check not in working_attachment:
+                    type_check = False
+                    await ctx.send(
+                        f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of '
+                        f'the attachment.',
+                        delete_after=5)
+                    break
 
+                if counter == limit:
+                    break
+
+            if type_check == True:
                 for attachment in ctx.message.attachments:
                     # Download the user attachments on iterator through list
                     await attachment.save(f'WorkingFiles/FilesToConvert/{attachment.filename}')
@@ -78,16 +85,16 @@ class FileOperations(commands.Cog, name='File Commands'):
                     # Need to set input type as attachment.filename
                     # Set output type as desired
 
-            else:
-                await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=5)
+        else:
+            await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=5)
 
-            # Must sleep (15s) to prevent errors
-            await asyncio.sleep(15)
-            # After output is sent, delete WorkingFiles/FilesToConvert/*
-            working_directory = 'WorkingFiles/FilesToConvert'
-            for file in os.scandir(working_directory):
-                os.remove(file.path)
-                print(f'I removed {file.name}')
+        # Must sleep (15s) to prevent errors
+        await asyncio.sleep(10)
+        # After output is sent, delete WorkingFiles/FilesToConvert/*
+        working_directory = 'WorkingFiles/FilesToConvert'
+        for file in os.scandir(working_directory):
+            os.remove(file.path)
+            print(f'I removed {file.name}')  # Testing
 
     @_convert_.error
     async def _convert_error(self, ctx, error):
