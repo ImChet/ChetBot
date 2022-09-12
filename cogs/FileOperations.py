@@ -39,6 +39,37 @@ class FileOperations(commands.Cog, name='File Commands'):
             else:
                 await ctx.send(f'Unexpected argument.\nThe options for this command are \"csv\", \"tab\", and \"n\".\n')
 
+    # Coverts user attachments to desired type
+    @commands.command(name='convert')
+    async def _convert_(self, ctx, initial: str, desired: str):
+        async with ctx.channel.typing():
+            initial = f'/{initial}'
+            desired = f'/{desired}'
+            index = 0
+            if ctx.message.attachments:
+                limit = len(ctx.message.attachments)
+
+                for x in range(index, limit+1):
+                    working_attachment = str(ctx.message.attachments[x].content_type)
+
+                    # .jpeg and .jpg is the same
+                    if '/jpeg' or '/jpg' in initial:
+                        initial = '/jpeg'
+
+                    # Check if file type of the attachment matched the declared initial value
+                    if initial in working_attachment:
+                        print(ctx.message.attachments[x].content_type)  # Testing
+                        await ctx.send(f'The attachment file type matches what you said')  # Testing
+
+                        # Converter logic goes here, use ConvertAPI
+                        # Need to set input type as working_attachment
+                        # Set output type as desired
+
+                    else:
+                        ctx.send(f'The initial file type you declared doesn\'t match the file type of the attachment.')
+            else:
+                await ctx.send(f'{ctx.author.mention}, no attachments were uploaded with your command.', delete_after=5)
+
 
 async def setup(ChetBot):
     await ChetBot.add_cog(FileOperations(ChetBot))
