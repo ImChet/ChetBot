@@ -76,7 +76,7 @@ class FileOperations(commands.Cog, name='File Commands'):
                 if counter == limit:
                     break
 
-            if type_check == True:
+            if type_check:
                 for attachment in ctx.message.attachments:
                     # Download the user attachments on iterator through list
                     await attachment.save(f'WorkingFiles/FilesToConvert/{attachment.filename}')
