@@ -1,3 +1,5 @@
+import asyncio
+import os
 import discord
 from discord.ext import commands
 
@@ -45,37 +47,47 @@ class FileOperations(commands.Cog, name='File Commands'):
         async with ctx.channel.typing():
             if ctx.message.attachments:
 
-                # Check if file type of the attachment matched the declared initial value (Not needed 100%) Cant break for loop atm
-                initialCheck = f'/{initial}'
-                desiredCheck = f'/{desired}'
-                index = 0
+                # Check if file type of the attachment matched the declared initial value
+                initial_check = f'/{initial}'
+                jpg_check = ['/jpeg', '/jpg']
+                counter = 0
                 limit = len(ctx.message.attachments)
-                for x in range(index, limit+1):
-                    working_attachment = str(ctx.message.attachments[x].content_type)
-                    if x == limit:
+
+                # .jpeg and .jpg is the same
+                if initial_check in jpg_check:
+                    initial_check = '/jpeg'
+
+                # Checks if the initial declared value matched actual uploaded attachment file type
+                for in_progress in range(0, limit+1):
+                    working_attachment = str(ctx.message.attachments[in_progress].content_type)
+                    if initial_check in working_attachment:
+                        print(ctx.message.attachments[in_progress].content_type)  # Testing
+                        counter = counter+1
+                    elif initial_check not in working_attachment:
+                        ctx.send(f'The initial file type you declared doesn\'t match the file type of the attachment.', delete_after=5)
                         break
-                    # .jpeg and .jpg is the same
-                    if '/jpeg' or '/jpg' in initialCheck:
-                        initialCheck = '/jpeg'
-                    if initialCheck in working_attachment:
-                        print(ctx.message.attachments[x].content_type)  # Testing
-                        await ctx.send(f'The attachment file type matches what you said.', delete_after=5)  # Testing
-                    else:
-                        await ctx.send(f'The initial file type you declared doesn\'t match the file type of the attachment.', delete_after=5)
+
+                    if counter == limit:
                         break
 
                 for attachment in ctx.message.attachments:
-                    # Need to download the user attachments as checks succeeded
+                    # Download the user attachments on iterator through list
                     await attachment.save(f'WorkingFiles/FilesToConvert/{attachment.filename}')
 
-                    # Attachment.save
                     # Converter logic goes here
-                    # Need to set input type as working_attachment
+                    # Need to set input type as attachment.filename
                     # Set output type as desired
-                    # After output is sent, delete WorkingFiles/FilesToConvert/*
 
             else:
                 await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=5)
+
+            # Must sleep (15s) to prevent errors
+            await asyncio.sleep(15)
+            # After output is sent, delete WorkingFiles/FilesToConvert/*
+            working_directory = 'WorkingFiles/FilesToConvert'
+            for file in os.scandir(working_directory):
+                os.remove(file.path)
+                print(f'I removed {file.name}')
 
     @_convert_.error
     async def _convert_error(self, ctx, error):
