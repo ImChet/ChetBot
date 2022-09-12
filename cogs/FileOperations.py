@@ -75,10 +75,9 @@ class FileOperations(commands.Cog, name='File Commands'):
                     break
 
             # Ensures the FilesToConvert directory exists
-            path = f'WorkingFiles/FilesToConvert/'
-            if os.path.exists(path):
-                return
-            else:
+            path = 'WorkingFiles/FilesToConvert/'
+            directory_exists = os.path.exists(path)
+            if directory_exists is False:
                 os.mkdir(path)
 
             if type_check:
@@ -88,12 +87,14 @@ class FileOperations(commands.Cog, name='File Commands'):
 
                     # Converter logic goes here
                     to_convert = f'WorkingFiles/FilesToConvert/{attachment.filename}'
+
                     # Set output type as desired
                     output_filepath = f'WorkingFiles/FilesToConvert/ChetBot_Converted_{file_increment}.{desired}'
                     # Save(output_filepath)
 
                     await ctx.send(f'{ctx.author.mention}, here is your converted file from .{initial} to .{desired}:')
-                    await ctx.send(file=output_filepath)
+                    await ctx.send(file=to_convert)
+                    # await ctx.send(file=output_filepath)
 
                     # Increment file names by 1 to keep filenames unique
                     file_increment = file_increment+1
