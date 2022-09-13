@@ -6,7 +6,7 @@ import discord
 from discord.ext import commands
 
 from apikeys import discordBotAPIKey
-from functions import getCurrentDateTime, getTime
+from functions import getCurrentDateTime
 
 # Specifies intents
 intents = discord.Intents.default()

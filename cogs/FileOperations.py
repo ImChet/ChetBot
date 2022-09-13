@@ -131,8 +131,8 @@ class FileOperations(commands.Cog, name='File Commands'):
         else:
             await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=10)
 
-        # Must sleep (20s) to prevent possible errors with the deletion of files
-        await asyncio.sleep(20)
+        # Must sleep (1s) to prevent possible errors with the deletion of files
+        await asyncio.sleep(1)
         # After output is sent, delete WorkingFiles/FilesToConvert/*
         working_directory = 'WorkingFiles/FilesToConvert'
         for file in os.scandir(working_directory):
@@ -215,8 +215,8 @@ class FileOperations(commands.Cog, name='File Commands'):
         else:
             await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=10)
 
-        # Must sleep (20s) to prevent possible errors with the deletion of files
-        await asyncio.sleep(20)
+        # Must sleep (1s) to prevent possible errors with the deletion of files
+        await asyncio.sleep(1)
         # After output is sent, delete WorkingFiles/FilesToConvert/*
         working_directory = 'WorkingFiles/FilesToConvert'
         for file in os.scandir(working_directory):
@@ -254,21 +254,25 @@ class FileOperations(commands.Cog, name='File Commands'):
 
             # Check if uploaded file name is already that of the outfile to avoid errors
             if os.path.isfile(out_file):
-                out_file = f'WorkingFiles/FilesToCombine/ChetBotCombined-{getTime()}.pdf'
+                current_time = getTime('-')
+                out_file = f'WorkingFiles/FilesToCombine/ChetBotCombined-{current_time}.pdf'
 
             # The PDF merger takes all appended files and writes them to the outfile
             merger.write(out_file)
+            # Need to close merger or files won't get deleted in WorkingFiles/FilesToCombine/
+            merger.close()
             # Send combined file
             await ctx.send(file=discord.File(out_file))
 
-            # Must sleep (20s) to prevent possible errors with the deletion of files
-            await asyncio.sleep(20)
-            # After output is sent, delete WorkingFiles/FilesToConvert/*
-            working_directory = 'WorkingFiles/FilesToCombine'
-            for file in os.scandir(working_directory):
-                os.remove(file.path)
         elif len(ctx.message.attachments) in [0, 1]:
             await ctx.send(f'{ctx.author.mention}, you must attach 2 or more pdf files for me to combine them.', delete_after=10)
+
+        # Must sleep (1s) to prevent possible errors with the deletion of files
+        await asyncio.sleep(1)
+        # After output is sent, delete WorkingFiles/FilesToConvert/*
+        working_directory = 'WorkingFiles/FilesToCombine'
+        for file in os.scandir(working_directory):
+            os.remove(file.path)
 
 
 async def setup(ChetBot):

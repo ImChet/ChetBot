@@ -17,8 +17,9 @@ def getCurrentDateTime():
 
 
 # Current Time
-def getTime():
-    return f'{datetime.now().strftime("%I-%M-%S")}'
+def getTime(chosenDelimiter: str):
+    output = f'%I{chosenDelimiter}%M{chosenDelimiter}%S'
+    return f'{datetime.now().strftime(output)}'
 
 
 # To lowercase
