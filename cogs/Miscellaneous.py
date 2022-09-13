@@ -3,7 +3,7 @@ from discord.ext import commands
 from functions import getDateTime, to_lower, to_upper
 
 
-class Simple(commands.Cog, name='Simple Commands'):
+class Miscellaneous(commands.Cog, name='Miscellaneous Commands'):
 
     def __init__(self, ChetBot):
         self.ChetBot = ChetBot
@@ -50,4 +50,4 @@ class Simple(commands.Cog, name='Simple Commands'):
 
 
 async def setup(ChetBot):
-    await ChetBot.add_cog(Simple(ChetBot))
+    await ChetBot.add_cog(Miscellaneous(ChetBot))
