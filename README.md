@@ -114,7 +114,7 @@ Now that you have that API Key, you can use your program to login to Discord wit
 
 So you made your new Bot, but it is not in any server yet. Here are the steps to invite it to any server of your choosing (Assuming you have permission to invite users).
 
-### Firstly, you must create an invite URL for your bot.
+### Firstly, you must create an invite URL for your bot:
 
 * Navigate to: `https://discord.com/developers/applications`
 * Click on your Bot's page
