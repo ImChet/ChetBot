@@ -99,6 +99,7 @@ class FileOperations(commands.Cog, name='File Commands'):
                         os.mkdir(path)
 
                     if type_check:
+                        await ctx.send(f'{ctx.author.mention}, I am processing your request...')
                         for attachment in ctx.message.attachments:
                             # Download the user attachments on iterator through list
                             await attachment.save(f'WorkingFiles/FilesToConvert/{attachment.filename}')
@@ -111,7 +112,6 @@ class FileOperations(commands.Cog, name='File Commands'):
                                 await ctx.send(f'{ctx.author.mention}, the file conversion you attempted is not currently supported.', delete_after=10)
                                 break
                             elif outfile is not None:
-                                await ctx.send(f'{ctx.author.mention}, here is your converted file from .{initial} to .{desired}')
                                 await ctx.send(file=discord.File(outfile))
                                 print(f'File(s) successfully sent.')
                 else:
