@@ -63,6 +63,8 @@ Description of command
 
 ##### Python packages in use
 
+For additional information on the packages that ChetBot utilizes, be sure to take a look at the linked PyPi documentation on each.
+
 * [discord.py](https://discordpy.readthedocs.io/en/stable/intro.html#installing)
 * [discord.py voice](https://discordpy.readthedocs.io/en/stable/intro.html#installing)
 * [Pillow](https://pypi.org/project/Pillow/)
@@ -70,7 +72,8 @@ Description of command
 * [PyPDF2](https://pypi.org/project/PyPDF2/)
 * [pdf2docx](https://pypi.org/project/pdf2docx/)
 * [docx2pdf](https://pypi.org/project/docx2pdf/)
-  * This package requires Microsoft Word to be installed
+
+###### (docx2pdf requires Microsoft Word to be installed)
 
 ### Windows setup
 
