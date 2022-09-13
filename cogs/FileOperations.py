@@ -138,11 +138,6 @@ class FileOperations(commands.Cog, name='File Commands'):
         for file in os.scandir(working_directory):
             os.remove(file.path)
 
-    @_convert_files_.error
-    async def _convert_files_error_(self, ctx, error):
-        if isinstance(error, discord.HTTPException):
-            await ctx.send(f'{ctx.author.mention}, saving your attachment failed.', delete_after=10)
-
     # Coverts user audio attachments from allowed types
     @commands.command(name='audio')
     async def _convert_audio_(self, ctx, initial: str, desired: str):
@@ -227,11 +222,6 @@ class FileOperations(commands.Cog, name='File Commands'):
         for file in os.scandir(working_directory):
             os.remove(file.path)
 
-    @_convert_audio_.error
-    async def _convert_audio_error_(self, ctx, error):
-        if isinstance(error, discord.HTTPException):
-            await ctx.send(f'{ctx.author.mention}, saving your attachment failed.', delete_after=10)
-
     # Makes and uploads files bases on user's decision
     @commands.command(name='combine')
     async def _combine_files_(self, ctx):
@@ -279,11 +269,6 @@ class FileOperations(commands.Cog, name='File Commands'):
                 os.remove(file.path)
         elif len(ctx.message.attachments) in [0, 1]:
             await ctx.send(f'{ctx.author.mention}, you must attach 2 or more pdf files for me to combine them.', delete_after=10)
-
-    @_combine_files_.error
-    async def _combine_files_error_(self, ctx, error):
-        if isinstance(error, discord.HTTPException):
-            await ctx.send(f'{ctx.author.mention}, saving your attachment failed.', delete_after=10)
 
 
 async def setup(ChetBot):
