@@ -53,11 +53,11 @@ Description of command
 ##### 3
 Description of command
 
-## Steps needed to get ChetBot up and running
+## Get ChetBot up and running
 
 ### Python Packages in use
 
-##### Go to the directory where your ChetBot files have been downloaded or cloned, and in the terminal run the following:
+##### Go to the directory where your files have been downloaded or cloned, and in the terminal run the following:
 
 * [discord.py](https://discordpy.readthedocs.io/en/stable/intro.html#installing): `py -3 -m pip install -U discord.py`
 * [discord.py voice](https://discordpy.readthedocs.io/en/stable/intro.html#installing): `py -m pip install -U discord.py[voice]`
@@ -72,7 +72,6 @@ Description of command
 
 #### FFmpeg installation to use Voice Channel commands
 
-##### Steps:
 * To download FFmpegPCMAudio go to their [website](https://ffmpeg.org/download.html#build-windows), as we are using Windows, we want to use the Windows package
   * Click on "Windows build by BtbN"
 * On the GitHub repository, find the `ffmpeg-n4.4-latest-win64-gpl-4.4.zip` or similar package, and download it
@@ -90,7 +89,6 @@ Description of command
 
 #### FFmpeg installation to use Voice Channel commands
 
-##### Steps:
 * Open your Terminal, type the following: `sudo apt install ffmpeg`
 * Check if FFmpeg is installed with the following: `FFmpeg -version`
 * Restart your PC to ensure FFmpeg took effect
@@ -101,7 +99,6 @@ If you wish to create your own Discord Bot, it needs to work with the Discord AP
 
 ## Making a Discord Bot account
 
-##### Steps:
 * Navigate to: `https://discord.com/developers/applications`
 * Click on the "New Application"
 * Give your application a name and click "Create"
@@ -117,8 +114,8 @@ Now that you have that API Key, you can use your program to login to Discord wit
 
 So you made your new Bot, but it is not in any server yet. Here are the steps to invite it to any server of your choosing (Assuming you have permission to invite users).
 
-Firstly, you must create an invite URL for your bot.
-##### Steps:
+### Firstly, you must create an invite URL for your bot.
+
 * Navigate to: `https://discord.com/developers/applications`
 * Click on your Bot's page
 * Go to the "OAuth2" tab on the left-hand side
@@ -137,7 +134,7 @@ Your Bot should now have successfully joined the Discord Server of your choosing
 Now that you have generated your Discord Bot's API Key and you have invited it to the server(s) of your choosing, you probably want to get to work making your Bot function as you wish.
 
 To do this, make sure that you have cloned the ChetBot files from my GitHub.
-##### Steps:
+
 * Follow the instructions on the [GitHub docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) if you are unfamiliar with cloning repositories
   * ChetBot repository Link: `https://github.com/ImChet/ChetBot.git`
 * In the newly cloned ChetBot repository, find the apikeys.py file, navigate to the discordBotAPIKey string definition and place your Discord Bot API Key in it.
