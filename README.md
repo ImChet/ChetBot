@@ -55,7 +55,7 @@ Description of command
 
 ## Steps needed to get ChetBot up and running
 
-### Python Packages needed for ChetBot functionality
+### Python Packages in use
 
 ##### Go to the directory where your ChetBot files have been downloaded or cloned, and in the terminal run the following:
 
