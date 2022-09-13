@@ -74,7 +74,7 @@ Description of command
 
 ##### Steps:
 * To download FFmpegPCMAudio go to their [website](https://ffmpeg.org/download.html#build-windows), as we are using Windows, we want to use the Windows package
-  * Click on "Windows buils by BtbN"
+  * Click on "Windows build by BtbN"
 * On the GitHub repository, find the `ffmpeg-n4.4-latest-win64-gpl-4.4.zip` or similar package, and download it
 * Extract the .exe files from the .zip file
 * Search "path" in the Windows search
