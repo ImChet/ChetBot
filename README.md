@@ -85,7 +85,6 @@ Description of command
 * Click ok, and close out of everything
 * Navigate to your cmd, check if FFmpeg is installed with the following: `FFmpeg -version`
 * Restart your PC to ensure FFmpeg took effect
-* Make sure to import the module for FFmpeg: `from discord import FFmpegPCMAudio`
 
 ### Linux setup
 
