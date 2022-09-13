@@ -48,11 +48,6 @@ def file_conversion(input_file, desired_outfile_type):
     input_file_type = (os.path.splitext(str(input_file))[1])
     input_file_name = (os.path.splitext(str(input_file))[0])
 
-    print(f'str(input_file) {str(input_file)}')  # test
-    print(f'input_file_type {str(input_file_type)}')  # test
-    print(f'input_file_name {str(input_file_name)}')  # test
-    print(f'desired_outfile_type = {desired_outfile_type}')  # test
-
     # Input conditional variable definitions
     input_is_pdf = input_file_type in pdf_file
     input_is_docx = input_file_type in docx_file
@@ -64,9 +59,6 @@ def file_conversion(input_file, desired_outfile_type):
     output_is_docx = desired_outfile_type in docx_file
     output_is_jpeg = desired_outfile_type in jpeg_file
     output_is_png = desired_outfile_type in png_file
-
-    print(f'input_is_jpeg = {input_is_jpeg}')  # testing
-    print(f'output_is_pdf = {output_is_pdf}')  # testing
 
     # .pdf to .docx (utilizes pdf2docx.parse)
     if input_is_pdf and output_is_docx:

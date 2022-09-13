@@ -106,14 +106,14 @@ class FileOperations(commands.Cog, name='File Commands'):
                             input_filepath = f'WorkingFiles/FilesToConvert/{attachment.filename}'
                             # Output file
                             outfile = file_conversion(input_filepath, desired)
-                            print(f'sending file now...')
-                            print(f'outfile = {str(outfile)}')
+                            print(f'Sending converted file(s) now...')
                             if outfile is None:
                                 await ctx.send(f'{ctx.author.mention}, the file conversion you attempted is not currently supported.', delete_after=10)
                                 break
                             elif outfile is not None:
                                 await ctx.send(f'{ctx.author.mention}, here is your converted file from .{initial} to .{desired}')
                                 await ctx.send(file=discord.File(outfile))
+                                print(f'File(s) successfully sent.')
                 else:
                     await ctx.send(f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of the attachment.', delete_after=10)
             else:
