@@ -24,9 +24,7 @@ initial_extensions = []
 # on_ready is called when the Bot has logged on/set things up and sets the bot status
 @ChetBot.event
 async def on_ready():
-    await ChetBot.change_presence(status=discord.Status.do_not_disturb,
-                                  activity=discord.Activity(type=discord.ActivityType.watching,
-                                                            name='over the universe'))
+    await ChetBot.change_presence(status=discord.Status.do_not_disturb, activity=discord.Activity(type=discord.ActivityType.watching, name='over the universe'))
     print(f'We have logged in as {ChetBot.user} on {getDateTime()}')
 
 
