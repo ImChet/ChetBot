@@ -1,54 +1,56 @@
 # ChetBot Discord Bot
 
-## ChetBot usage
+## What is ChetBot?
 
-### Event Listeners
-###### When a Member joins your server
+Description of What is ChetBot?
+
+## Event Listeners
+##### When a Member joins your server
 Description of on_member_join
 
-###### etc...
+##### etc...
 Description of etc...
 
-### Commands
+## Commands
 
-##### Administration Commands
-###### 1
+### Administration Commands
+##### 1
 Description of command
 
-###### 2
+##### 2
 Description of command
 
-###### 3
+##### 3
 Description of command
 
-##### File Commands
-###### 1
+### File Commands
+##### 1
 Description of command
 
-###### 2
+##### 2
 Description of command
 
-###### 3
+##### 3
 Description of command
 
-##### Voice Channel Commands
-###### 1
+### Voice Channel Commands
+##### 1
 Description of command
 
-###### 2
+##### 2
 Description of command
 
-###### 3
+##### 3
 Description of command
 
-##### Miscellaneous Commands
-###### 1
+### Miscellaneous Commands
+##### 1
 Description of command
 
-###### 2
+##### 2
 Description of command
 
-###### 3
+##### 3
 Description of command
 
 ## Steps needed to get ChetBot up and running
