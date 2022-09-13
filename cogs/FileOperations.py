@@ -52,8 +52,6 @@ class FileOperations(commands.Cog, name='File Commands'):
         await ctx.typing()
         if ctx.message.attachments:
 
-            print(str(ctx.message.attachments[0].content_type))  # Testing
-
             # Defining variables in use
             initial_check = f'/{initial}'
             allowed_files = ['/pdf', '/jpeg', '/jpg', '/docx', '/png']
