@@ -1,5 +1,7 @@
 import random
+
 from discord.ext import commands
+
 from functions import getDateTime, to_lower, to_upper
 
 

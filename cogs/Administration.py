@@ -1,7 +1,8 @@
+from typing import Optional
+
 import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions, bot_has_permissions
-from typing import Optional
 
 
 class Administration(commands.Cog, name='Administration Commands'):

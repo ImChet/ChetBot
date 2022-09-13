@@ -1,6 +1,7 @@
 import discord
-from discord.ext import commands
 from discord import FFmpegPCMAudio
+from discord.ext import commands
+
 from functions import check_queue, queues
 
 

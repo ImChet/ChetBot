@@ -1,8 +1,9 @@
-from datetime import datetime
-from pdf2docx import parse
-from docx2pdf import convert
-from PIL import Image
 import os
+from datetime import datetime
+
+from PIL import Image
+from docx2pdf import convert
+from pdf2docx import parse
 
 # Variable Definitions
 # Defining variables
