@@ -18,22 +18,6 @@ ChetBot = commands.Bot(command_prefix="/", intents=intents)
 # Defines the initial_extensions array
 initial_extensions = []
 
-# Logging setup / parameters
-logger = logging.getLogger('discord')
-logger.setLevel(logging.DEBUG)
-logging.getLogger('discord.http').setLevel(logging.INFO)
-logHandler = logging.handlers.RotatingFileHandler(
-    filename='WorkingFiles/ChetBot.log',
-    encoding='utf-8',
-    maxBytes=500000000,
-    backupCount=3,  # Rotates through 3 files of 500MB each
-)
-loggingDateFormat = '%Y-%m-%d %H:%M:%S'
-loggingFormatter = logging.Formatter('[{asctime}] [{levelname:<8}] {name}: {message}', loggingDateFormat, style='{')
-logHandler.setFormatter(loggingFormatter)
-logger.addHandler(logHandler)
-
-
 # on_ready is called when the Bot has logged on/set things up and sets the bot status
 @ChetBot.event
 async def on_ready():
