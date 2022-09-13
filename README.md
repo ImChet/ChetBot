@@ -3,46 +3,53 @@
 ## ChetBot usage
 
 ### Event Listeners
+###### When a Member joins your server
+Description of on_member_join
 
-##### When a Member joins your server
-###### Description of on_member_join
-
-##### etc...
-###### Description of etc...
+###### etc...
+Description of etc...
 
 ### Commands
 
 ##### Administration Commands
-1
-###### Description of command
-2
-###### Description of command
-3
-###### Description of command
+###### 1
+Description of command
+
+###### 2
+Description of command
+
+###### 3
+Description of command
 
 ##### File Commands
-1
-###### Description of command
-2
-###### Description of command
-3
-###### Description of command
+###### 1
+Description of command
+
+###### 2
+Description of command
+
+###### 3
+Description of command
 
 ##### Voice Channel Commands
-1
-###### Description of command
-2
-###### Description of command
-3
-###### Description of command
+###### 1
+Description of command
+
+###### 2
+Description of command
+
+###### 3
+Description of command
 
 ##### Miscellaneous Commands
-1
-###### Description of command
-2
-###### Description of command
-3
-###### Description of command
+###### 1
+Description of command
+
+###### 2
+Description of command
+
+###### 3
+Description of command
 
 ## Steps needed to get ChetBot up and running
 
@@ -62,7 +69,7 @@
 
 #### FFmpeg installation to use Voice Channel commands
 
-###### Steps:
+##### Steps:
 * To download FFmpegPCMAudio go to their [website](https://ffmpeg.org/download.html#build-windows), as we are using Windows, we want to use the Windows package
   * Click on "Windows buils by BtbN"
 * On the GitHub repository, find the `ffmpeg-n4.4-latest-win64-gpl-4.4.zip` or similar package, and download it
@@ -81,7 +88,7 @@
 
 #### FFmpeg installation to use Voice Channel commands
 
-###### Steps:
+##### Steps:
 * Open your Terminal, type the following: `sudo apt install ffmpeg`
 * Check if FFmpeg is installed with the following: `FFmpeg -version`
 * Restart your PC to ensure FFmpeg took effect
@@ -92,7 +99,7 @@ If you wish to create your own Discord Bot, it needs to work with the Discord AP
 
 ### Making a Discord Bot account
 
-###### Steps:
+##### Steps:
 * Navigate to: `https://discord.com/developers/applications`
 * Click on the "New Application"
 * Give your application a name and click "Create"
@@ -128,7 +135,7 @@ Your Bot should now have successfully joined the Discord Server of your choosing
 Now that you have generated your Discord Bot's API Key and you have invited it to the server(s) of your choosing, you probably want to get to work making your Bot function as you wish.
 
 To do this, make sure that you have cloned the ChetBot files from my GitHub.
-###### Steps:
+##### Steps:
 * Follow the instructions on the [GitHub docs](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) if you are unfamiliar with cloning repositories
   * ChetBot repository Link: `https://github.com/ImChet/ChetBot.git`
 * In the newly cloned ChetBot repository, find the apikeys.py file, navigate to the discordBotAPIKey string definition and place your Discord Bot API Key in it.
