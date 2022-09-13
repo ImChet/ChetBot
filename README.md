@@ -62,7 +62,7 @@ Description of command
 * [discord.py](https://discordpy.readthedocs.io/en/stable/intro.html#installing): `py -3 -m pip install -U discord.py`
 * [discord.py voice](https://discordpy.readthedocs.io/en/stable/intro.html#installing): `py -m pip install -U discord.py[voice]`
 * [pyffmpeg](https://pypi.org/project/pyffmpeg/): `py -3 -m pip install pyffmpeg`
-* [PyPDF2](https://pypdf2.readthedocs.io/en/latest/): `py -3 -m pip install PyPDF2`
+* [PyPDF2](https://pypi.org/project/PyPDF2/): `py -3 -m pip install PyPDF2`
 * [pdf2docx](https://pypi.org/project/pdf2docx/): `py -3 -m pip install pdf2docx`
 * [docx2pdf](https://pypi.org/project/docx2pdf/): `py -3 -m pip install docx2pdf`
   * This package requires Microsoft Word to be installed
