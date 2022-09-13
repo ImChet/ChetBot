@@ -1,6 +1,7 @@
 from datetime import datetime
 from pdf2docx import parse
 from docx2pdf import convert
+from PIL import Image
 import os
 
 # Variable Definitions
@@ -64,25 +65,51 @@ def file_conversion(input_file, desired_outfile_type):
     output_is_jpeg = desired_outfile_type in jpeg_file
     output_is_png = desired_outfile_type in png_file
 
-    print(f'input_is_docx = {input_is_docx}')  # testing
+    print(f'input_is_jpeg = {input_is_jpeg}')  # testing
     print(f'output_is_pdf = {output_is_pdf}')  # testing
 
-    # .pdf to .docx
+    # .pdf to .docx (utilizes pdf2docx.parse)
     if input_is_pdf and output_is_docx:
         # infile is .pdf
         infile = input_file
         # outfile is .docx
         outfile = f'{input_file_name}{desired_outfile_type}'
-
         parse(infile, outfile)
         return outfile
 
-    # .docx to .pdf
+    # .docx to .pdf (utilizes docx2pdf.convert)
     elif input_is_docx and output_is_pdf:
         # infile is .docx
         infile = input_file
         # outfile is .pdf
         outfile = f'{input_file_name}{desired_outfile_type}'
-        print(f'(in if) infile = {infile} and outfile = {outfile}')
         convert(infile, outfile)
         return outfile
+
+    # .jpeg to .pdf (utilizes PIL.Image)
+    elif input_is_jpeg and output_is_pdf:
+        # infile is .jpeg
+        infile = Image.open(input_file)
+        # outfile is .pdf
+        outfile_path = f'{input_file_name}{desired_outfile_type}'
+        outfile = infile.convert('RGB')
+        outfile.save(outfile_path)
+        return outfile_path
+
+    elif input_is_png and output_is_pdf:
+        # infile is .png
+        infile = Image.open(input_file)
+        # outfile is .pdf
+        outfile_path = f'{input_file_name}{desired_outfile_type}'
+        outfile = infile.convert('RGB')
+        outfile.save(outfile_path)
+        return outfile_path
+
+    elif input_is_png and output_is_jpeg:
+        # infile is .png
+        infile = Image.open(input_file)
+        # outfile is .jpeg
+        outfile_path = f'{input_file_name}{desired_outfile_type}'
+        outfile = infile.convert('RGB')
+        outfile.save(outfile_path)
+        return outfile_path
