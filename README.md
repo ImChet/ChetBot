@@ -100,7 +100,7 @@ Description of command
 
 If you wish to create your own Discord Bot, it needs to work with the Discord API. This section explains how to utilize the discord.py library to work with Discord's API.
 
-### Making a Discord Bot account
+## Making a Discord Bot account
 
 ##### Steps:
 * Navigate to: `https://discord.com/developers/applications`
@@ -114,7 +114,7 @@ If you wish to create your own Discord Bot, it needs to work with the Discord AP
 
 Now that you have that API Key, you can use your program to login to Discord with your new Bot account.
 
-### Inviting your Discord Bot account
+## Inviting your Discord Bot account
 
 So you made your new Bot, but it is not in any server yet. Here are the steps to invite it to any server of your choosing (Assuming you have permission to invite users).
 
@@ -133,7 +133,7 @@ Firstly, you must create an invite URL for your bot.
 
 Your Bot should now have successfully joined the Discord Server of your choosing.
 
-### Working with your Discord Bot
+## Working with your Discord Bot
 
 Now that you have generated your Discord Bot's API Key and you have invited it to the server(s) of your choosing, you probably want to get to work making your Bot function as you wish.
 
