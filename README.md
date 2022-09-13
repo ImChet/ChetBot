@@ -63,7 +63,7 @@ Description of command
 
 ##### Python packages in use
 
-For additional information on the packages that ChetBot utilizes, be sure to take a look at the linked PyPi documentation on each.
+For additional information on the packages that ChetBot utilizes, be sure to take a look at the linked PyPi documentation on each:
 
 * [discord.py](https://discordpy.readthedocs.io/en/stable/intro.html#installing)
 * [discord.py voice](https://discordpy.readthedocs.io/en/stable/intro.html#installing)
