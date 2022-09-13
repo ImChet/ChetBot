@@ -99,7 +99,7 @@ class FileOperations(commands.Cog, name='File Commands'):
                         os.mkdir(path)
 
                     if type_check:
-                        await ctx.send(f'{ctx.author.mention}, I am processing your request...')
+                        await ctx.send(f'{ctx.author.mention}, I am processing your request...', delete_after=10)
                         for attachment in ctx.message.attachments:
                             # Download the user attachments on iterator through list
                             await attachment.save(f'WorkingFiles/FilesToConvert/{attachment.filename}')
@@ -186,7 +186,7 @@ class FileOperations(commands.Cog, name='File Commands'):
                         os.mkdir(path)
 
                     if type_check:
-                        await ctx.send(f'{ctx.author.mention}, here are your converted file(s) from .{initial} to .{desired}')
+                        await ctx.send(f'{ctx.author.mention}, I am processing your request...', delete_after=10)
                         for attachment in ctx.message.attachments:
                             # Download the user attachments on iterator through list
                             await attachment.save(f'WorkingFiles/FilesToConvert/{attachment.filename}')

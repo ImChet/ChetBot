@@ -105,3 +105,7 @@ def file_conversion(input_file, desired_outfile_type):
         outfile = infile.convert('RGB')
         outfile.save(outfile_path)
         return outfile_path
+
+    else:
+        not_supported = None
+        return not_supported
