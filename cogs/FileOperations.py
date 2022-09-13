@@ -131,8 +131,8 @@ class FileOperations(commands.Cog, name='File Commands'):
         else:
             await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=10)
 
-        # Must sleep (1s) to prevent possible errors with the deletion of files
-        await asyncio.sleep(1)
+        # Must sleep (10s) to prevent possible errors with the deletion of files
+        await asyncio.sleep(10)
         # After output is sent, delete WorkingFiles/FilesToConvert/*
         working_directory = 'WorkingFiles/FilesToConvert'
         for file in os.scandir(working_directory):
@@ -215,8 +215,8 @@ class FileOperations(commands.Cog, name='File Commands'):
         else:
             await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=10)
 
-        # Must sleep (1s) to prevent possible errors with the deletion of files
-        await asyncio.sleep(1)
+        # Must sleep (10s) to prevent possible errors with the deletion of files
+        await asyncio.sleep(10)
         # After output is sent, delete WorkingFiles/FilesToConvert/*
         working_directory = 'WorkingFiles/FilesToConvert'
         for file in os.scandir(working_directory):
@@ -267,8 +267,8 @@ class FileOperations(commands.Cog, name='File Commands'):
         elif len(ctx.message.attachments) in [0, 1]:
             await ctx.send(f'{ctx.author.mention}, you must attach 2 or more pdf files for me to combine them.', delete_after=10)
 
-        # Must sleep (1s) to prevent possible errors with the deletion of files
-        await asyncio.sleep(1)
+        # Must sleep (10s) to prevent possible errors with the deletion of files
+        await asyncio.sleep(10)
         # After output is sent, delete WorkingFiles/FilesToConvert/*
         working_directory = 'WorkingFiles/FilesToCombine'
         for file in os.scandir(working_directory):
