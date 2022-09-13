@@ -4,6 +4,7 @@ import os
 import discord
 from discord.ext import commands
 from pyffmpeg import FFmpeg
+from PyPDF2 import PdfFileMerger
 
 from functions import file_conversion
 
@@ -234,6 +235,47 @@ class FileOperations(commands.Cog, name='File Commands'):
             await ctx.send(f'{ctx.author.mention}, saving your attachment failed.', delete_after=10)
         elif isinstance(error, discord.NotFound):
             await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=10)
+
+    # Makes and uploads files bases on user's decision
+    @commands.command(name='combine')
+    async def _combine_files_(self, ctx):
+        if ctx.message.attachments:
+            pdf_check = ['.pdf']
+            # Check if attatched file is .pdf
+            for attachment in ctx.message.attachments:
+                attatched_file_type = (os.path.splitext(str(attachment))[1])
+                if attatched_file_type not in pdf_check:
+                    await ctx.send(f'{ctx.author.mention}, the file(s) attached is not a PDF. Currently only PDF combinations are supported.', delete_after=10)
+                    break
+
+            # Ensures the FilesToCombine directory exists
+            path = 'WorkingFiles/FilesToCombine/'
+            directory_exists = os.path.exists(path)
+            if directory_exists is False:
+                os.mkdir(path)
+
+            merger = PdfFileMerger()
+            for pdf in ctx.message.attachments:
+                # Download the user attachments on iterator through list
+                await pdf.save(f'WorkingFiles/FilesToCombine/{pdf.filename}')
+                # Input file
+                input_filepath = f'WorkingFiles/FilesToCombine/{pdf.filename}'
+                # Appends each file attached to the PDF merger
+                merger.append(input_filepath)
+
+            # Output file
+            out_file = 'WorkingFiles/FilesToCombine/ChetBot_Combined.pdf'
+            # The PDF merger takes all appended files and writes them to the outfile
+            merger.write(out_file)
+            # Send combined file
+            await ctx.send(file=discord.File(out_file))
+
+            # Must sleep (20s) to prevent possible errors with the deletion of files
+            await asyncio.sleep(20)
+            # After output is sent, delete WorkingFiles/FilesToConvert/*
+            working_directory = 'WorkingFiles/FilesToCombine'
+            for file in os.scandir(working_directory):
+                os.remove(file.path)
 
 
 async def setup(ChetBot):

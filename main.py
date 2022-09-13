@@ -36,11 +36,10 @@ for filename in os.listdir('./cogs'):
 
 
 async def main():
-    if __name__ == '__main__':
-        for extension in initial_extensions:
-            await ChetBot.load_extension(extension)
+    for extension in initial_extensions:
+        await ChetBot.load_extension(extension)
 
-
-asyncio.run(main())
+if __name__ == '__main__':
+    asyncio.run(main())
 
 ChetBot.run(discordBotAPIKey, log_handler=None)
