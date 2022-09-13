@@ -65,8 +65,7 @@ Description of command
 
 For additional information on the packages that ChetBot utilizes, be sure to take a look at the linked PyPi documentation on each:
 
-* [discord.py](https://discordpy.readthedocs.io/en/stable/intro.html#installing)
-* [discord.py voice](https://discordpy.readthedocs.io/en/stable/intro.html#installing)
+* [discord.py](https://pypi.org/project/discord.py/)
 * [Pillow](https://pypi.org/project/Pillow/)
 * [pyffmpeg](https://pypi.org/project/pyffmpeg/)
 * [PyPDF2](https://pypi.org/project/PyPDF2/)
