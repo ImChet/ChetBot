@@ -46,18 +46,17 @@ class FileOperations(commands.Cog, name='File Commands'):
     @commands.command(name='file')
     async def _convert_files_(self, ctx, initial: str, desired: str):
         if ctx.message.attachments:
-            print(f'{ctx.message.attachments[0].content_type} Test 1')  # testing
-            print(f'{ctx.message.attachments[1].content_type} Test 1')  # testing
-            print(f'{ctx.message.attachments[2].content_type} Test 1')  # testing
-
             await ctx.typing()
+
+            print(f'{ctx.message.attachments[0].content_type} Test 1')  # testing
 
             # Defining variables in use
             initial_check = f'/{initial}'
-            allowed_files = ['/pdf', '/jpeg', '/jpg', '/docx']
+            allowed_files = ['/pdf', '/jpeg', '/jpg', '/docx', '/png']
             jpg_files = ['/jpeg', '/jpg']
             pdf_file = ['/pdf']
             docx_file = ['/docx']
+            png_file = ['/png']
             check_counter = 0
             limit = len(ctx.message.attachments)
 
@@ -66,30 +65,32 @@ class FileOperations(commands.Cog, name='File Commands'):
             jpg_check = initial_check in jpg_files
             pdf_check = initial_check in pdf_file
             docx_check = initial_check in docx_file
+            png_check = initial_check in png_file
 
-            # Content_types are either ['application/pdf',
-            # 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/png']
             # Cleaning up user input
             if supported_file_check:
                 if jpg_check:
-                    initial_check = 'image/jpeg'
+                    initial_check = 'image/jpeg'  # .jpg/.jpeg
                 elif pdf_check:
-                    initial_check = 'application/pdf'
+                    initial_check = 'application/pdf'  # .pdf
                 elif docx_check:
-                    initial_check = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                    initial_check = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'  # .docx
+                elif png_check:
+                    initial_check = 'image/png'  # .png
                 else:
                     await ctx.send(f'{ctx.author.mention}, the type of file attached is not currently supported.', delete_after=10)
-
                 # Checks if the initial declared value matched actual uploaded attachment file type
                 for working_file in range(0, limit + 1):
                     working_file_attachment = str(ctx.message.attachments[working_file].content_type)
                     if initial_check in working_file_attachment:
                         type_check = initial_check in working_file_attachment
-                        print(ctx.message.attachments[working_file].content_type)  # Testing
                         check_counter = check_counter + 1
+
+                        print(ctx.message.attachments[working_file].content_type)  # Testing
+                        print(f'Test passed, type of file approved')  # testing
+
                     elif initial_check not in working_file_attachment:
-                        await ctx.send(
-                            f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of the attachment.', delete_after=10)
+                        await ctx.send(f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of the attachment.', delete_after=10)
                         break
 
                     if check_counter == limit:
@@ -102,24 +103,23 @@ class FileOperations(commands.Cog, name='File Commands'):
                     os.mkdir(path)
 
                 if type_check:
+                    await ctx.send(f'{ctx.author.mention}, here is your converted file from .{initial} to .{desired}')
                     for attachment in ctx.message.attachments:
                         # Download the user attachments on iterator through list
                         await attachment.save(f'WorkingFiles/FilesToConvert/{attachment.filename}')
-                        # Download the user attachments on iterator through list
-                        await attachment.save(f'WorkingFiles/FilesToConvert/{attachment.filename}')
-                        # Retaining the name of the file uploaded by the user without the previous extension
+                        # Retaining the name of the file uploaded by the user without the previous unconverted extension
                         trimmed_filename = (os.path.splitext(str(attachment.filename))[0])
+
+                        # Converter logic goes here
+
                         # Input file
                         input_filepath = f'WorkingFiles/FilesToConvert/{attachment.filename}'
                         # Output file
                         output_filepath = f'WorkingFiles/FilesToConvert/{trimmed_filename}.{desired}'
 
-                        # Converter logic goes here
-
-                        await ctx.send(f'{ctx.author.mention}, here is your converted file from .{initial} to .{desired}:')
                         await ctx.send(file=discord.File(output_filepath))
             else:
-                await ctx.send(f'{ctx.author.mention}, the type of file attached is not currently supported.', delete_after=10)
+                await ctx.send(f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of the attachment.', delete_after=10)
         else:
             await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=10)
 
@@ -191,12 +191,13 @@ class FileOperations(commands.Cog, name='File Commands'):
                     os.mkdir(path)
 
                 if type_check:
-                    await ctx.send(f'{ctx.author.mention}, here are your converted file(s) from .{initial} to .{desired}:')
+                    await ctx.send(f'{ctx.author.mention}, here are your converted file(s) from .{initial} to .{desired}')
                     for attachment in ctx.message.attachments:
                         # Download the user attachments on iterator through list
                         await attachment.save(f'WorkingFiles/FilesToConvert/{attachment.filename}')
-                        # Retaining the name of the file uploaded by the user without the previous extension
+                        # Retaining the name of the file uploaded by the user without the previous unconverted extension
                         trimmed_filename = (os.path.splitext(str(attachment.filename))[0])
+
                         # Input file
                         input_filepath = f'WorkingFiles/FilesToConvert/{attachment.filename}'
                         # Output file
@@ -207,7 +208,7 @@ class FileOperations(commands.Cog, name='File Commands'):
                         out_file = ff.convert(input_filepath, output_filepath)
                         await ctx.send(file=discord.File(out_file))
             else:
-                await ctx.send(f'{ctx.author.mention}, the type of file attached is not currently supported.', delete_after=10)
+                await ctx.send(f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of the attachment.', delete_after=10)
         else:
             await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=10)
 
