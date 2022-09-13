@@ -1,0 +1,7 @@
+discord.py==2.0.1
+discord.py[voice]==2.0.1
+pyffmpeg==2.3.0.3
+PyPDF2==2.10.7
+Pillow==9.2.0
+docx2pdf==0.1.8
+pdf2docx==0.5.6
