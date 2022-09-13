@@ -2,7 +2,7 @@ import random
 
 from discord.ext import commands
 
-from functions import getDateTime, to_lower, to_upper
+from functions import getCurrentDateTime, to_lower, to_upper
 
 
 class Miscellaneous(commands.Cog, name='Miscellaneous Commands'):
@@ -13,7 +13,7 @@ class Miscellaneous(commands.Cog, name='Miscellaneous Commands'):
     # Gives the current date and time
     @commands.command()
     async def date(self, ctx):
-        await ctx.send(f'Today\'s date is {getDateTime()}.')
+        await ctx.send(f'Today\'s date is {getCurrentDateTime()}.')
 
     # To lowercase
     @commands.command()

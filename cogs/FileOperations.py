@@ -6,7 +6,7 @@ from discord.ext import commands
 from pyffmpeg import FFmpeg
 from PyPDF2 import PdfFileMerger
 
-from functions import file_conversion
+from functions import file_conversion, getTime
 
 
 class FileOperations(commands.Cog, name='File Commands'):
@@ -139,11 +139,9 @@ class FileOperations(commands.Cog, name='File Commands'):
             os.remove(file.path)
 
     @_convert_files_.error
-    async def _convert_error(self, ctx, error):
+    async def _convert_files_error_(self, ctx, error):
         if isinstance(error, discord.HTTPException):
             await ctx.send(f'{ctx.author.mention}, saving your attachment failed.', delete_after=10)
-        elif isinstance(error, discord.NotFound):
-            await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=10)
 
     # Coverts user audio attachments from allowed types
     @commands.command(name='audio')
@@ -230,23 +228,20 @@ class FileOperations(commands.Cog, name='File Commands'):
             os.remove(file.path)
 
     @_convert_audio_.error
-    async def _convert_error(self, ctx, error):
+    async def _convert_audio_error_(self, ctx, error):
         if isinstance(error, discord.HTTPException):
             await ctx.send(f'{ctx.author.mention}, saving your attachment failed.', delete_after=10)
-        elif isinstance(error, discord.NotFound):
-            await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=10)
 
     # Makes and uploads files bases on user's decision
     @commands.command(name='combine')
     async def _combine_files_(self, ctx):
-        if ctx.message.attachments:
+        if len(ctx.message.attachments) >= 2:
             await ctx.send(f'{ctx.author.mention}, I am processing your request...', delete_after=3)
-            pdf_check = ['.pdf']
-            # Check if attatched file is .pdf
+            # Check if attached file is .pdf
             for attachment in ctx.message.attachments:
                 attatched_file_type = (os.path.splitext(str(attachment))[1])
-                if attatched_file_type not in pdf_check:
-                    await ctx.send(f'{ctx.author.mention}, the file(s) attached is not a PDF. Currently only PDF combinations are supported.', delete_after=10)
+                if attatched_file_type not in ['.pdf']:
+                    await ctx.send(f'{ctx.author.mention}, one or more of the files attached is not a PDF. Currently only PDF combinations are supported.', delete_after=10)
                     break
 
             # Ensures the FilesToCombine directory exists
@@ -265,7 +260,12 @@ class FileOperations(commands.Cog, name='File Commands'):
                 merger.append(input_filepath)
 
             # Output file
-            out_file = 'WorkingFiles/FilesToCombine/ChetBot_Combined.pdf'
+            out_file = f'WorkingFiles/FilesToCombine/ChetBotCombined.pdf'
+
+            # Check if uploaded file name is already that of the outfile to avoid errors
+            if os.path.isfile(out_file):
+                out_file = f'WorkingFiles/FilesToCombine/ChetBotCombined-{getTime()}.pdf'
+
             # The PDF merger takes all appended files and writes them to the outfile
             merger.write(out_file)
             # Send combined file
@@ -277,6 +277,13 @@ class FileOperations(commands.Cog, name='File Commands'):
             working_directory = 'WorkingFiles/FilesToCombine'
             for file in os.scandir(working_directory):
                 os.remove(file.path)
+        elif len(ctx.message.attachments) in [0, 1]:
+            await ctx.send(f'{ctx.author.mention}, you must attach 2 or more pdf files for me to combine them.', delete_after=10)
+
+    @_combine_files_.error
+    async def _combine_files_error_(self, ctx, error):
+        if isinstance(error, discord.HTTPException):
+            await ctx.send(f'{ctx.author.mention}, saving your attachment failed.', delete_after=10)
 
 
 async def setup(ChetBot):
