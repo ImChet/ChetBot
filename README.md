@@ -10,7 +10,7 @@
 * [pdf2docx](https://pypi.org/project/pdf2docx/): `py -3 -m pip install pdf2docx`
 * [docx2pdf](https://pypi.org/project/docx2pdf/): `py -3 -m pip install docx2pdf`
   * This package requires Microsoft Word to be installed
-* [Pillow](): `py -3 -m pip install Pillow`
+* [Pillow](https://pypi.org/project/Pillow/): `py -3 -m pip install Pillow`
 
 ## Windows setup
 
