@@ -240,6 +240,7 @@ class FileOperations(commands.Cog, name='File Commands'):
     @commands.command(name='combine')
     async def _combine_files_(self, ctx):
         if ctx.message.attachments:
+            await ctx.send(f'{ctx.author.mention}, I am processing your request...', delete_after=3)
             pdf_check = ['.pdf']
             # Check if attatched file is .pdf
             for attachment in ctx.message.attachments:
