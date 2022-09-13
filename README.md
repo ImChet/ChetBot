@@ -1,19 +1,25 @@
 # Steps needed to get ChetBot up and running
 
+## Python Packages needed for ChetBot functionality
+
+##### Go to the directory where your ChetBot files have been downloaded or cloned, and in the terminal run the following:
+
+* [discord.py](https://discordpy.readthedocs.io/en/stable/intro.html#installing): `py -3 -m pip install -U discord.py`
+* [discord.py voice](https://discordpy.readthedocs.io/en/stable/intro.html#installing): `py -m pip install -U discord.py[voice]`
+* [pyffmpeg](https://pypi.org/project/pyffmpeg/): `py -3 -m pip install pyffmpeg`
+* [pdf2docx](https://pypi.org/project/pdf2docx/): `py -3 -m pip install pdf2docx`
+* [docx2pdf](https://pypi.org/project/docx2pdf/): `py -3 -m pip install docx2pdf`
+  * This package requires Microsoft Word to be installed
+* [Pillow](): `py -3 -m pip install Pillow`
+
 ## Windows setup
 
-### discord.py installation
-
-##### Go to the directory where your ChetBot files have been downloaded, and in the terminal run the following:
-
-`py -3 -m pip install -U discord.py`
-`py -m pip install -U discord.py[voice]`
-
-### FFmpeg installation
-
-FFmpeg download: `https://ffmpeg.org/download.html#build-windows`
+### FFmpeg installation to use Voice Channel commands
 
 ##### Steps:
+* To download FFmpegPCMAudio go to their [website](https://ffmpeg.org/download.html#build-windows), as we are using Windows, we want to use the Windows package
+  * Click on "Windows buils by BtbN"
+* On the GitHub repository, find the `ffmpeg-n4.4-latest-win64-gpl-4.4.zip` or similar package, and download it
 * Extract the .exe files from the .zip file
 * Search "path" in the Windows search
 * Go to "Edit the System Enviroment Variables"
@@ -27,14 +33,7 @@ FFmpeg download: `https://ffmpeg.org/download.html#build-windows`
 
 ## Linux setup
 
-### discord.py installation
-
-##### Go to the directory where your ChetBot files have been downloaded, and in the terminal run the following:
-
-`python3 -m pip install -U discord.py`
-`python3 -m pip install -U discord.py[voice]`
-
-### FFmpeg installation
+### FFmpeg installation to use Voice Channel commands
 
 ##### Steps:
 * Open your Terminal, type the following: `sudo apt install ffmpeg`
@@ -43,7 +42,7 @@ FFmpeg download: `https://ffmpeg.org/download.html#build-windows`
 
 # Creating your own Discord Bot
 
-If you wish to create your own Discord Bot, it needs to work with the discord.py library and the Discord API. 
+If you wish to create your own Discord Bot, it needs to work with the Discord API. This section explains how to utilize the discord.py library to work with Discord's API.
 
 ### Making a Discord Bot account
 
@@ -92,4 +91,4 @@ You are now ready to use your Discord Bot.
 
 To do this, run the main.py file to sign onto Discord as your Bot.
 
-You may use the built-in ChetBot commands and event listeners as examples for your own Bot.
+You may use the built-in ChetBot commands and event listeners as examples for your own Bot. If you wish, you can start from scratch and figure your own way around the discord.py library or view their [documentation](https://discordpy.readthedocs.io/en/stable/index.html) as reference.
