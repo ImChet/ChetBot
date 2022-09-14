@@ -2,5 +2,5 @@
 /.idea
 __pycache__/
 /cogs/__pycache__/
-/ChetBot.log
 /apikeys.py
+/ChetBot.log
