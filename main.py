@@ -4,6 +4,7 @@ import os
 import logging.handlers
 import discord
 from discord.ext import commands
+from discord.ext.commands import DefaultHelpCommand
 
 from apikeys import discordBotAPIKey
 from functions import getCurrentDateTime
@@ -15,7 +16,7 @@ intents.voice_states = True
 intents.members = True
 
 # Creates the client connection to Discord and sets command prefix
-ChetBot = commands.Bot(command_prefix="/", intents=intents)
+ChetBot = commands.Bot(command_prefix="/", intents=intents, help_command=DefaultHelpCommand(no_category='Help Command'))
 
 # Defines the initial_extensions array
 initial_extensions = []

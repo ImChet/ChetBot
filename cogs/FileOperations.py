@@ -3,20 +3,21 @@ import os
 
 import discord
 from discord.ext import commands
+from discord.ext.commands import parameter
 from pyffmpeg import FFmpeg
 from PyPDF2 import PdfFileMerger
 
 from functions import file_conversion, getTime
 
 
-class FileOperations(commands.Cog, name='File Commands'):
+class FileOperations(commands.Cog, name='File Commands', description='File Commands'):
 
     def __init__(self, ChetBot):
         self.ChetBot = ChetBot
 
     # Makes and uploads files bases on user's decision
-    @commands.command(name='create')
-    async def _create_file_(self, ctx, fileType, *args):
+    @commands.command(name='create', description='Creates and uploads a file based on the user\'s descision.\n---------------\n/create <desired_file_type> <user_input>')
+    async def _create_file_(self, ctx, desired_file_type: str = parameter(description='- Options are: [csv | tab | n]'), *, user_input: str = parameter(description='- Any input given by the user to be added to the file')):
         await ctx.typing()
 
         # Ensures the FilesToCreate directory exists
@@ -25,24 +26,24 @@ class FileOperations(commands.Cog, name='File Commands'):
         if directory_exists is False:
             os.mkdir(path)
 
-        if fileType == 'csv':
-            userArgs = ','.join(args)
+        if desired_file_type == 'csv':
+            userArgs = ','.join(user_input)
             f = open("WorkingFiles/FilesToCreate/ChetBot.csv", "w")
             f.write(userArgs)
             f.close()
             myfile = discord.File('WorkingFiles/FilesToCreate/ChetBot.csv')
             await ctx.send(f'{ctx.author.mention} here is the file that you wanted me to create:\n')
             await ctx.send(file=myfile)
-        elif fileType == 'tab':
-            userArgs = '\t'.join(args)
+        elif desired_file_type == 'tab':
+            userArgs = '\t'.join(user_input)
             f = open("WorkingFiles/FilesToCreate/ChetBot.csv", "w")
             f.write(userArgs)
             f.close()
             myfile = discord.File('WorkingFiles/FilesToCreate/ChetBot.csv')
             await ctx.send(f'{ctx.author.mention} here is the file that you wanted me to create:\n')
             await ctx.send(file=myfile)
-        elif fileType == 'n':
-            userArgs = '\n'.join(args)
+        elif desired_file_type == 'n':
+            userArgs = '\n'.join(user_input)
             f = open("WorkingFiles/FilesToCreate/ChetBot.csv", "w")
             f.write(userArgs)
             f.close()
@@ -60,13 +61,13 @@ class FileOperations(commands.Cog, name='File Commands'):
             os.remove(file.path)
 
     # Coverts user attachments to desired type
-    @commands.command(name='file')
-    async def _convert_files_(self, ctx, initial: str, desired: str):
+    @commands.command(name='convert', description='Converts user attached file from specified initial type to specified desired type.\n---------------\nAttatch the files that you wish to convert then\n/convert <initial_file_type> <desired_file_type>')
+    async def _convert_files_(self, ctx, initial_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]'), desired_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]')):
         await ctx.typing()
         if ctx.message.attachments:
 
             # Defining variables in use
-            initial_check = f'/{initial}'
+            initial_check = f'/{initial_file_type}'
             allowed_files = ['/pdf', '/jpeg', '/jpg', '/docx', '/png']
             jpg_files = ['/jpeg', '/jpg']
             pdf_file = ['/pdf']
@@ -125,7 +126,7 @@ class FileOperations(commands.Cog, name='File Commands'):
                         # Input file
                         input_filepath = f'WorkingFiles/FilesToConvert/{attachment.filename}'
                         # Output file
-                        outfile = file_conversion(input_filepath, desired)
+                        outfile = file_conversion(input_filepath, desired_file_type)
                         print(f'Sending converted file(s) now...')
                         if outfile is None:
                             await ctx.send(
@@ -150,13 +151,13 @@ class FileOperations(commands.Cog, name='File Commands'):
             os.remove(file.path)
 
     # Coverts user audio attachments from allowed types
-    @commands.command(name='audio')
-    async def _convert_audio_(self, ctx, initial: str, desired: str):
+    @commands.command(name='audio', description='Converts user attached audio or video file from specified initial type to specified desired type.\n---------------\nAttatch the files that you wish to convert then\n/audio <initial_file_type> <desired_file_type>')
+    async def _convert_audio_(self, ctx, initial_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]'), desired_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]')):
         await ctx.typing()
         if ctx.message.attachments:
 
             # Defining variables in use
-            initial_check = f'/{initial}'
+            initial_check = f'/{initial_file_type}'
             audio_types = ['/mp4', '/mp3', '/wav']
             mp4_file = ['/mp4']
             mp3_file = ['/mp3']
@@ -213,7 +214,7 @@ class FileOperations(commands.Cog, name='File Commands'):
                         # Input file
                         input_filepath = f'WorkingFiles/FilesToConvert/{attachment.filename}'
                         # Output file
-                        output_filepath = f'WorkingFiles/FilesToConvert/{trimmed_filename}.{desired}'
+                        output_filepath = f'WorkingFiles/FilesToConvert/{trimmed_filename}.{desired_file_type}'
                         # Defining ff to FFmpeg
                         ff = FFmpeg()
                         # Setting the conversion as the downloaded user file, to the desired user file type
@@ -234,7 +235,7 @@ class FileOperations(commands.Cog, name='File Commands'):
             os.remove(file.path)
 
     # Makes and uploads files bases on user's decision
-    @commands.command(name='combine')
+    @commands.command(name='combine', description='Combines user attached PDF files.\n---------------\nAttatch the files that you wish to combine then\n/combine')
     async def _combine_files_(self, ctx):
         if len(ctx.message.attachments) >= 2:
             await ctx.send(f'{ctx.author.mention}, I am processing your request...', delete_after=3)
