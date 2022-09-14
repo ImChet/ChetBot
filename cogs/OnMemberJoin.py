@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 
-class MemberJoin(commands.Cog):
+class OnMemberJoin(commands.Cog):
 
     def __init__(self, ChetBot):
         self.ChetBot = ChetBot
@@ -18,4 +18,4 @@ class MemberJoin(commands.Cog):
 
 
 async def setup(ChetBot):
-    await ChetBot.add_cog(MemberJoin(ChetBot))
+    await ChetBot.add_cog(OnMemberJoin(ChetBot))
