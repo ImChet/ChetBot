@@ -1,1 +1,1 @@
-discordBotAPIKey = 'MTAxNTM2MDg2MDcxOTQxOTYwMg.GrwLSY.dzXQUO7MW3iuBehPx5CEQ1Kh5hOC9QV6VnkC_w'
+discordBotAPIKey = 'Place your Discord Bot API Key here'
