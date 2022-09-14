@@ -13,5 +13,6 @@ class OnReady(commands.Cog):
     async def on_ready(self):
         print(f'We have logged in as {self.ChetBot.user} on {getCurrentDateTime()}')
 
+
 async def setup(ChetBot):
     await ChetBot.add_cog(OnReady(ChetBot))
