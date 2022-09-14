@@ -25,6 +25,8 @@ class ErrorHandling(commands.Cog):
             await ctx.send(f'{ctx.author.mention}, the command you typed does not exist.\nTry the /help command.', delete_after=10)
         elif isinstance(error, discord.HTTPException):
             await ctx.send(f'{ctx.author.mention}, an HTTP request operation failed. Try again shortly.', delete_after=10)
+        elif isinstance(error, commands.CommandOnCooldown):
+            await ctx.send(f'{ctx.author.mention}, this command is currently on cooldown. Try again shortly.', delete_after=10)
 
 
 async def setup(ChetBot):

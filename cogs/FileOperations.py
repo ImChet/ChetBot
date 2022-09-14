@@ -15,6 +15,8 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
     def __init__(self, ChetBot):
         self.ChetBot = ChetBot
 
+    # discord.ext.commands.BucketType. [default (Global)| channel | guild]
+    @commands.cooldown(1, 10, type=discord.ext.commands.BucketType.default)
     # Makes and uploads files bases on user's decision
     @commands.command(name='create', description='Creates and uploads a file based on the user\'s descision.\n---------------\n/create <desired_file_type> <user_input>')
     async def _create_file_(self, ctx, desired_file_type: str = parameter(description='- Options are: [csv | tab | n]'), *, user_input: str = parameter(description='- Any input given by the user to be added to the file')):
@@ -60,6 +62,8 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         for file in os.scandir(working_directory):
             os.remove(file.path)
 
+    # discord.ext.commands.BucketType. [default (Global)| channel | guild]
+    @commands.cooldown(1, 10, type=discord.ext.commands.BucketType.default)
     # Coverts user attachments to desired type
     @commands.command(name='convert', description='Converts user attached file from specified initial type to specified desired type.\n---------------\nAttatch the files that you wish to convert then\n/convert <initial_file_type> <desired_file_type>')
     async def _convert_files_(self, ctx, initial_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]'), desired_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]')):
@@ -150,6 +154,8 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         for file in os.scandir(working_directory):
             os.remove(file.path)
 
+    # discord.ext.commands.BucketType. [default (Global)| channel | guild]
+    @commands.cooldown(1, 10, type=discord.ext.commands.BucketType.default)
     # Coverts user audio attachments from allowed types
     @commands.command(name='audio', description='Converts user attached audio or video file from specified initial type to specified desired type.\n---------------\nAttatch the files that you wish to convert then\n/audio <initial_file_type> <desired_file_type>')
     async def _convert_audio_(self, ctx, initial_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]'), desired_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]')):
@@ -234,6 +240,8 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         for file in os.scandir(working_directory):
             os.remove(file.path)
 
+    # discord.ext.commands.BucketType. [default (Global)| channel | guild]
+    @commands.cooldown(1, 10, type=discord.ext.commands.BucketType.default)
     # Makes and uploads files bases on user's decision
     @commands.command(name='combine', description='Combines user attached PDF files.\n---------------\nAttatch the files that you wish to combine then\n/combine')
     async def _combine_files_(self, ctx):
