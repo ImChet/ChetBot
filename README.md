@@ -4,10 +4,6 @@
 
 ChetBot is a Discord bot that can handle file conversions, combine PDF files, create Comma and Tab delimited files, and more.
 
-I wrote ChetBot as an introduction into Python, trying to see what I could teach myself. 
-
-###### Don't judge my code too harshly. I would love suggestions on how to improve my code.
-
 ## Event Listeners
 ##### When a Member joins your server
 Description of on_member_join
