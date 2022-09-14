@@ -74,9 +74,9 @@ For additional information on the packages that ChetBot utilizes, be sure to tak
 
 ###### (docx2pdf requires Microsoft Word to be installed)
 
-### Windows setup
+### FFmpeg installation to use Voice Channel commands
 
-#### FFmpeg installation to use Voice Channel commands
+#### Windows setup
 
 * To download FFmpegPCMAudio go to their [website](https://ffmpeg.org/download.html#build-windows), as we are using Windows, we want to use the Windows package
   * Click on "Windows build by BtbN"
@@ -91,9 +91,7 @@ For additional information on the packages that ChetBot utilizes, be sure to tak
 * Navigate to your cmd, check if FFmpeg is installed with the following: `FFmpeg -version`
 * Restart your PC to ensure FFmpeg took effect
 
-### Linux setup
-
-#### FFmpeg installation to use Voice Channel commands
+#### Linux setup
 
 * Open your Terminal, type the following: `sudo apt install ffmpeg`
 * Check if FFmpeg is installed with the following: `FFmpeg -version`
