@@ -19,32 +19,45 @@ class FileOperations(commands.Cog, name='File Commands'):
     async def _create_file_(self, ctx, fileType, *args):
         await ctx.typing()
 
+        # Ensures the FilesToCreate directory exists
+        path = 'WorkingFiles/FilesToCreate/'
+        directory_exists = os.path.exists(path)
+        if directory_exists is False:
+            os.mkdir(path)
+
         if fileType == 'csv':
             userArgs = ','.join(args)
-            f = open("WorkingFiles/ChetBot.csv", "w")
+            f = open("WorkingFiles/FilesToCreate/ChetBot.csv", "w")
             f.write(userArgs)
             f.close()
-            myfile = discord.File('WorkingFiles/ChetBot.csv')
+            myfile = discord.File('WorkingFiles/FilesToCreate/ChetBot.csv')
             await ctx.send(f'{ctx.author.mention} here is the file that you wanted me to create:\n')
             await ctx.send(file=myfile)
         elif fileType == 'tab':
             userArgs = '\t'.join(args)
-            f = open("WorkingFiles/ChetBot.csv", "w")
+            f = open("WorkingFiles/FilesToCreate/ChetBot.csv", "w")
             f.write(userArgs)
             f.close()
-            myfile = discord.File('WorkingFiles/ChetBot.csv')
+            myfile = discord.File('WorkingFiles/FilesToCreate/ChetBot.csv')
             await ctx.send(f'{ctx.author.mention} here is the file that you wanted me to create:\n')
             await ctx.send(file=myfile)
         elif fileType == 'n':
             userArgs = '\n'.join(args)
-            f = open("WorkingFiles/ChetBot.csv", "w")
+            f = open("WorkingFiles/FilesToCreate/ChetBot.csv", "w")
             f.write(userArgs)
             f.close()
-            myfile = discord.File('WorkingFiles/ChetBot.csv')
+            myfile = discord.File('WorkingFiles/FilesToCreate/ChetBot.csv')
             await ctx.send(f'{ctx.author.mention} here is the file that you wanted me to create:\n')
             await ctx.send(file=myfile)
         else:
             await ctx.send(f'Unexpected argument.\nThe options for this command are \"csv\", \"tab\", and \"n\".\n')
+
+        # Must sleep (10s) to prevent possible errors with the deletion of files
+        await asyncio.sleep(10)
+        # After output is sent, delete WorkingFiles/FilesToCreate/*
+        working_directory = 'WorkingFiles/FilesToCreate'
+        for file in os.scandir(working_directory):
+            os.remove(file.path)
 
     # Coverts user attachments to desired type
     @commands.command(name='file')
