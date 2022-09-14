@@ -43,6 +43,12 @@ for filename in os.listdir('./cogs'):
 
 
 async def main():
+    # Ensures the WorkingFiles directory exists
+    path = 'WorkingFiles/'
+    directory_exists = os.path.exists(path)
+    if directory_exists is False:
+        os.mkdir(path)
+
     for extension in initial_extensions:
         await ChetBot.load_extension(extension)
 
