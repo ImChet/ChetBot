@@ -1,7 +1,5 @@
 # ChetBot
 
-## What is ChetBot?
-
 ChetBot is a Discord bot that can handle file conversions, combine PDF files, create comma and tab delimited files, and more.
 
 ## Event Listeners
