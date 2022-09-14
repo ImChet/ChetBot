@@ -2,5 +2,4 @@
 /.idea
 __pycache__/
 /cogs/__pycache__/
-/apikeys.py
 /ChetBot.log
