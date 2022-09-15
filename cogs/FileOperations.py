@@ -1,13 +1,13 @@
-import asyncio
 import os
 
 import discord
+from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import parameter
 from pyffmpeg import FFmpeg
 from PyPDF2 import PdfFileMerger
 
-from functions import file_conversion, getTime
+from functions import file_conversion, getTime, removeDirectory
 
 
 class FileOperations(commands.Cog, name='File Commands', description='File Commands'):
@@ -15,58 +15,72 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
     def __init__(self, ChetBot):
         self.ChetBot = ChetBot
 
-    # discord.ext.commands.BucketType. [default (Global)| channel | guild]
-    @commands.cooldown(1, 10, type=discord.ext.commands.BucketType.default)
     # Makes and uploads files bases on user's decision
-    @commands.command(name='create', description='Creates and uploads a file based on the user\'s descision.\n---------------\n/create <desired_file_type> <user_input>')
-    async def _create_file_(self, ctx, desired_file_type: str = parameter(description='- Options are: [csv | tab | n]'), *, user_input: str = parameter(description='- Any input given by the user to be added to the file')):
-        await ctx.typing()
+    @commands.hybrid_group(name='create', with_app_command=True, description='Creates and uploads a file based on the user\'s descision.\n/create <desired_file_type> <user_input>')
+    @app_commands.guilds(495623660967690240)
+    async def _create_file_(self, ctx: commands.Context) -> None:
+        print('I am the parent create command')
 
-        # Ensures the FilesToCreate directory exists
-        path = 'WorkingFiles/FilesToCreate/'
-        directory_exists = os.path.exists(path)
-        if directory_exists is False:
-            os.mkdir(path)
+    @_create_file_.command(name='csv', with_app_command=True, description='Creates a csv delimited file based on user input.')
+    @app_commands.guilds(495623660967690240)
+    async def _create_file_csv_(self, ctx: commands.Context, *, user_input: str = parameter(description='- Any input given by the user to be added to the file')) -> None:
 
-        if desired_file_type == 'csv':
-            userArgs = ','.join(user_input)
-            f = open("WorkingFiles/FilesToCreate/ChetBot.csv", "w")
-            f.write(userArgs)
-            f.close()
-            myfile = discord.File('WorkingFiles/FilesToCreate/ChetBot.csv')
-            await ctx.send(f'{ctx.author.mention} here is the file that you wanted me to create:\n')
-            await ctx.send(file=myfile)
-        elif desired_file_type == 'tab':
-            userArgs = '\t'.join(user_input)
-            f = open("WorkingFiles/FilesToCreate/ChetBot.csv", "w")
-            f.write(userArgs)
-            f.close()
-            myfile = discord.File('WorkingFiles/FilesToCreate/ChetBot.csv')
-            await ctx.send(f'{ctx.author.mention} here is the file that you wanted me to create:\n')
-            await ctx.send(file=myfile)
-        elif desired_file_type == 'n':
-            userArgs = '\n'.join(user_input)
-            f = open("WorkingFiles/FilesToCreate/ChetBot.csv", "w")
-            f.write(userArgs)
-            f.close()
-            myfile = discord.File('WorkingFiles/FilesToCreate/ChetBot.csv')
-            await ctx.send(f'{ctx.author.mention} here is the file that you wanted me to create:\n')
-            await ctx.send(file=myfile)
-        else:
-            await ctx.send(f'Unexpected argument.\nThe options for this command are \"csv\", \"tab\", and \"n\".\n')
+        # Make unique temporary directory to use for each user
+        parent_dir = 'WorkingFiles/FilesToCreate/'
+        user_dir = str(ctx.author.id)
+        temp_directory = os.path.join(parent_dir, user_dir)
+        os.mkdir(temp_directory)
 
-        # Must sleep (10s) to prevent possible errors with the deletion of files
-        await asyncio.sleep(10)
-        # After output is sent, delete WorkingFiles/FilesToCreate/*
-        working_directory = 'WorkingFiles/FilesToCreate'
-        for file in os.scandir(working_directory):
-            os.remove(file.path)
+        working_file = f'{temp_directory}/ChetBot.csv'
+        space_seperated = user_input.split(' ')
+        working_text = ', '.join(space_seperated)
+        f = open(working_file, "w")
+        f.write(working_text)
+        f.close()
+        await ctx.send(file=discord.File(working_file))
+        removeDirectory(temp_directory)
 
-    # discord.ext.commands.BucketType. [default (Global)| channel | guild]
-    @commands.cooldown(1, 10, type=discord.ext.commands.BucketType.default)
+    @_create_file_.command(name='tab', with_app_command=True, description='Creates a tab delimited file based on user input.')
+    @app_commands.guilds(495623660967690240)
+    async def _create_file_csv_(self, ctx: commands.Context, *, user_input: str = parameter(description='- Any input given by the user to be added to the file')) -> None:
+
+        # Make unique temporary directory to use for each user
+        parent_dir = 'WorkingFiles/FilesToCreate/'
+        user_dir = str(ctx.author.id)
+        temp_directory = os.path.join(parent_dir, user_dir)
+        os.mkdir(temp_directory)
+
+        working_file = f'{temp_directory}/ChetBot.csv'
+        space_seperated = user_input.split(' ')
+        working_text = '\t'.join(space_seperated)
+        f = open(working_file, "w")
+        f.write(working_text)
+        f.close()
+        await ctx.send(file=discord.File(working_file))
+        removeDirectory(temp_directory)
+
+    @_create_file_.command(name='line', with_app_command=True, description='Creates a line delimited file based on user input.')
+    @app_commands.guilds(495623660967690240)
+    async def _create_file_csv_(self, ctx: commands.Context, *, user_input: str = parameter(description='- Any input given by the user to be added to the file')) -> None:
+
+        # Make unique temporary directory to use for each user
+        parent_dir = 'WorkingFiles/FilesToCreate/'
+        user_dir = str(ctx.author.id)
+        temp_directory = os.path.join(parent_dir, user_dir)
+        os.mkdir(temp_directory)
+
+        working_file = f'{temp_directory}/ChetBot.csv'
+        space_seperated = user_input.split(' ')
+        working_text = '\n'.join(space_seperated)
+        f = open(working_file, "w")
+        f.write(working_text)
+        f.close()
+        await ctx.send(file=discord.File(working_file))
+        removeDirectory(temp_directory)
+
     # Coverts user attachments to desired type
-    @commands.command(name='convert', description='Converts user attached file from specified initial type to specified desired type.\n---------------\nAttatch the files that you wish to convert then\n/convert <initial_file_type> <desired_file_type>')
-    async def _convert_files_(self, ctx, initial_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]'), desired_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]')):
+    @commands.hybrid_command(name='convert', with_app_command=False, description='Converts user attached file from specified initial type to specified desired type.\n(Make sure you attach the files you wish to convert)\n/convert <initial_file_type> <desired_file_type>')
+    async def _convert_files_(self, ctx: commands.Context, initial_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]'), desired_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]')) -> None:
         await ctx.typing()
         if ctx.message.attachments:
 
@@ -114,22 +128,21 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
                     if check_counter == limit:
                         break
 
-                # Ensures the FilesToConvert directory exists
-                path = 'WorkingFiles/FilesToConvert/'
-                directory_exists = os.path.exists(path)
-                if directory_exists is False:
-                    os.mkdir(path)
+                # Make unique temporary directory to use for each user
+                parent_dir = 'WorkingFiles/FilesToConvert/'
+                user_dir = str(ctx.author.id)
+                temp_directory = os.path.join(parent_dir, user_dir)
+                os.mkdir(temp_directory)
 
                 if type_check:
                     await ctx.send(f'{ctx.author.mention}, I am processing your request...', delete_after=3)
                     for attachment in ctx.message.attachments:
                         # Download the user attachments on iterator through list
-                        await attachment.save(f'WorkingFiles/FilesToConvert/{attachment.filename}')
+                        await attachment.save(f'{temp_directory}/{attachment.filename}')
                         # Input file
-                        input_filepath = f'WorkingFiles/FilesToConvert/{attachment.filename}'
+                        input_filepath = f'{temp_directory}/{attachment.filename}'
                         # Output file
                         outfile = file_conversion(input_filepath, desired_file_type)
-                        print(f'Sending converted file(s) now...')
                         if outfile is None:
                             await ctx.send(
                                 f'{ctx.author.mention}, the file conversion you attempted is not currently supported.',
@@ -137,7 +150,6 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
                             break
                         elif outfile is not None:
                             await ctx.send(file=discord.File(outfile))
-                            print(f'File(s) successfully sent.')
             else:
                 await ctx.send(
                     f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of the attachment.',
@@ -145,18 +157,12 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         else:
             await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=10)
 
-        # Must sleep (10s) to prevent possible errors with the deletion of files
-        await asyncio.sleep(10)
-        # After output is sent, delete WorkingFiles/FilesToConvert/*
-        working_directory = 'WorkingFiles/FilesToConvert'
-        for file in os.scandir(working_directory):
-            os.remove(file.path)
+        # Remove temporary user directory
+        removeDirectory(temp_directory)
 
-    # discord.ext.commands.BucketType. [default (Global)| channel | guild]
-    @commands.cooldown(1, 10, type=discord.ext.commands.BucketType.default)
     # Coverts user audio attachments from allowed types
-    @commands.command(name='audio', description='Converts user attached audio or video file from specified initial type to specified desired type.\n---------------\nAttatch the files that you wish to convert then\n/audio <initial_file_type> <desired_file_type>')
-    async def _convert_audio_(self, ctx, initial_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]'), desired_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]')):
+    @commands.hybrid_command(name='audio', with_app_command=False, description='Converts user attached audio or video file from specified initial type to specified desired type.\n(Make sure you attach the files you wish to convert)\n/audio <initial_file_type> <desired_file_type>')
+    async def _convert_audio_(self, ctx: commands.Context, initial_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]'), desired_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]')) -> None:
         await ctx.typing()
         if ctx.message.attachments:
 
@@ -202,23 +208,23 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
                     if check_counter == limit:
                         break
 
-                # Ensures the FilesToConvert directory exists
-                path = 'WorkingFiles/FilesToConvert/'
-                directory_exists = os.path.exists(path)
-                if directory_exists is False:
-                    os.mkdir(path)
+                # Make unique temporary directory to use for each user
+                parent_dir = 'WorkingFiles/FilesToConvert/'
+                user_dir = str(ctx.author.id)
+                temp_directory = os.path.join(parent_dir, user_dir)
+                os.mkdir(temp_directory)
 
                 if type_check:
                     await ctx.send(f'{ctx.author.mention}, I am processing your request...', delete_after=3)
                     for attachment in ctx.message.attachments:
                         # Download the user attachments on iterator through list
-                        await attachment.save(f'WorkingFiles/FilesToConvert/{attachment.filename}')
+                        await attachment.save(f'{temp_directory}/{attachment.filename}')
                         # Keeping the file name uploaded by the user without the previous unconverted extension
                         trimmed_filename = (os.path.splitext(str(attachment.filename))[0])
                         # Input file
-                        input_filepath = f'WorkingFiles/FilesToConvert/{attachment.filename}'
+                        input_filepath = f'{temp_directory}/{attachment.filename}'
                         # Output file
-                        output_filepath = f'WorkingFiles/FilesToConvert/{trimmed_filename}.{desired_file_type}'
+                        output_filepath = f'{temp_directory}/{trimmed_filename}.{desired_file_type}'
                         # Defining ff to FFmpeg
                         ff = FFmpeg()
                         # Setting the conversion as the downloaded user file, to the desired user file type
@@ -231,18 +237,12 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         else:
             await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=10)
 
-        # Must sleep (10s) to prevent possible errors with the deletion of files
-        await asyncio.sleep(10)
-        # After output is sent, delete WorkingFiles/FilesToConvert/*
-        working_directory = 'WorkingFiles/FilesToConvert'
-        for file in os.scandir(working_directory):
-            os.remove(file.path)
+        # Remove temporary user directory
+        removeDirectory(temp_directory)
 
-    # discord.ext.commands.BucketType. [default (Global)| channel | guild]
-    @commands.cooldown(1, 10, type=discord.ext.commands.BucketType.default)
     # Makes and uploads files bases on user's decision
-    @commands.command(name='combine', description='Combines user attached PDF files.\n---------------\nAttatch the files that you wish to combine then\n/combine')
-    async def _combine_files_(self, ctx):
+    @commands.hybrid_command(name='combine', description='Combines user attached PDF files.\n(Make sure you attach the files you wish to convert)\n/combine')
+    async def _combine_files_(self, ctx: commands.Context) -> None:
         if len(ctx.message.attachments) >= 2:
             await ctx.send(f'{ctx.author.mention}, I am processing your request...', delete_after=3)
             # Check if attached file is .pdf
@@ -252,28 +252,28 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
                     await ctx.send(f'{ctx.author.mention}, one or more of the files attached is not a PDF. Currently only PDF combinations are supported.', delete_after=10)
                     break
 
-            # Ensures the FilesToCombine directory exists
-            path = 'WorkingFiles/FilesToCombine/'
-            directory_exists = os.path.exists(path)
-            if directory_exists is False:
-                os.mkdir(path)
+            # Make unique temporary directory to use for each user
+            parent_dir = 'WorkingFiles/FilesToCombine/'
+            user_dir = str(ctx.author.id)
+            temp_directory = os.path.join(parent_dir, user_dir)
+            os.mkdir(temp_directory)
 
             merger = PdfFileMerger()
             for pdf in ctx.message.attachments:
                 # Download the user attachments on iterator through list
-                await pdf.save(f'WorkingFiles/FilesToCombine/{pdf.filename}')
+                await pdf.save(f'{temp_directory}/{pdf.filename}')
                 # Input file
-                input_filepath = f'WorkingFiles/FilesToCombine/{pdf.filename}'
+                input_filepath = f'{temp_directory}/{pdf.filename}'
                 # Appends each file attached to the PDF merger
                 merger.append(input_filepath)
 
             # Output file
-            out_file = f'WorkingFiles/FilesToCombine/ChetBotCombined.pdf'
+            out_file = f'{temp_directory}/ChetBotCombined.pdf'
 
             # Check if uploaded file name is already that of the outfile to avoid errors
             if os.path.isfile(out_file):
                 current_time = getTime('-')
-                out_file = f'WorkingFiles/FilesToCombine/ChetBotCombined-{current_time}.pdf'
+                out_file = f'{temp_directory}/ChetBotCombined-{current_time}.pdf'
 
             # The PDF merger takes all appended files and writes them to the outfile
             merger.write(out_file)
@@ -285,12 +285,8 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         elif len(ctx.message.attachments) in [0, 1]:
             await ctx.send(f'{ctx.author.mention}, you must attach 2 or more pdf files for me to combine them.', delete_after=10)
 
-        # Must sleep (10s) to prevent possible errors with the deletion of files
-        await asyncio.sleep(10)
-        # After output is sent, delete WorkingFiles/FilesToConvert/*
-        working_directory = 'WorkingFiles/FilesToCombine'
-        for file in os.scandir(working_directory):
-            os.remove(file.path)
+        # Remove temporary user directory
+        removeDirectory(temp_directory)
 
 
 async def setup(ChetBot):

@@ -7,6 +7,7 @@ from discord.ext import commands
 from discord.ext.commands import DefaultHelpCommand
 
 from apikeys import discordBotAPIKey
+from functions import checkDirectoryExists
 
 
 # ChetBot constructor class
@@ -20,11 +21,9 @@ class CreateBot(commands.Bot):
         super().__init__(command_prefix="/", intents=intents, help_command=DefaultHelpCommand(no_category='Help Command'), activity=discord.Activity(type=discord.ActivityType.watching, name='over the universe'), status=discord.Status.do_not_disturb)
 
     async def setup_hook(self) -> None:
-        # remove this when syncing globally
-        # avoid ratelimiting
-        # guild=discord.Object(id=495623660967690240)
+        # REMOVE WHEN GOING GLOBAL
         await self.tree.sync(guild=discord.Object(id=495623660967690240))
-        print(f'Synced slash commands.')
+        print("Slash commands synced.")
 
 
 ChetBot = CreateBot()
@@ -34,13 +33,12 @@ initial_extensions = []
 
 # Logging setup / parameters
 logger = logging.getLogger('discord')
-logger.setLevel(logging.ERROR)
+logger.setLevel(logging.DEBUG)
 logHandler = logging.FileHandler(filename='ChetBot.log', encoding='utf-8', mode='w')
 loggingDateFormat = '%Y-%m-%d %H:%M:%S'
 loggingFormatter = logging.Formatter('[{asctime}] [{levelname:<8}] {name}: {message}', loggingDateFormat, style='{')
 logHandler.setFormatter(loggingFormatter)
 logger.addHandler(logHandler)
-
 
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
@@ -48,11 +46,13 @@ for filename in os.listdir('./cogs'):
 
 
 async def main():
-    # Ensures the WorkingFiles directory exists
-    path = 'WorkingFiles/'
-    directory_exists = os.path.exists(path)
-    if directory_exists is False:
-        os.mkdir(path)
+    # Ensures the all the needed working directories exist
+    checkDirectoryExists('WorkingFiles/')
+    checkDirectoryExists('WorkingFiles/FilesToCreate/')
+    checkDirectoryExists('WorkingFiles/FilesToConvert/')
+    checkDirectoryExists('WorkingFiles/FilesToCombine/')
+    checkDirectoryExists('WorkingFiles/AudioFilesToUse/')
+
     # Loads all cogs
     for extension in initial_extensions:
         await ChetBot.load_extension(extension)

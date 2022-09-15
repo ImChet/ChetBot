@@ -1,5 +1,5 @@
 import discord
-from discord import FFmpegPCMAudio
+from discord import FFmpegPCMAudio, app_commands
 from discord.ext import commands
 from discord.ext.commands import parameter
 
@@ -11,66 +11,85 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
     def __init__(self, ChetBot):
         self.ChetBot = ChetBot
 
+    # Defining the 'voice' hybrid group command
+    @commands.hybrid_group(name='voice', with_app_command=True, description='Voice channel commands for ChetBot to execute.')
+    @app_commands.guilds(495623660967690240)
+    async def _voice_(self, ctx: commands.Context) -> None:
+        print('I am the parent voice command')
+
     # Join voice channel
-    @commands.command(name='join', description='Makes ChetBot join the Voice Channel that you are currently in.\n---------------\n/join')
-    async def _join_(self, ctx):
+    @_voice_.command(name='join', with_app_command=True, description='Makes ChetBot join the Voice Channel that you are currently in.')
+    @app_commands.guilds(495623660967690240)
+    async def _join_(self, ctx: commands.Context) -> None:
         if ctx.author.voice:
             await ctx.message.author.voice.channel.connect()
+            await ctx.send(f'I have connected to the voice channel.', delete_after=5)
         else:
-            await ctx.send(f'{ctx.author.mention}, you are not in a voice channel.', delete_after=5)
+            await ctx.send(f'{ctx.author.mention}, you are not in a voice channel.', delete_after=10)
 
     # Leave voice channel
-    @commands.command(name='leave', description='Makes ChetBot leave the Voice Channel that you are currently in.\n---------------\n/leave')
-    async def _leave_(self, ctx):
+    @_voice_.command(name='leave', with_app_command=True, description='Makes ChetBot leave the Voice Channel that you are currently in.')
+    @app_commands.guilds(495623660967690240)
+    async def _leave_(self, ctx: commands.Context) -> None:
         if ctx.voice_client:
             await ctx.guild.voice_client.disconnect()
+            await ctx.send(f'I have disconnected from the voice channel.', delete_after=5)
         else:
-            await ctx.send(f'{ctx.author.mention}, I am not in a voice channel.', delete_after=5)
+            await ctx.send(f'{ctx.author.mention}, I am not in a voice channel.', delete_after=10)
 
     # Play file located at audio
-    @commands.command(name='play', description='Makes ChetBot play audio.\n---------------\n/play <audio>')
-    async def _play_(self, ctx, audio: str = parameter(description='- The audio that you would like ChetBot to play')):
+    @_voice_.command(name='play', with_app_command=True, description='Makes ChetBot play audio.')
+    @app_commands.guilds(495623660967690240)
+    async def _play_(self, ctx: commands.Context, audio: str = parameter(description='- The audio that you would like ChetBot to play')) -> None:
         if ctx.guild.voice_client is not None:
             voice = ctx.guild.voice_client
             source = FFmpegPCMAudio(audio)
             voice.play(source, after=lambda x=None: check_queue(ctx, ctx.message.guild.id))
+            await ctx.send(f'I started playing the audio.', delete_after=5)
         else:
-            await ctx.send(f'{ctx.author.mention}, I am not in a voice channel.', delete_after=5)
+            await ctx.send(f'{ctx.author.mention}, I am not in a voice channel.', delete_after=10)
 
     # Queues file located at audio to play next
-    @commands.command(name='queue', description='Makes ChetBot queue audio to play next.\n---------------\n/queue <audio>')
-    async def _queue_(self, ctx, audio: str = parameter(description='- The audio that you would like ChetBot to play next')):
+    @_voice_.command(name='queue', with_app_command=True, description='Makes ChetBot queue audio to play next.')
+    @app_commands.guilds(495623660967690240)
+    async def _queue_(self, ctx: commands.Context, audio: str = parameter(description='- The audio that you would like ChetBot to play next')) -> None:
         source = FFmpegPCMAudio(audio)
         guild_id = ctx.message.guild.id
         if guild_id in queues:
             queues[guild_id].append(source)
         else:
             queues[guild_id] = [source]
-        await ctx.send(f'{ctx.author.mention}, your request is added to the queue.', delete_after=5)
+        await ctx.send(f'{ctx.author.mention}, your request has been added to the queue.', delete_after=5)
 
     # Pause file currently being played
-    @commands.command(name='pause', description='Makes ChetBot pause the current audio.\n---------------\n/pause')
-    async def _pause_(self, ctx):
+    @_voice_.command(name='pause', with_app_command=True, description='Makes ChetBot pause the current audio.')
+    @app_commands.guilds(495623660967690240)
+    async def _pause_(self, ctx: commands.Context) -> None:
         voice = discord.utils.get(self.ChetBot.voice_clients, guild=ctx.guild)
         if voice.is_playing():
             voice.pause()
+            await ctx.send(f'I paused the audio.', delete_after=5)
         else:
-            await ctx.send(f'{ctx.author.mention}, there is currently no audio being played.', delete_after=5)
+            await ctx.send(f'{ctx.author.mention}, there is currently no audio being played.', delete_after=10)
 
     # Resume file currently paused
-    @commands.command(name='resume', description='Makes ChetBot resume the paused audio.\n---------------\n/resume')
-    async def _resume_(self, ctx):
+    @_voice_.command(name='resume', with_app_command=True, description='Makes ChetBot resume the paused audio.')
+    @app_commands.guilds(495623660967690240)
+    async def _resume_(self, ctx: commands.Context) -> None:
         voice = discord.utils.get(self.ChetBot.voice_clients, guild=ctx.guild)
         if voice.is_paused():
             voice.resume()
+            await ctx.send(f'I resumed playing the audio.', delete_after=5)
         else:
-            await ctx.send(f'{ctx.author.mention}, there is currently no audio paused.', delete_after=5)
+            await ctx.send(f'{ctx.author.mention}, there is currently no audio paused.', delete_after=10)
 
     # Stop file that is being played
-    @commands.command(name='stop', description='Makes ChetBot cancel the current audio.\n---------------\n/stop')
-    async def _stop_(self, ctx):
+    @_voice_.command(name='stop', with_app_command=True, description='Makes ChetBot cancel the current audio.')
+    @app_commands.guilds(495623660967690240)
+    async def _stop_(self, ctx: commands.Context) -> None:
         voice = discord.utils.get(self.ChetBot.voice_clients, guild=ctx.guild)
         voice.stop()
+        await ctx.send(f'I stopped the audio from playing.', delete_after=5)
 
 
 async def setup(ChetBot):

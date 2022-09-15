@@ -1,4 +1,6 @@
+import asyncio
 import os
+import shutil
 from datetime import datetime
 
 from PIL import Image
@@ -6,7 +8,6 @@ from docx2pdf import convert
 from pdf2docx import parse
 
 # Variable Definitions
-# Defining variables
 queues = {}
 
 
@@ -23,12 +24,12 @@ def getTime(chosenDelimiter: str):
 
 
 # To lowercase
-def to_lower(arg):
+def to_lower(arg: str):
     return arg.lower()
 
 
 # To uppercase
-def to_upper(arg):
+def to_upper(arg: str):
     return arg.upper()
 
 
@@ -116,3 +117,19 @@ def file_conversion(input_file, desired_outfile_type):
     else:
         not_supported = None
         return not_supported
+
+
+def removeFilesFromDirectory(working_directory):
+    for file in os.scandir(working_directory):
+        os.remove(file.path)
+
+
+def removeDirectory(working_directory):
+    shutil.rmtree(working_directory)
+
+
+def checkDirectoryExists(directory):
+    path = directory
+    directory_exists = os.path.exists(path)
+    if directory_exists is False:
+        os.mkdir(path)

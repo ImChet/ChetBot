@@ -1,5 +1,6 @@
 import random
 
+from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import parameter
 
@@ -12,46 +13,63 @@ class Miscellaneous(commands.Cog, name='Miscellaneous Commands', description='Mi
         self.ChetBot = ChetBot
 
     # Gives the current date and time
-    @commands.command(name='date', description='Gives the current date and time.\n---------------\n/date')
-    async def _date_(self, ctx):
+    @commands.hybrid_command(name='date', with_app_command=True, description='Gives the current date and time.')
+    @app_commands.guilds(495623660967690240)
+    async def _date_(self, ctx: commands.Context) -> None:
         await ctx.send(f'Today\'s date is {getCurrentDateTime()}.')
 
     # To lowercase
-    @commands.command(name='low', description='Changes the input provided to lowercase.\n---------------\n/low <input>')
-    async def _low_(self, ctx, *, input: to_lower = parameter(description='- Any input given by the user to be changed to lowercase')):
-        await ctx.send(input)
+    @commands.hybrid_command(name='low', with_app_command=True, description='Changes the input provided to lowercase.')
+    @app_commands.guilds(495623660967690240)
+    async def _low_(self, ctx: commands.Context, *, user_input: to_lower = parameter(description='- Any input given by the user to be changed to lowercase')) -> None:
+        await ctx.send(user_input)
 
     # To uppercase
-    @commands.command(name='up', description='Changes the input provided to uppercase.\n---------------\n/up <input>')
-    async def _up_(self, ctx, *, input: to_upper = parameter(description='- Any input given by the user to be changed to uppercase')):
-        await ctx.send(input)
+    @commands.hybrid_command(name='up', with_app_command=True, description='Changes the input provided to uppercase.')
+    @app_commands.guilds(495623660967690240)
+    async def _up_(self, ctx: commands.Context, *, user_input: to_upper = parameter(description='- Any input given by the user to be changed to uppercase')) -> None:
+        await ctx.send(user_input)
 
     # Wordcount of args
-    @commands.command(name='count', description='Counts the amount of input given.\n---------------\n/count <input>')
-    async def _count_(self, ctx, *, input: str = parameter(description='- Any amount of input given by the user to be counted')):
-        await ctx.send(f'Count: {len(input)}')
-
-    # Number calculations, returns float
-    @commands.command(name='calc', description='Performs basic math calculations.\n---------------\n/calc <method> <first_number> <second_number>')
-    async def _calc_(self, ctx, method: str = parameter(description='- Options are: [a | s | m | d]'), first_number: float = parameter(description='- First value used for calculations'), second_number: float = parameter(description='- Second value used for calculations')):
-        if method == 'a':
-            await ctx.send(f'{first_number}+{second_number} = {first_number + second_number}')
-        elif method == 's':
-            await ctx.send(f'{first_number}-{second_number} = {first_number - second_number}')
-        elif method == 'm':
-            await ctx.send(f'{first_number}*{second_number} = {first_number * second_number}')
-        elif method == 'd':
-            await ctx.send(f'{first_number}/{second_number} = {first_number / second_number}')
-        else:
-            await ctx.send(f'Unexpected expression after calc, try again {ctx.author.mention}', delete_after=5)
+    @commands.hybrid_command(name='count', with_app_command=True, description='Counts the amount of input given.')
+    @app_commands.guilds(495623660967690240)
+    async def _count_(self, ctx: commands.Context, *, user_input: str = parameter(description='- Any amount of input given by the user to be counted')) -> None:
+        await ctx.send(f'Count: {len(user_input)}')
 
     # Random range based on two arguments
-    @commands.command(name='range', description='Random number based on range given.\n---------------\n/range <bottom_of_range> <top_of_range>')
-    async def _randomrange_(self, ctx, bottom_of_range: int = parameter(description='- Bottom of range for random value'), top_of_range: int = parameter(description='- Top of range for random value')):
+    @commands.hybrid_command(name='range', with_app_command=True, description='Random number based on range given.')
+    @app_commands.guilds(495623660967690240)
+    async def _randomrange_(self, ctx: commands.Context, bottom_of_range: int = parameter(description='- Bottom of range for random value'), top_of_range: int = parameter(description='- Top of range for random value')) -> None:
         if bottom_of_range >= 0 and top_of_range >= 0:
             await ctx.send(f'From {bottom_of_range} to {top_of_range} your random number is: {random.randint(bottom_of_range, top_of_range)}')
         else:
             await ctx.send(f'{ctx.author.mention}, negative value detected. Try again...', delete_after=5)
+
+    # Defining the 'calc' hybrid group command
+    @commands.hybrid_group(name='calc', with_app_command=True, description='Performs basic math calculations.\n/calc <method> <first_number> <second_number>')
+    @app_commands.guilds(495623660967690240)
+    async def _calc_(self, ctx: commands.Context) -> None:
+        print('I am the calc voice command')
+
+    @_calc_.command(name='a', with_app_command=True, description='Addition')
+    @app_commands.guilds(495623660967690240)
+    async def _addition_(self, ctx: commands.Context, first_number: float, second_number: float) -> None:
+        await ctx.send(f'{first_number}+{second_number} = {first_number + second_number}')
+
+    @_calc_.command(name='s', with_app_command=True, description='Subtraction')
+    @app_commands.guilds(495623660967690240)
+    async def _subtraction_(self, ctx: commands.Context, first_number: float, second_number: float) -> None:
+        await ctx.send(f'{first_number}-{second_number} = {first_number - second_number}')
+
+    @_calc_.command(name='m', with_app_command=True, description='Multiplication')
+    @app_commands.guilds(495623660967690240)
+    async def _multiplication_(self, ctx: commands.Context, first_number: float, second_number: float) -> None:
+        await ctx.send(f'{first_number}*{second_number} = {first_number * second_number}')
+
+    @_calc_.command(name='d', with_app_command=True, description='Division')
+    @app_commands.guilds(495623660967690240)
+    async def _division_(self, ctx: commands.Context, first_number: float, second_number: float) -> None:
+        await ctx.send(f'{first_number}/{second_number} = {first_number / second_number}')
 
 
 async def setup(ChetBot):
