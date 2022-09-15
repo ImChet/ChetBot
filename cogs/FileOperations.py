@@ -98,8 +98,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
                 elif png_check:
                     initial_check = 'image/png'  # .png
                 else:
-                    await ctx.send(f'{ctx.author.mention}, the type of file attached is not currently supported.',
-                                   delete_after=10)
+                    await ctx.send(f'{ctx.author.mention}, the type of file attached is not currently supported.', delete_after=10)
                 # Checks if the initial declared value matched actual uploaded attachment file type
                 for working_file in range(0, limit + 1):
                     working_file_attachment = str(ctx.message.attachments[working_file].content_type)
@@ -109,8 +108,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
 
                     elif initial_check not in working_file_attachment:
                         await ctx.send(
-                            f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of the attachment.',
-                            delete_after=10)
+                            f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of the attachment.', delete_after=10)
                         break
 
                     if check_counter == limit:

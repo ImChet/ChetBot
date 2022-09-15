@@ -8,14 +8,26 @@ from discord.ext.commands import DefaultHelpCommand
 
 from apikeys import discordBotAPIKey
 
-# Specifies intents
-intents = discord.Intents.default()
-intents.message_content = True
-intents.voice_states = True
-intents.members = True
 
-# ChetBot constructor
-ChetBot = commands.Bot(command_prefix="/", intents=intents, help_command=DefaultHelpCommand(no_category='Help Command'), activity=discord.Activity(type=discord.ActivityType.watching, name='over the universe'), status=discord.Status.do_not_disturb)
+# ChetBot constructor class
+class CreateBot(commands.Bot):
+    def __init__(self):
+        # Specifies intents
+        intents = discord.Intents.default()
+        intents.message_content = True
+        intents.voice_states = True
+        intents.members = True
+        super().__init__(command_prefix="/", intents=intents, help_command=DefaultHelpCommand(no_category='Help Command'), activity=discord.Activity(type=discord.ActivityType.watching, name='over the universe'), status=discord.Status.do_not_disturb)
+
+    async def setup_hook(self) -> None:
+        # remove this when syncing globally
+        # avoid ratelimiting
+        # guild=discord.Object(id=495623660967690240)
+        await self.tree.sync(guild=discord.Object(id=495623660967690240))
+        print(f'Synced slash commands.')
+
+
+ChetBot = CreateBot()
 
 # Defines the initial_extensions array
 initial_extensions = []
@@ -41,7 +53,7 @@ async def main():
     directory_exists = os.path.exists(path)
     if directory_exists is False:
         os.mkdir(path)
-
+    # Loads all cogs
     for extension in initial_extensions:
         await ChetBot.load_extension(extension)
 
