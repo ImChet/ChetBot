@@ -9,7 +9,7 @@ When a member joins your server a simple embed will be sent to greet them in the
 ## Commands
 
 ### Administration Commands
-##### /kick
+### /kick
 Kicks users with optional specified reason. 
 ###### (You must have kick permissions to run this)
 
@@ -19,7 +19,7 @@ Arguments:
 * member - The member you wish you kick
 * reason - The optional reason you kicked the user specified by <member> (default: None)
 
-##### /ban
+### /ban
 Bans users with optional specified reason. 
 ###### (You must have ban permissions to run this)
 
@@ -29,7 +29,7 @@ Arguments:
 * member - The member you wish you ban
 * reason - The optional reason you banned the user specified by <member> (default: None)
 
-##### /clear
+### /clear
 Clears a specified backlog of messages in channel where command was invoked.
 
 `/clear <amount>`
@@ -38,7 +38,7 @@ Arguments:
 * amount - Number of previous messages to clear (default: 1)
 
 ### File Commands
-##### /create
+### /create
 Creates and uploads a file based on the user's descision.
 
 `/create <desired_file_type> <user_input>`
@@ -48,7 +48,7 @@ Desired File Types:
 * line - Creates a line delimited file based on user input
 * tab - Creates a tab delimited file based on user input
 
-##### /convert
+### /convert
 Converts user attached file from specified initial type to specified desired type.
 ###### (Make sure you attach the files you wish to convert)
 
@@ -58,12 +58,12 @@ Arguments:
 * initial_file_type - Options are: [pdf | docx | jpg | jpeg | png]
 * desired_file_type - Options are: [pdf | docx | jpg | jpeg | png]
 
-##### /combine
+### /combine
 Combines user attached PDF files.
 ###### (Make sure you attach the files you wish to convert)
 `/combine`
 
-##### /audio
+### /audio
 Converts user attached audio or video file from specified initial type to specified desired type.
 ###### (Make sure you attach the files you wish to convert)
 
@@ -74,17 +74,17 @@ Arguments:
 * desired_file_type - Options are: [mp4 | mp3 | wav]
 
 ### Voice Channel Commands
-##### /voice join
+### /voice join
 Makes ChetBot join the Voice Channel that you are currently in.
 
 `/voice join`
 
-##### /voice leave
+### /voice leave
 Makes ChetBot leave the Voice Channel that you are currently in.
 
 `/leave`
 
-##### /voice play
+### /voice play
 Makes ChetBot play audio.
 
 `/play <audio>`
@@ -92,7 +92,7 @@ Makes ChetBot play audio.
 Arguments:
 * audio - The audio that you would like ChetBot to play
 
-##### /voice queue
+### /voice queue
 Makes ChetBot queue audio to play next.
 
 `/queue <audio>`
@@ -100,28 +100,28 @@ Makes ChetBot queue audio to play next.
 Arguments:
 * audio - The audio that you would like ChetBot to play next
 
-##### /voice pause
+### /voice pause
 Makes ChetBot pause the current audio.
 
 `/pause`
 
-##### /voice resume
+### /voice resume
 Makes ChetBot resume the paused audio.
 
 `/resume`
 
-##### /voice stop
+### /voice stop
 Makes ChetBot cancel the current audio.
 
 `/stop`
 
 ### Miscellaneous Commands
-##### /date
+### /date
 Gives the current date and time.
 
 `/date`
 
-##### /up
+### /up
 Changes the input provided to uppercase.
 
 `/up <user_input>`
@@ -129,7 +129,7 @@ Changes the input provided to uppercase.
 Arguments:
 * user_input - Any input given by the user to be changed to uppercase
 
-##### /low
+### /low
 Changes the input provided to lowercase.
 
 `/low <user_input>`
@@ -137,7 +137,7 @@ Changes the input provided to lowercase.
 Arguments:
 * user_input - Any input given by the user to be changed to lowercase
 
-##### /count
+### /count
 Counts the amount of input given.
 
 `/count <user_input>`
@@ -145,7 +145,7 @@ Counts the amount of input given.
 Arguments:
 * user_input - Any amount of input given by the user to be counted
 
-##### /range
+### /range
 Random number based on range given.
 
 `/range <bottom_of_range> <top_of_range>`
@@ -154,22 +154,22 @@ Arguments:
 * bottom_of_range - Bottom of range for random value
 * top_of_range    - Top of range for random value
 
-##### /calc a
+### /calc a
 Performs basic math calculations. 
 ###### (Addition)
 `/calc a <first_number> <second_number>`
 
-##### /calc s
+### /calc s
 Performs basic math calculations.
 ###### (Subtraction)
 `/calc s <first_number> <second_number>`
 
-##### /calc m
+### /calc m
 Performs basic math calculations.
 ###### (Multplication)
 `/calc m <first_number> <second_number>`
 
-##### /calc d
+### /calc d
 Performs basic math calculations.
 ###### (Division)
 `/calc d <first_number> <second_number>`
