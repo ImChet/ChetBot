@@ -140,7 +140,7 @@ Arguments:
 ##### /count
 Counts the amount of input given.
 
-`/count`
+`/count <user_input>`
 
 Arguments:
 * user_input - Any amount of input given by the user to be counted
