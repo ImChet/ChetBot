@@ -4,52 +4,175 @@ ChetBot is a Discord bot that can handle file conversions, combine PDF files, cr
 
 ## Event Listeners
 ##### When a Member joins your server
-Description of on_member_join
-
-##### etc...
-Description of etc...
+When a member joins your server a simple embed will be sent to greet them in their direct messages.
 
 ## Commands
 
 ### Administration Commands
-##### 1
-Description of command
+##### /kick
+Kicks users with optional specified reason. 
+###### (You must have kick permissions to run this)
 
-##### 2
-Description of command
+`/kick <member> <reason>`
 
-##### 3
-Description of command
+Arguments:
+* member - The member you wish you kick
+* reason - The optional reason you kicked the user specified by <member> (default: None)
+
+##### /ban
+Bans users with optional specified reason. 
+###### (You must have ban permissions to run this)
+
+`/ban <member> <reason>`
+
+Arguments:
+* member - The member you wish you ban
+* reason - The optional reason you banned the user specified by <member> (default: None)
+
+##### /clear
+Clears a specified backlog of messages in channel where command was invoked.
+
+`/clear <amount>`
+
+Arguments:
+* amount - Number of previous messages to clear (default: 1)
 
 ### File Commands
-##### 1
-Description of command
+##### /create
+Creates and uploads a file based on the user's descision.
 
-##### 2
-Description of command
+`/create <desired_file_type> <user_input>`
 
-##### 3
-Description of command
+Desired File Types:
+* csv - Creates a csv delimited file based on user input 
+* line - Creates a line delimited file based on user input
+* tab - Creates a tab delimited file based on user input
+
+##### /convert
+Converts user attached file from specified initial type to specified desired type.
+###### (Make sure you attach the files you wish to convert)
+
+`/convert <initial_file_type> <desired_file_type>`
+
+Arguments:
+* initial_file_type - Options are: [pdf | docx | jpg | jpeg | png]
+* desired_file_type - Options are: [pdf | docx | jpg | jpeg | png]
+
+##### /combine
+Combines user attached PDF files.
+###### (Make sure you attach the files you wish to convert)
+`/combine`
+
+##### /audio
+Converts user attached audio or video file from specified initial type to specified desired type.
+###### (Make sure you attach the files you wish to convert)
+
+`/audio <initial_file_type> <desired_file_type>`
+
+Arguments:
+* initial_file_type - Options are: [mp4 | mp3 | wav]
+* desired_file_type - Options are: [mp4 | mp3 | wav]
 
 ### Voice Channel Commands
-##### 1
-Description of command
+##### /voice join
+Makes ChetBot join the Voice Channel that you are currently in.
 
-##### 2
-Description of command
+`/voice join`
 
-##### 3
-Description of command
+##### /voice leave
+Makes ChetBot leave the Voice Channel that you are currently in.
+
+`/leave`
+
+##### /voice play
+Makes ChetBot play audio.
+
+`/play <audio>`
+
+Arguments:
+* audio - The audio that you would like ChetBot to play
+
+##### /voice queue
+Makes ChetBot queue audio to play next.
+
+`/queue <audio>`
+
+Arguments:
+* audio - The audio that you would like ChetBot to play next
+
+##### /voice pause
+Makes ChetBot pause the current audio.
+
+`/pause`
+
+##### /voice resume
+Makes ChetBot resume the paused audio.
+
+`/resume`
+
+##### /voice stop
+Makes ChetBot cancel the current audio.
+
+`/stop`
 
 ### Miscellaneous Commands
-##### 1
-Description of command
+##### /date
+Gives the current date and time.
 
-##### 2
-Description of command
+`/date`
 
-##### 3
-Description of command
+##### /up
+Changes the input provided to uppercase.
+
+`/up <user_input>`
+
+Arguments:
+* user_input - Any input given by the user to be changed to uppercase
+
+##### /low
+Changes the input provided to lowercase.
+
+`/low <user_input>`
+
+Arguments:
+* user_input - Any input given by the user to be changed to lowercase
+
+##### /count
+Counts the amount of input given.
+
+`/count`
+
+Arguments:
+* user_input - Any amount of input given by the user to be counted
+
+##### /range
+Random number based on range given.
+
+`/range <bottom_of_range> <top_of_range>`
+
+Arguments:
+* bottom_of_range - Bottom of range for random value
+* top_of_range    - Top of range for random value
+
+##### /calc a
+Performs basic math calculations. 
+###### (Addition)
+`/calc a <first_number> <second_number>`
+
+##### /calc s
+Performs basic math calculations.
+###### (Subtraction)
+`/calc s <first_number> <second_number>`
+
+##### /calc m
+Performs basic math calculations.
+###### (Multplication)
+`/calc m <first_number> <second_number>`
+
+##### /calc d
+Performs basic math calculations.
+###### (Division)
+`/calc d <first_number> <second_number>`
 
 ## Get ChetBot up and running
 
