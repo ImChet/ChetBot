@@ -1,5 +1,5 @@
 # ChetBot
-###### (ChetBot is still a work in progress)
+###### (ChetBot is still a work in progress; Currently only syncs to my personal Discord and contains bugs that will be fixed for initial release)
 
 
 ChetBot is a Discord bot that can handle file conversions, combine PDF files, create comma and tab delimited files, and more.
