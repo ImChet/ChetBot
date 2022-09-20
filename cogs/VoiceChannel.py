@@ -1,9 +1,12 @@
+import os
+
 import discord
 from discord import FFmpegPCMAudio, app_commands
 from discord.ext import commands
 from discord.ext.commands import parameter
+from yt_dlp import YoutubeDL
 
-from functions import check_queue, queues
+from functions import check_queue, queues, removeDirectory
 
 
 class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voice Channel Commands'):
@@ -40,12 +43,39 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
     # Play file located at audio
     @_voice_.command(name='play', with_app_command=True, description='Makes ChetBot play audio.')
     @app_commands.guilds(495623660967690240)
-    async def _play_(self, ctx: commands.Context, audio: str = parameter(description='- The audio that you would like ChetBot to play')) -> None:
+    async def _play_(self, ctx: commands.Context, url: str = parameter(description='- The YouTube URL that you would like ChetBot to play')) -> None:
         if ctx.guild.voice_client is not None:
-            voice = ctx.guild.voice_client
-            source = FFmpegPCMAudio(audio)
-            voice.play(source, after=lambda x=None: check_queue(ctx, ctx.message.guild.id))
-            await ctx.send(f'I started playing the audio.', delete_after=5)
+            # Make unique temporary directory to use for each user
+            parent_dir = 'WorkingFiles/AudioFilesToUse/'
+            user_dir = str(ctx.author.id)
+            temp_directory = os.path.join(parent_dir, user_dir)
+            os.mkdir(temp_directory)
+
+            await ctx.send(f'{ctx.author.mention}, your song is being processed...', delete_after=5)
+
+            ydl_opts = {
+                'format': 'bestaudio/best',
+                'postprocessors': [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec': 'mp3',
+                    'preferredquality': '192',
+                }],
+                'outtmpl': temp_directory + '/%(title)s.%(ext)s',
+            }
+
+            with YoutubeDL(ydl_opts) as ydl:
+                ydl.download([url])
+
+            for file in os.listdir(temp_directory):
+                working_file = f'{temp_directory}/{file}'
+                voice = ctx.guild.voice_client
+                source = FFmpegPCMAudio(working_file)
+                voice.play(source, after=lambda x=None: check_queue(ctx, ctx.message.guild.id))
+                await ctx.send(f'I started playing your requested audio.', delete_after=5)
+
+            # Remove temporary user directory
+            removeDirectory(temp_directory)
+
         else:
             await ctx.send(f'{ctx.author.mention}, I am not in a voice channel.', delete_after=10)
 

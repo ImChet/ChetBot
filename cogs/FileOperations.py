@@ -1,6 +1,8 @@
 import os
 
 import discord
+from yt_dlp import YoutubeDL
+
 from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import parameter
@@ -287,6 +289,69 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
 
         # Remove temporary user directory
         removeDirectory(temp_directory)
+
+    # Downloads a YouTube Video to desired output
+    @commands.hybrid_group(name='youtube', with_app_command=True, description='Downloads a YouTube video from the URL given.')
+    @app_commands.guilds(495623660967690240)
+    async def _youtube_command_(self, ctx: commands.Context) -> None:
+        print(f'I am the parent YouTube command')
+
+    @_youtube_command_.command(name='mp3', with_app_command=True, description='Downloads and converts a YouTube video from the URL given to an mp3.')
+    @app_commands.guilds(495623660967690240)
+    async def _youtube_download_mp3_(self, ctx: commands.Context, url: str = parameter(description='- The YouTube URL that you would like ChetBot to download')) -> None:
+
+        await ctx.send(f'{ctx.author.mention}, your request is being processed...')
+
+        # Make unique temporary directory to use for each user
+        parent_dir = 'WorkingFiles/FilesToUpload/'
+        user_dir = str(ctx.author.id)
+
+        temp_directory = os.path.join(parent_dir, user_dir)
+        os.mkdir(temp_directory)
+
+        ydl_opts = {
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
+            'outtmpl': temp_directory + '/%(title)s.%(ext)s',
+        }
+
+        with YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+
+        for file in os.listdir(temp_directory):
+            await ctx.reply(file=discord.File(f'{temp_directory}/{file}'))
+
+        # Remove temporary user directory
+        removeDirectory(temp_directory)
+
+    # Hidden from view as it must be under 8MiB to send, still works locally or under 8 MiB; I am not removing the rule
+    @_youtube_command_.command(name='mp4', hidden=True, with_app_command=False, description='Downloads and converts a YouTube video from the URL given to an mp4.')
+    @app_commands.guilds(495623660967690240)
+    async def _youtube_download_mp4_(self, ctx: commands.Context, url: str = parameter(description='- The YouTube URL that you would like ChetBot to download')) -> None:
+
+        await ctx.send(f'{ctx.author.mention}, your request is being processed...')
+
+        # Make unique temporary directory to use for each user
+        parent_dir = 'WorkingFiles/FilesToUpload/'
+        user_dir = str(ctx.author.id)
+
+        temp_directory = os.path.join(parent_dir, user_dir)
+        os.mkdir(temp_directory)
+
+        ydl_opts = {
+            'format': 'best[ext=mp4]',
+            'outtmpl': temp_directory + '/%(title)s.%(ext)s',
+        }
+
+        with YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+
+        for file in os.listdir(temp_directory):
+            await ctx.reply(file=discord.File(f'{temp_directory}/{file}'))
 
 
 async def setup(ChetBot):

@@ -52,6 +52,7 @@ async def main():
     checkDirectoryExists('WorkingFiles/FilesToConvert/')
     checkDirectoryExists('WorkingFiles/FilesToCombine/')
     checkDirectoryExists('WorkingFiles/AudioFilesToUse/')
+    checkDirectoryExists('WorkingFiles/FilesToUpload/')
 
     # Loads all cogs
     for extension in initial_extensions:
