@@ -1,8 +1,10 @@
-import asyncio
 import os
 import shutil
+import string
 from datetime import datetime
+import random
 
+import discord.ext.commands
 from PIL import Image
 from docx2pdf import convert
 from pdf2docx import parse
@@ -34,10 +36,10 @@ def to_upper(arg: str):
 
 
 # Checks if the queue is populated and removes the current item in queue
-def check_queue(ctx, arg):
-    if queues[arg] != []:
+def check_queue(ctx: discord.ext.commands.Context, id):
+    if queues[id] != []:
         voice = ctx.guild.voice_client
-        source = queues[arg].pop(0)
+        source = queues[id].pop(0)
         voice.play(source)
 
 
@@ -133,3 +135,15 @@ def checkDirectoryExists(directory):
     directory_exists = os.path.exists(path)
     if directory_exists is False:
         os.mkdir(path)
+
+
+def checkDirectoryExistsDelete(directory):
+    path = directory
+    directory_exists = os.path.exists(path)
+    if directory_exists is True:
+        shutil.rmtree(path)
+
+
+def randomChar(amount: int):
+    return ''.join(random.choice(string.ascii_letters) for x in range(amount))
+

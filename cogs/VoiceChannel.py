@@ -6,7 +6,7 @@ from discord.ext import commands
 from discord.ext.commands import parameter
 from yt_dlp import YoutubeDL
 
-from functions import check_queue, queues, removeDirectory
+from functions import check_queue, queues, removeDirectory, checkDirectoryExists, checkDirectoryExistsDelete, randomChar
 
 
 class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voice Channel Commands'):
@@ -27,6 +27,12 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
         if ctx.author.voice:
             await ctx.message.author.voice.channel.connect()
             await ctx.send(f'I have connected to the voice channel.', delete_after=5)
+
+            # Removes the temp directory if still exists
+            parent_dir = 'WorkingFiles/AudioFilesToUse/'
+            user_dir = str(ctx.author.id)
+            temp_directory = os.path.join(parent_dir, user_dir)
+            checkDirectoryExistsDelete(temp_directory)
         else:
             await ctx.send(f'{ctx.author.mention}, you are not in a voice channel.', delete_after=10)
 
@@ -37,6 +43,12 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
         if ctx.voice_client:
             await ctx.guild.voice_client.disconnect()
             await ctx.send(f'I have disconnected from the voice channel.', delete_after=5)
+
+            # Removes the temp directory if music is stopped this way
+            parent_dir = 'WorkingFiles/AudioFilesToUse/'
+            user_dir = str(ctx.author.id)
+            temp_directory = os.path.join(parent_dir, user_dir)
+            checkDirectoryExistsDelete(temp_directory)
         else:
             await ctx.send(f'{ctx.author.mention}, I am not in a voice channel.', delete_after=10)
 
@@ -60,35 +72,58 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
                     'preferredcodec': 'mp3',
                     'preferredquality': '192',
                 }],
-                'outtmpl': temp_directory + '/%(title)s.%(ext)s',
+                'outtmpl': temp_directory + '/initial_song.mp3',
             }
 
             with YoutubeDL(ydl_opts) as ydl:
                 ydl.download([url])
 
-            for file in os.listdir(temp_directory):
-                working_file = f'{temp_directory}/{file}'
-                voice = ctx.guild.voice_client
-                source = FFmpegPCMAudio(working_file)
-                voice.play(source, after=lambda x=None: check_queue(ctx, ctx.message.guild.id))
-                await ctx.send(f'I started playing your requested audio.', delete_after=5)
+            working_file = temp_directory + '/initial_song.mp3'
+            source = FFmpegPCMAudio(working_file)
+            voice = ctx.guild.voice_client
+            voice.play(source, after=lambda x=None: check_queue(ctx, ctx.message.guild.id))
+            await ctx.send(f'I started playing your requested audio.', delete_after=5)
 
-            # Remove temporary user directory
+            # Remove temporary user directory (Currently is not getting called, need to fix)
             removeDirectory(temp_directory)
 
         else:
             await ctx.send(f'{ctx.author.mention}, I am not in a voice channel.', delete_after=10)
 
-    # Queues file located at audio to play next
+    # Queues next YouTube video
     @_voice_.command(name='queue', with_app_command=True, description='Makes ChetBot queue audio to play next.')
     @app_commands.guilds(495623660967690240)
-    async def _queue_(self, ctx: commands.Context, audio: str = parameter(description='- The audio that you would like ChetBot to play next')) -> None:
-        source = FFmpegPCMAudio(audio)
+    async def _queue_(self, ctx: commands.Context, url: str = parameter(description='- The YouTube URL that you would like ChetBot to play next')) -> None:
+
+        # Checks that the unique directory exists that already contains the user's previous YouTube videos
+        parent_dir = 'WorkingFiles/AudioFilesToUse/'
+        user_dir = str(ctx.author.id)
+        temp_directory = os.path.join(parent_dir, user_dir)
+        checkDirectoryExists(temp_directory)
+        queued_song = f'{temp_directory}/{randomChar(10)}.mp3'
+
+        await ctx.send(f'{ctx.author.mention}, your song is being processed...', delete_after=5)
+
+        ydl_opts = {
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
+            'outtmpl': str(queued_song),
+        }
+
+        with YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+
+        source = FFmpegPCMAudio(queued_song)
         guild_id = ctx.message.guild.id
         if guild_id in queues:
             queues[guild_id].append(source)
         else:
             queues[guild_id] = [source]
+
         await ctx.send(f'{ctx.author.mention}, your request has been added to the queue.', delete_after=5)
 
     # Pause file currently being played
@@ -120,6 +155,12 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
         voice = discord.utils.get(self.ChetBot.voice_clients, guild=ctx.guild)
         voice.stop()
         await ctx.send(f'I stopped the audio from playing.', delete_after=5)
+
+        # Removes the temp directory if music is stopped this way
+        parent_dir = 'WorkingFiles/AudioFilesToUse/'
+        user_dir = str(ctx.author.id)
+        temp_directory = os.path.join(parent_dir, user_dir)
+        checkDirectoryExistsDelete(temp_directory)
 
 
 async def setup(ChetBot):
