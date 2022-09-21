@@ -6,7 +6,7 @@ from discord.ext import commands
 from discord.ext.commands import parameter
 from yt_dlp import YoutubeDL
 
-from functions import check_queue, queues, checkDirectoryExists, checkDirectoryExistsDelete, randomChar
+from functions import check_queue, queues, checkDirectoryExists, checkDirectoryExistsDelete, randomChar, removeDirectory
 
 
 class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voice Channel Commands'):
@@ -98,9 +98,11 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
         voice.play(source, after=lambda x=None: check_queue(ctx, ctx.message.guild.id))
         await ctx.send(f'I started playing your requested audio.', delete_after=5)
 
-        # I do not think you are able to get this part to ever trigger after the queue is empty
-        # and the bot is not playing audio
-        # removeDirectory(temp_directory)
+        # I don't think you're able to get this part to trigger after the queue is empty + the bot is not playing audio
+        try:
+            removeDirectory(temp_directory)
+        except:
+            pass
 
     # Queues next YouTube video
     @_voice_.command(name='queue', with_app_command=True, description='Makes ChetBot queue audio to play next.')
