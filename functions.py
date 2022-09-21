@@ -37,10 +37,13 @@ def to_upper(arg: str):
 
 # Checks if the queue is populated and removes the current item in queue
 def check_queue(ctx: discord.ext.commands.Context, id):
-    if queues[id] != []:
-        voice = ctx.guild.voice_client
-        source = queues[id].pop(0)
-        voice.play(source)
+    try:
+        if queues[id] != []:
+            voice = ctx.guild.voice_client
+            source = queues[id].pop(0)
+            voice.play(source)
+    except:
+        pass
 
 
 # Determines the method of which to convert files based on inputted type and desired type
@@ -146,4 +149,3 @@ def checkDirectoryExistsDelete(directory):
 
 def randomChar(amount: int):
     return ''.join(random.choice(string.ascii_letters) for x in range(amount))
-
