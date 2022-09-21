@@ -212,6 +212,7 @@ For additional information on the packages that ChetBot utilizes, be sure to tak
 * [PyPDF2](https://pypi.org/project/PyPDF2/)
 * [pdf2docx](https://pypi.org/project/pdf2docx/)
 * [docx2pdf](https://pypi.org/project/docx2pdf/)
+* [yt-dlp](https://pypi.org/project/yt-dlp/)
 
 ###### (docx2pdf requires Microsoft Word to be installed)
 
