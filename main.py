@@ -1,7 +1,7 @@
 import asyncio
+import logging.handlers
 import os
 
-import logging.handlers
 import discord
 from discord.ext import commands
 from discord.ext.commands import DefaultHelpCommand
