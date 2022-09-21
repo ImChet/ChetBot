@@ -291,7 +291,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         removeDirectory(temp_directory)
 
     # Downloads a YouTube Video to desired output
-    @commands.hybrid_group(name='youtube', with_app_command=True, description='Downloads a YouTube video from the URL given.')
+    @commands.hybrid_group(name='youtube', with_app_command=True, description='Downloads and/or converts a YouTube video from the URL given to the requested type.')
     @app_commands.guilds(495623660967690240)
     async def _youtube_command_(self, ctx: commands.Context) -> None:
         print(f'I am the parent YouTube command')

@@ -75,6 +75,24 @@ Arguments:
 * initial_file_type - Options are: [mp4 | mp3 | wav]
 * desired_file_type - Options are: [mp4 | mp3 | wav]
 
+### /youtube mp3
+Downloads and converts a YouTube video from the URL given and uploads the mp3 file it converted.
+###### (The command can take a second to run sometimes, just let it run)
+
+`/youtube mp3 <url>`
+
+Arguments:
+* url - The YouTube URL that you would like ChetBot to download
+
+### /youtube mp4
+Downloads a YouTube video from the URL given and uploads it.
+###### (Hidden from general help command as this command only works if the file it generates if less than 8MB, as that is Discord's upload limit currently)
+
+`/youtube mp4 <url>`
+
+Arguments:
+* url - The YouTube URL that you would like ChetBot to download
+
 ### Voice Channel Commands
 ### /voice join
 Makes ChetBot join the Voice Channel that you are currently in.
@@ -84,38 +102,38 @@ Makes ChetBot join the Voice Channel that you are currently in.
 ### /voice leave
 Makes ChetBot leave the Voice Channel that you are currently in.
 
-`/leave`
+`/voice leave`
 
 ### /voice play
-Makes ChetBot play audio.
+Makes ChetBot play audio from the URL given. Makes ChetBot join the Voice Channel that you are currently in if it's not in the voice channel with you already.
 
-`/play <audio>`
+`/voice play <url>`
 
 Arguments:
-* audio - The audio that you would like ChetBot to play
+* url - The YouTube URL that you would like ChetBot to play
 
 ### /voice queue
-Makes ChetBot queue audio to play next.
+Makes ChetBot queue audio to play next from the URL given.
 
-`/queue <audio>`
+`/voice queue <url>`
 
 Arguments:
-* audio - The audio that you would like ChetBot to play next
+* url - The YouTube URL that you would like ChetBot to play next
 
 ### /voice pause
 Makes ChetBot pause the current audio.
 
-`/pause`
+`/voice pause`
 
 ### /voice resume
 Makes ChetBot resume the paused audio.
 
-`/resume`
+`/voice resume`
 
 ### /voice stop
 Makes ChetBot cancel the current audio.
 
-`/stop`
+`/voice stop`
 
 ### Miscellaneous Commands
 ### /date
