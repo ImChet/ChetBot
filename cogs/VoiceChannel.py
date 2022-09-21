@@ -92,7 +92,6 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
         with YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
 
-        # source = FFmpegPCMAudio(working_file)
         working_file_list = [working_file]
         voice = ctx.guild.voice_client
 
