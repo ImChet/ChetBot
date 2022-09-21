@@ -92,13 +92,11 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
         with YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
 
-        working_file_list = [working_file]
         voice = ctx.guild.voice_client
 
-        for file in working_file_list:
-            source = FFmpegPCMAudio(file)
-            voice.play(source, after=lambda x=None: check_queue(ctx, ctx.message.guild.id))
-            await ctx.send(f'I started playing your requested audio.', delete_after=5)
+        source = FFmpegPCMAudio(working_file)
+        voice.play(source, after=lambda x=None: check_queue(ctx, ctx.message.guild.id))
+        await ctx.send(f'I started playing your requested audio.', delete_after=5)
 
         # I do not think you are able to get this part to ever trigger after the queue is empty
         # and the bot is not playing audio
