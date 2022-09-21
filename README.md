@@ -77,7 +77,6 @@ Arguments:
 
 ### /youtube mp3
 Downloads and converts a YouTube video from the URL given and uploads the mp3 file it converted.
-###### (The command can take a second to run sometimes, just let it run)
 
 `/youtube mp3 <url>`
 
