@@ -77,26 +77,30 @@ Desired File Types:
 Converts user attached file from specified initial type to specified desired type.
 ###### (Supports up to 10 attachments at once)
 
-`/convert <initial_file_type> <desired_file_type> <attachments>`
+`/convert <initial_file_type> <desired_file_type> <attachment>`
 
 Arguments:
 * initial_file_type - Options are: [pdf | docx | jpg | jpeg | png]
 * desired_file_type - Options are: [pdf | docx | jpg | jpeg | png]
+* attachment - The attachment(s) you wish to convert
 
 ### /combine
 Combines user attached PDF files.
 ###### (Supports up to 10 attachments at once)
 `/combine <attachments>`
 
+* attachments - The attachments you wish to convert
+
 ### /audio
 Converts user attached audio or video file from specified initial type to specified desired type.
 ###### (Supports up to 10 attachments at once)
 
-`/audio <initial_file_type> <desired_file_type> <attachments>`
+`/audio <initial_file_type> <desired_file_type> <attachment>`
 
 Arguments:
 * initial_file_type - Options are: [mp4 | mp3 | wav]
 * desired_file_type - Options are: [mp4 | mp3 | wav]
+* attachment - The attachment(s) you wish to convert
 
 ### /youtube mp3
 Downloads and converts a YouTube video from the URL given and uploads the mp3 file it converted.
