@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 import discord
 from PyPDF2 import PdfFileMerger
@@ -80,8 +81,21 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         removeDirectory(temp_directory)
 
     # Coverts user attachments to desired type
-    @commands.hybrid_command(name='convert', with_app_command=False, description='Converts user attached file from specified initial type to specified desired type.\n(Make sure you attach the files you wish to convert)\n/convert <initial_file_type> <desired_file_type>')
-    async def _convert_files_(self, ctx: commands.Context, initial_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]'), desired_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]')) -> None:
+    @commands.hybrid_command(name='convert', with_app_command=True, description='Converts user attached file from specified initial type to specified desired type.')
+    @app_commands.guilds(495623660967690240)
+    async def _convert_files_(self, ctx: commands.Context,
+                              initial_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]'),
+                              desired_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]'),
+                              attachment1: discord.Attachment = parameter(description=' - The attachment to convert.'),
+                              attachment2: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment3: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment4: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment5: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment6: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment7: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment8: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment9: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment10: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.')) -> None:
         await ctx.typing()
         if ctx.message.attachments:
 
@@ -135,9 +149,17 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
                 temp_directory = os.path.join(parent_dir, user_dir)
                 os.mkdir(temp_directory)
 
+                # Prevents possible user error where user clicks wrong attachment number
+                default_attachment_list = [attachment1, attachment2, attachment3, attachment4, attachment5,
+                                           attachment6, attachment7, attachment8, attachment9, attachment10]
+                actual_attachment_list = []
+                for x in (range(0, len(default_attachment_list))):
+                    if default_attachment_list[x] is not None:
+                        actual_attachment_list.append(default_attachment_list[x])
+
                 if type_check:
                     await ctx.send(f'{ctx.author.mention}, I am processing your request...', delete_after=3)
-                    for attachment in ctx.message.attachments:
+                    for attachment in tuple(actual_attachment_list):
                         # Download the user attachments on iterator through list
                         await attachment.save(f'{temp_directory}/{attachment.filename}')
                         # Input file
@@ -162,8 +184,21 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         removeDirectory(temp_directory)
 
     # Coverts user audio attachments from allowed types
-    @commands.hybrid_command(name='audio', with_app_command=False, description='Converts user attached audio or video file from specified initial type to specified desired type.\n(Make sure you attach the files you wish to convert)\n/audio <initial_file_type> <desired_file_type>')
-    async def _convert_audio_(self, ctx: commands.Context, initial_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]'), desired_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]')) -> None:
+    @commands.hybrid_command(name='audio', with_app_command=True, description='Converts user attached audio or video file from specified initial type to specified desired type.')
+    @app_commands.guilds(495623660967690240)
+    async def _convert_audio_(self, ctx: commands.Context,
+                              initial_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]'),
+                              desired_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]'),
+                              attachment1: discord.Attachment = parameter(description=' - The attachment to convert.'),
+                              attachment2: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment3: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment4: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment5: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment6: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment7: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment8: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment9: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
+                              attachment10: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.')) -> None:
         await ctx.typing()
         if ctx.message.attachments:
 
@@ -215,9 +250,17 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
                 temp_directory = os.path.join(parent_dir, user_dir)
                 os.mkdir(temp_directory)
 
+                # Prevents possible user error where user clicks wrong attachment number
+                default_attachment_list = [attachment1, attachment2, attachment3, attachment4, attachment5,
+                                           attachment6, attachment7, attachment8, attachment9, attachment10]
+                actual_attachment_list = []
+                for x in (range(0, len(default_attachment_list))):
+                    if default_attachment_list[x] is not None:
+                        actual_attachment_list.append(default_attachment_list[x])
+
                 if type_check:
-                    await ctx.send(f'{ctx.author.mention}, I am processing your request...', delete_after=3)
-                    for attachment in ctx.message.attachments:
+                    await ctx.send(f'{ctx.author.mention}, I am processing your request...', delete_after=5)
+                    for attachment in tuple(actual_attachment_list):
                         # Download the user attachments on iterator through list
                         await attachment.save(f'{temp_directory}/{attachment.filename}')
                         # Keeping the file name uploaded by the user without the previous unconverted extension
@@ -242,14 +285,25 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         removeDirectory(temp_directory)
 
     # Makes and uploads files bases on user's decision
-    @commands.hybrid_command(name='combine', description='Combines user attached PDF files.\n(Make sure you attach the files you wish to convert)\n/combine')
-    async def _combine_files_(self, ctx: commands.Context) -> None:
+    @commands.hybrid_command(name='combine', with_app_command=True, description='Combines user attached PDF files.')
+    @app_commands.guilds(495623660967690240)
+    async def _combine_files_(self, ctx: commands.Context,
+                              attachment1: discord.Attachment,
+                              attachment2: discord.Attachment,
+                              attachment3: Optional[discord.Attachment] = parameter(default=None),
+                              attachment4: Optional[discord.Attachment] = parameter(default=None),
+                              attachment5: Optional[discord.Attachment] = parameter(default=None),
+                              attachment6: Optional[discord.Attachment] = parameter(default=None),
+                              attachment7: Optional[discord.Attachment] = parameter(default=None),
+                              attachment8: Optional[discord.Attachment] = parameter(default=None),
+                              attachment9: Optional[discord.Attachment] = parameter(default=None),
+                              attachment10: Optional[discord.Attachment] = parameter(default=None)) -> None:
         if len(ctx.message.attachments) >= 2:
-            await ctx.send(f'{ctx.author.mention}, I am processing your request...', delete_after=3)
+            await ctx.send(f'{ctx.author.mention}, I am processing your request...', delete_after=5)
             # Check if attached file is .pdf
             for attachment in ctx.message.attachments:
-                attatched_file_type = (os.path.splitext(str(attachment))[1])
-                if attatched_file_type not in ['.pdf']:
+                attached_file_type = (os.path.splitext(str(attachment))[1])
+                if attached_file_type not in ['.pdf']:
                     await ctx.send(f'{ctx.author.mention}, one or more of the files attached is not a PDF. Currently only PDF combinations are supported.', delete_after=10)
                     break
 
@@ -260,8 +314,16 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
             os.mkdir(temp_directory)
 
             merger = PdfFileMerger()
-            for pdf in ctx.message.attachments:
-                # Download the user attachments on iterator through list
+            # Prevents possible user error where user clicks wrong attachment number
+            default_attachment_list = [attachment1, attachment2, attachment3, attachment4, attachment5,
+                                       attachment6, attachment7, attachment8, attachment9, attachment10]
+            actual_attachment_list = []
+            for x in (range(0, len(default_attachment_list))):
+                if default_attachment_list[x] is not None:
+                    actual_attachment_list.append(default_attachment_list[x])
+
+            for pdf in tuple(actual_attachment_list):
+                # Download the user attachments on iterator through the attachment list that is cast as a tuple
                 await pdf.save(f'{temp_directory}/{pdf.filename}')
                 # Input file
                 input_filepath = f'{temp_directory}/{pdf.filename}'

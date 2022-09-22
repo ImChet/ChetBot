@@ -20,7 +20,7 @@ class Roles(commands.Cog):
     @bot_has_permissions(manage_roles=True)
     @has_permissions(manage_roles=True)
     @app_commands.guilds(495623660967690240)
-    async def _role_add_command_(self, ctx: commands.Context, member: discord.Member = parameter(description='- The member to add the role to'), *, role: discord.Role = parameter(description='- The role to add the member to')):
+    async def _role_add_command_(self, ctx: commands.Context, member: discord.Member = parameter(description='- The member to add the role to'), *, role: discord.Role = parameter(description='- The role to add the member to')) -> None:
         if role in member.roles:
             await ctx.send(f'That user already has that role.', delete_after=5)
         else:
@@ -31,7 +31,7 @@ class Roles(commands.Cog):
     @bot_has_permissions(manage_roles=True)
     @has_permissions(manage_roles=True)
     @app_commands.guilds(495623660967690240)
-    async def _role_add_command_(self, ctx: commands.Context, member: discord.Member = parameter(description='- The member to remove the role from'), *, role: discord.Role = parameter(description='- The role to remove from the user')):
+    async def _role_add_command_(self, ctx: commands.Context, member: discord.Member = parameter(description='- The member to remove the role from'), *, role: discord.Role = parameter(description='- The role to remove from the user')) -> None:
         if role in member.roles:
             await member.remove_roles(role)
             await ctx.send(f'Removed {role} from {member}.', delete_after=5)

@@ -22,8 +22,9 @@ class CreateBot(commands.Bot):
 
     async def setup_hook(self) -> None:
         # REMOVE WHEN GOING GLOBAL
+        print("ChetBot spinning up...")
         await self.tree.sync(guild=discord.Object(id=495623660967690240))
-        print("Slash commands synced.")
+        print("Slash commands synced. Proceeding...")
 
 
 ChetBot = CreateBot()
