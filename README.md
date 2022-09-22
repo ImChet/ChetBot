@@ -75,9 +75,9 @@ Desired File Types:
 
 ### /convert
 Converts user attached file from specified initial type to specified desired type.
-###### (Make sure you attach the files you wish to convert)
+###### (Supports up to 10 attachments at once)
 
-`/convert <initial_file_type> <desired_file_type>`
+`/convert <initial_file_type> <desired_file_type> <attachments>`
 
 Arguments:
 * initial_file_type - Options are: [pdf | docx | jpg | jpeg | png]
@@ -85,14 +85,14 @@ Arguments:
 
 ### /combine
 Combines user attached PDF files.
-###### (Make sure you attach the files you wish to convert)
-`/combine`
+###### (Supports up to 10 attachments at once)
+`/combine <attachments>`
 
 ### /audio
 Converts user attached audio or video file from specified initial type to specified desired type.
-###### (Make sure you attach the files you wish to convert)
+###### (Supports up to 10 attachments at once)
 
-`/audio <initial_file_type> <desired_file_type>`
+`/audio <initial_file_type> <desired_file_type> <attachments>`
 
 Arguments:
 * initial_file_type - Options are: [mp4 | mp3 | wav]
