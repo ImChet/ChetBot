@@ -162,6 +162,36 @@ Makes ChetBot cancel the current audio.
 `/voice stop`
 
 ### Miscellaneous Commands
+
+### /help
+If you need assistance with anything related to ChetBot use this command.
+
+`/help`
+
+### /search google
+Search for anything you want to on Google and ChetBot returns a link to the search results.
+
+`/search google <query>`
+
+Arguments:
+* query - What you want to search for on Google
+
+### /search youtube
+Search for anything you want to on YouTube and ChetBot returns a link to the search results.
+
+`/search youtube <query>`
+
+Arguments:
+* query - What you want to search for on YouTube
+
+### /search github
+Search for anything you want to on github and ChetBot returns a link to the search results.
+
+`/search github <query>`
+
+Arguments:
+* query - What you want to search for on Google
+
 ### /date
 Gives the current date and time.
 
@@ -219,6 +249,11 @@ Performs basic math calculations.
 Performs basic math calculations.
 ###### (Division)
 `/calc d <first_number> <second_number>`
+
+### /feedback
+Submit feedback to the creator of ChetBot.
+
+`/feedback`
 
 ## Get ChetBot up and running
 
