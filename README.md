@@ -18,7 +18,7 @@ Kicks users with optional specified reason.
 `/kick <member> <reason>`
 
 Arguments:
-* member - The member you wish you kick
+* member - The member you wish to kick
 * reason - The optional reason you kicked the user specified by <member> (default: None)
 
 ### /ban
@@ -28,7 +28,7 @@ Bans users with optional specified reason.
 `/ban <member> <reason>`
 
 Arguments:
-* member - The member you wish you ban
+* member - The member you wish to ban
 * reason - The optional reason you banned the user specified by <member> (default: None)
 
 ### /clear

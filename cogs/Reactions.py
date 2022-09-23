@@ -8,16 +8,16 @@ class Reactions(commands.Cog, name='Reaction Listener'):
         self.ChetBot = ChetBot
 
     # Reaction add listener
-    @commands.Cog.listener()
-    async def on_reaction_add(self, reaction, member: discord.Member):
-        channel = reaction.message.channel
-        # await reaction.message.reply(f'{member.name} added {reaction.emoji}')
-
+    # @commands.Cog.listener()
+    # async def on_reaction_add(self, reaction, member: discord.Member):
+    #     channel = reaction.message.channel
+    #     await reaction.message.reply(f'{member.name} added {reaction.emoji}')
+    #
     # Reaction remove listener
-    @commands.Cog.listener()
-    async def on_reaction_remove(self, reaction, member: discord.Member):
-        channel = reaction.message.channel
-        # await reaction.message.reply(f'{member.name} removed {reaction.emoji}')
+    # @commands.Cog.listener()
+    # async def on_reaction_remove(self, reaction, member: discord.Member):
+    #     channel = reaction.message.channel
+    #     await reaction.message.reply(f'{member.name} removed {reaction.emoji}')
 
 
 async def setup(ChetBot):

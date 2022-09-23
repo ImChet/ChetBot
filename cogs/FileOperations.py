@@ -82,6 +82,8 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
 
     # Coverts user attachments to desired type
     @commands.hybrid_command(name='convert', with_app_command=True, description='Converts user attached file from specified initial type to specified desired type.')
+    @app_commands.describe(initial_file_type='Options are: [pdf | docx | jpg | jpeg | png]',
+                           desired_file_type='Options are: [pdf | docx | jpg | jpeg | png]')
     @app_commands.guilds(495623660967690240)
     async def _convert_files_(self, ctx: commands.Context,
                               initial_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]'),
@@ -185,6 +187,8 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
 
     # Coverts user audio attachments from allowed types
     @commands.hybrid_command(name='audio', with_app_command=True, description='Converts user attached audio or video file from specified initial type to specified desired type.')
+    @app_commands.describe(initial_file_type='Options are: [mp4 | mp3 | wav]',
+                           desired_file_type='Options are: [mp4 | mp3 | wav]')
     @app_commands.guilds(495623660967690240)
     async def _convert_audio_(self, ctx: commands.Context,
                               initial_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]'),
@@ -358,6 +362,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         print(f'I am the parent YouTube command')
 
     @_youtube_command_.command(name='mp3', with_app_command=True, description='Downloads and converts a YouTube video from the URL given to an mp3.')
+    @app_commands.describe(url='The YouTube URL that you would like ChetBot to download')
     @app_commands.guilds(495623660967690240)
     async def _youtube_download_mp3_(self, ctx: commands.Context, url: str = parameter(description='- The YouTube URL that you would like ChetBot to download')) -> None:
 
@@ -391,6 +396,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
 
     # Hidden from view as it must be under 8MiB to send, still works locally or under 8 MiB; I am not removing the rule
     @_youtube_command_.command(name='mp4', hidden=True, with_app_command=False, description='Downloads and converts a YouTube video from the URL given to an mp4.')
+    @app_commands.describe(url='The YouTube URL that you would like ChetBot to download')
     @app_commands.guilds(495623660967690240)
     async def _youtube_download_mp4_(self, ctx: commands.Context, url: str = parameter(description='- The YouTube URL that you would like ChetBot to download')) -> None:
 

@@ -3,6 +3,7 @@ import logging.handlers
 import os
 
 import discord
+from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import DefaultHelpCommand
 
@@ -18,13 +19,16 @@ class CreateBot(commands.Bot):
         intents.message_content = True
         intents.voice_states = True
         intents.members = True
-        super().__init__(command_prefix="/", intents=intents, help_command=DefaultHelpCommand(no_category='Help Command'), activity=discord.Activity(type=discord.ActivityType.watching, name='over the universe'), status=discord.Status.do_not_disturb)
+        super().__init__(command_prefix="/", intents=intents,
+                         help_command=DefaultHelpCommand(no_category='Help Command'),
+                         activity=discord.Activity(type=discord.ActivityType.watching, name='over the universe'),
+                         status=discord.Status.do_not_disturb)
 
     async def setup_hook(self) -> None:
+        print("ChetBot spinning up...\n-----")
         # REMOVE WHEN GOING GLOBAL
-        print("ChetBot spinning up...")
         await self.tree.sync(guild=discord.Object(id=495623660967690240))
-        print("Slash commands synced. Proceeding...")
+        print("Slash commands synced. Proceeding...\n-----")
 
 
 ChetBot = CreateBot()
@@ -58,6 +62,14 @@ async def main():
     # Loads all cogs
     for extension in initial_extensions:
         await ChetBot.load_extension(extension)
+
+
+# Context menus are not supported in group contexts (cogs)
+@ChetBot.tree.context_menu(name='Test Context Menu')
+@app_commands.guilds(495623660967690240)
+async def test_context_menu(interaction: discord.Interaction, member: discord.Member):
+    await interaction.response.send_message(f'{member} is a sussy baca....')
+
 
 if __name__ == '__main__':
     asyncio.run(main())

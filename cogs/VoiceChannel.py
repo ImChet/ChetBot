@@ -54,6 +54,7 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
 
     # Play file located at audio
     @_voice_.command(name='play', with_app_command=True, description='Makes ChetBot play audio.')
+    @app_commands.describe(url='The YouTube URL that you would like ChetBot to play')
     @app_commands.guilds(495623660967690240)
     async def _play_(self, ctx: commands.Context, url: str = parameter(description='- The YouTube URL that you would like ChetBot to play')) -> None:
         if ctx.guild.voice_client is None:
@@ -106,6 +107,7 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
 
     # Queues next YouTube video
     @_voice_.command(name='queue', with_app_command=True, description='Makes ChetBot queue audio to play next.')
+    @app_commands.describe(url='The YouTube URL that you would like ChetBot to play next')
     @app_commands.guilds(495623660967690240)
     async def _queue_(self, ctx: commands.Context, url: str = parameter(description='- The YouTube URL that you would like ChetBot to play next')) -> None:
 
