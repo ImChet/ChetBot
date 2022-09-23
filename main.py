@@ -20,7 +20,7 @@ class CreateBot(commands.Bot):
         intents.voice_states = True
         intents.members = True
         super().__init__(command_prefix="/", intents=intents,
-                         help_command=DefaultHelpCommand(no_category='Help Command'),
+                         help_command=None,
                          activity=discord.Activity(type=discord.ActivityType.watching, name='over the universe'),
                          status=discord.Status.do_not_disturb)
 
@@ -65,10 +65,10 @@ async def main():
 
 
 # Context menus are not supported in group contexts (cogs)
-@ChetBot.tree.context_menu(name='Test Context Menu')
+@ChetBot.tree.context_menu(name='Summon')
 @app_commands.guilds(495623660967690240)
-async def test_context_menu(interaction: discord.Interaction, member: discord.Member):
-    await interaction.response.send_message(f'{member} is a sussy baca....')
+async def summon_context_menu(interaction: discord.Interaction, member: discord.Member):
+    await interaction.response.send_message(f'{member.mention} has been summoned by {interaction.user.mention}')
 
 
 if __name__ == '__main__':
