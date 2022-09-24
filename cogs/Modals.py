@@ -9,7 +9,8 @@ from functions import getCurrentDateTime
 class Feedback(discord.ui.Modal, title='Feedback on ChetBot'):
     name = discord.ui.TextInput(
         label='Name',
-        placeholder='Enter your name here...'
+        placeholder='Enter your name here...',
+        required=True
     )
     feedback = discord.ui.TextInput(
         label='What feedback do you have?',
@@ -24,7 +25,11 @@ class Feedback(discord.ui.Modal, title='Feedback on ChetBot'):
                                                 ephemeral=True)
         working_file = f'ChetBot_Feedback.txt'
         f = open(working_file, "a")
-        f.write(f'-----\nFrom: {str(self.name.value)}\nDiscord Name:{str(interaction.user.name)}#{str(interaction.user.discriminator)}\nFeedback: {str(self.feedback.value)}\nTime feedback sent: on {getCurrentDateTime()}\n-----\n')
+        f.write(f'-----\nFrom: {str(self.name.value)}\n'
+                f'Discord Name:{str(interaction.user.name)}#{str(interaction.user.discriminator)}\n'
+                f'Feedback: {str(self.feedback.value)}\n'
+                f'Time feedback sent: on {getCurrentDateTime()}\n'
+                f'-----\n')
         f.close()
 
 
