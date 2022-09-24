@@ -2,6 +2,8 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 
+from functions import getCurrentDateTime
+
 
 # Modals can only have text
 class Feedback(discord.ui.Modal, title='Feedback on ChetBot'):
@@ -18,9 +20,12 @@ class Feedback(discord.ui.Modal, title='Feedback on ChetBot'):
     )
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
-        # Currently the feedback doesn't get sent anywhere
         await interaction.response.send_message(f'Thank you for submitting your feedback, {interaction.user.mention}!',
                                                 ephemeral=True)
+        working_file = f'ChetBot_Feedback.txt'
+        f = open(working_file, "a")
+        f.write(f'-----\nFrom: {str(self.name.value)}\nDiscord Name:{str(interaction.user.name)}#{str(interaction.user.discriminator)}\nFeedback: {str(self.feedback.value)}\nTime feedback sent: on {getCurrentDateTime()}\n-----\n')
+        f.close()
 
 
 class Modals(commands.Cog):
