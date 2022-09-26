@@ -255,6 +255,16 @@ Submit feedback to the creator of ChetBot.
 
 `/feedback`
 
+### /sync
+Syncs slash commands based on choice.
+###### (Must be the owner/creator of the API key that ChetBot is currently using to run this command)
+
+* `/sync`           | Global sync
+* `/sync !`         | Sync current guild
+* `/sync *`         | Copies all global app commands to current guild and syncs
+* `/sync ^`         | Clears all commands from the current guild target and syncs (removes guild commands)
+* `/sync id_1 id_2` | Syncs guilds with id 1 and 2
+
 ## Get ChetBot up and running
 
 ### Install requirements
