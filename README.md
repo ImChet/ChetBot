@@ -3,6 +3,8 @@
 
 ChetBot is a Discord bot that can handle file conversions, combine PDF files, create comma and tab delimited files, download YouTube videos, play songs in Voice Chat, and more.
 
+###### [Invite ChetBot to your Discord server...](https://discord.com/api/oauth2/authorize?client_id=1015360860719419602&permissions=8&scope=bot%20applications.commands)
+
 ## Event Listeners
 ##### When a Member joins your server
 When a member joins your server a simple embed will be sent to greet them in their direct messages.
