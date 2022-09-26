@@ -39,7 +39,6 @@ class Modals(commands.Cog):
         self.ChetBot = ChetBot
 
     @app_commands.command(name='feedback', description='Submit feedback to the creator of ChetBot.')
-    @app_commands.guilds(495623660967690240)
     async def _feedback_modal_(self, interaction: discord.Interaction):
         await interaction.response.send_modal(Feedback())
 

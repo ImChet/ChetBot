@@ -35,28 +35,24 @@ class Views(commands.Cog):
 
     @commands.hybrid_group(name='search', with_app_command=True,
                            description='Search for anything on your desired website.')
-    @app_commands.guilds(495623660967690240)
     async def _search_parent_command_(self, ctx: commands.Context):
         print('I am the parent search command')
 
     @_search_parent_command_.command(name='google', with_app_command=True,
                                      description='Search for anything you want to on Google.')
     @app_commands.describe(query='What you want to search for on Google')
-    @app_commands.guilds(495623660967690240)
     async def _google_search_(self, ctx: commands.Context, *, query: str):
         await ctx.reply(view=GoogleSearch(query))
 
     @_search_parent_command_.command(name='github', with_app_command=True,
                                      description='Search for anything you want to on GitHub.')
     @app_commands.describe(query='What you want to search for on GitHub')
-    @app_commands.guilds(495623660967690240)
     async def _github_search_(self, ctx: commands.Context, *, query: str):
         await ctx.reply(view=GitHubSearch(query))
 
     @_search_parent_command_.command(name='youtube', with_app_command=True,
                                      description='Search for anything you want to on YouTube.')
     @app_commands.describe(query='What you want to search for on YouTube')
-    @app_commands.guilds(495623660967690240)
     async def _github_search_(self, ctx: commands.Context, *, query: str):
         await ctx.reply(view=YouTubeSearch(query))
 

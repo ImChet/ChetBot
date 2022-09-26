@@ -19,12 +19,10 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
 
     # Makes and uploads files bases on user's decision
     @commands.hybrid_group(name='create', with_app_command=True, description='Creates and uploads a file based on the user\'s descision.\n/create <desired_file_type> <user_input>')
-    @app_commands.guilds(495623660967690240)
     async def _create_file_(self, ctx: commands.Context) -> None:
         print('I am the parent create command')
 
     @_create_file_.command(name='csv', with_app_command=True, description='Creates a csv delimited file based on user input.')
-    @app_commands.guilds(495623660967690240)
     async def _create_file_csv_(self, ctx: commands.Context, *, user_input: str = parameter(description='- Any input given by the user to be added to the file')) -> None:
 
         # Make unique temporary directory to use for each user
@@ -43,7 +41,6 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         removeDirectory(temp_directory)
 
     @_create_file_.command(name='tab', with_app_command=True, description='Creates a tab delimited file based on user input.')
-    @app_commands.guilds(495623660967690240)
     async def _create_file_csv_(self, ctx: commands.Context, *, user_input: str = parameter(description='- Any input given by the user to be added to the file')) -> None:
 
         # Make unique temporary directory to use for each user
@@ -62,7 +59,6 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         removeDirectory(temp_directory)
 
     @_create_file_.command(name='line', with_app_command=True, description='Creates a line delimited file based on user input.')
-    @app_commands.guilds(495623660967690240)
     async def _create_file_csv_(self, ctx: commands.Context, *, user_input: str = parameter(description='- Any input given by the user to be added to the file')) -> None:
 
         # Make unique temporary directory to use for each user
@@ -84,7 +80,6 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
     @commands.hybrid_command(name='convert', with_app_command=True, description='Converts user attached file from specified initial type to specified desired type.')
     @app_commands.describe(initial_file_type='Options are: [pdf | docx | jpg | jpeg | png]',
                            desired_file_type='Options are: [pdf | docx | jpg | jpeg | png]')
-    @app_commands.guilds(495623660967690240)
     async def _convert_files_(self, ctx: commands.Context,
                               initial_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]'),
                               desired_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]'),
@@ -189,7 +184,6 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
     @commands.hybrid_command(name='audio', with_app_command=True, description='Converts user attached audio or video file from specified initial type to specified desired type.')
     @app_commands.describe(initial_file_type='Options are: [mp4 | mp3 | wav]',
                            desired_file_type='Options are: [mp4 | mp3 | wav]')
-    @app_commands.guilds(495623660967690240)
     async def _convert_audio_(self, ctx: commands.Context,
                               initial_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]'),
                               desired_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]'),
@@ -290,7 +284,6 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
 
     # Makes and uploads files bases on user's decision
     @commands.hybrid_command(name='combine', with_app_command=True, description='Combines user attached PDF files.')
-    @app_commands.guilds(495623660967690240)
     async def _combine_files_(self, ctx: commands.Context,
                               attachment1: discord.Attachment,
                               attachment2: discord.Attachment,
@@ -357,13 +350,11 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
 
     # Downloads a YouTube Video to desired output
     @commands.hybrid_group(name='youtube', with_app_command=True, description='Downloads and/or converts a YouTube video from the URL given to the requested type.')
-    @app_commands.guilds(495623660967690240)
     async def _youtube_command_(self, ctx: commands.Context) -> None:
         print(f'I am the parent YouTube command')
 
     @_youtube_command_.command(name='mp3', with_app_command=True, description='Downloads and converts a YouTube video from the URL given to an mp3.')
     @app_commands.describe(url='The YouTube URL that you would like ChetBot to download')
-    @app_commands.guilds(495623660967690240)
     async def _youtube_download_mp3_(self, ctx: commands.Context, url: str = parameter(description='- The YouTube URL that you would like ChetBot to download')) -> None:
 
         await ctx.send(f'{ctx.author.mention}, your request is being processed...')
@@ -397,7 +388,6 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
     # Hidden from view as it must be under 8MiB to send, still works locally or under 8 MiB; I am not removing the rule
     @_youtube_command_.command(name='mp4', hidden=True, with_app_command=False, description='Downloads and converts a YouTube video from the URL given to an mp4.')
     @app_commands.describe(url='The YouTube URL that you would like ChetBot to download')
-    @app_commands.guilds(495623660967690240)
     async def _youtube_download_mp4_(self, ctx: commands.Context, url: str = parameter(description='- The YouTube URL that you would like ChetBot to download')) -> None:
 
         await ctx.send(f'{ctx.author.mention}, your request is being processed...')

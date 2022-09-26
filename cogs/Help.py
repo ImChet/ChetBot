@@ -74,7 +74,6 @@ class Help(commands.Cog):
         self.ChetBot = ChetBot
 
     @app_commands.command(name='help', description='If you need assistance with anything related to ChetBot.')
-    @app_commands.guilds(495623660967690240)
     async def _help_(self, interaction: discord.Interaction):
         view = HelpDropdownView()
         await interaction.response.send_message(view=view)

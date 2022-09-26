@@ -16,13 +16,11 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
 
     # Defining the 'voice' hybrid group command
     @commands.hybrid_group(name='voice', with_app_command=True, description='Voice channel commands for ChetBot to execute.')
-    @app_commands.guilds(495623660967690240)
     async def _voice_(self, ctx: commands.Context) -> None:
         print('I am the parent voice command')
 
     # Join voice channel
     @_voice_.command(name='join', with_app_command=True, description='Makes ChetBot join the Voice Channel that you are currently in.')
-    @app_commands.guilds(495623660967690240)
     async def _join_(self, ctx: commands.Context) -> None:
         if ctx.author.voice:
             await ctx.message.author.voice.channel.connect()
@@ -38,7 +36,6 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
 
     # Leave voice channel
     @_voice_.command(name='leave', with_app_command=True, description='Makes ChetBot leave the Voice Channel that you are currently in.')
-    @app_commands.guilds(495623660967690240)
     async def _leave_(self, ctx: commands.Context) -> None:
         if ctx.voice_client:
             await ctx.guild.voice_client.disconnect()
@@ -55,7 +52,6 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
     # Play file located at audio
     @_voice_.command(name='play', with_app_command=True, description='Makes ChetBot play audio.')
     @app_commands.describe(url='The YouTube URL that you would like ChetBot to play')
-    @app_commands.guilds(495623660967690240)
     async def _play_(self, ctx: commands.Context, url: str = parameter(description='- The YouTube URL that you would like ChetBot to play')) -> None:
         if ctx.guild.voice_client is None:
             if ctx.author.voice:
@@ -108,7 +104,6 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
     # Queues next YouTube video
     @_voice_.command(name='queue', with_app_command=True, description='Makes ChetBot queue audio to play next.')
     @app_commands.describe(url='The YouTube URL that you would like ChetBot to play next')
-    @app_commands.guilds(495623660967690240)
     async def _queue_(self, ctx: commands.Context, url: str = parameter(description='- The YouTube URL that you would like ChetBot to play next')) -> None:
 
         # Checks that the unique directory exists that already contains the user's previous YouTube videos
@@ -144,7 +139,6 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
 
     # Pause file currently being played
     @_voice_.command(name='pause', with_app_command=True, description='Makes ChetBot pause the current audio.')
-    @app_commands.guilds(495623660967690240)
     async def _pause_(self, ctx: commands.Context) -> None:
         voice = discord.utils.get(self.ChetBot.voice_clients, guild=ctx.guild)
         if voice.is_playing():
@@ -155,7 +149,6 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
 
     # Resume file currently paused
     @_voice_.command(name='resume', with_app_command=True, description='Makes ChetBot resume the paused audio.')
-    @app_commands.guilds(495623660967690240)
     async def _resume_(self, ctx: commands.Context) -> None:
         voice = discord.utils.get(self.ChetBot.voice_clients, guild=ctx.guild)
         if voice.is_paused():
@@ -166,7 +159,6 @@ class VoiceChannel(commands.Cog, name='Voice Channel Commands', description='Voi
 
     # Stop file that is being played
     @_voice_.command(name='stop', with_app_command=True, description='Makes ChetBot cancel the current audio.')
-    @app_commands.guilds(495623660967690240)
     async def _stop_(self, ctx: commands.Context) -> None:
         voice = discord.utils.get(self.ChetBot.voice_clients, guild=ctx.guild)
         voice.stop()
