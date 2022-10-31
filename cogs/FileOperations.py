@@ -18,12 +18,14 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         self.ChetBot = ChetBot
 
     # Makes and uploads files bases on user's decision
-    @commands.hybrid_group(name='create', with_app_command=True, description='Creates and uploads a file based on the user\'s descision.\n/create <desired_file_type> <user_input>')
+    @commands.hybrid_group(name='delimited', with_app_command=True, description='Creates and uploads a file based on the user\'s descision.\n/delimited <desired_file_type> <user_input>')
     async def _create_file_(self, ctx: commands.Context) -> None:
-        print('I am the parent create command')
+        print('I am the parent delimited command')
 
     @_create_file_.command(name='csv', with_app_command=True, description='Creates a csv delimited file based on user input.')
-    async def _create_file_csv_(self, ctx: commands.Context, *, user_input: str = parameter(description='- Any input given by the user to be added to the file')) -> None:
+    @app_commands.describe(where_to_split='Optional character to split your input on',
+                           user_input='Any input given by the user to be added to the file')
+    async def _create_file_csv_(self, ctx: commands.Context, *, where_to_split: str = parameter(default=' ', description='- Optional character to split your input on'), user_input: str = parameter(description='- Any input given by the user to be added to the file')) -> None:
 
         # Make unique temporary directory to use for each user
         parent_dir = 'WorkingFiles/FilesToCreate/'
@@ -32,7 +34,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         os.mkdir(temp_directory)
 
         working_file = f'{temp_directory}/ChetBot.csv'
-        space_seperated = user_input.split(' ')
+        space_seperated = user_input.split(where_to_split)
         working_text = ', '.join(space_seperated)
         f = open(working_file, "w")
         f.write(working_text)
@@ -41,7 +43,9 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         removeDirectory(temp_directory)
 
     @_create_file_.command(name='tab', with_app_command=True, description='Creates a tab delimited file based on user input.')
-    async def _create_file_csv_(self, ctx: commands.Context, *, user_input: str = parameter(description='- Any input given by the user to be added to the file')) -> None:
+    @app_commands.describe(where_to_split='Optional character to split your input on',
+                           user_input='Any input given by the user to be added to the file')
+    async def _create_file_csv_(self, ctx: commands.Context, *, where_to_split: str = parameter(default=' ', description='- Optional character to split your input on'), user_input: str = parameter(description='- Any input given by the user to be added to the file')) -> None:
 
         # Make unique temporary directory to use for each user
         parent_dir = 'WorkingFiles/FilesToCreate/'
@@ -50,7 +54,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         os.mkdir(temp_directory)
 
         working_file = f'{temp_directory}/ChetBot.csv'
-        space_seperated = user_input.split(' ')
+        space_seperated = user_input.split(where_to_split)
         working_text = '\t'.join(space_seperated)
         f = open(working_file, "w")
         f.write(working_text)
@@ -59,7 +63,9 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         removeDirectory(temp_directory)
 
     @_create_file_.command(name='line', with_app_command=True, description='Creates a line delimited file based on user input.')
-    async def _create_file_csv_(self, ctx: commands.Context, *, user_input: str = parameter(description='- Any input given by the user to be added to the file')) -> None:
+    @app_commands.describe(where_to_split='Optional character to split your input on',
+                           user_input='Any input given by the user to be added to the file')
+    async def _create_file_csv_(self, ctx: commands.Context, *, where_to_split: str = parameter(default=' ', description='- Optional character to split your input on'), user_input: str = parameter(description='- Any input given by the user to be added to the file')) -> None:
 
         # Make unique temporary directory to use for each user
         parent_dir = 'WorkingFiles/FilesToCreate/'
@@ -68,7 +74,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         os.mkdir(temp_directory)
 
         working_file = f'{temp_directory}/ChetBot.csv'
-        space_seperated = user_input.split(' ')
+        space_seperated = user_input.split(where_to_split)
         working_text = '\n'.join(space_seperated)
         f = open(working_file, "w")
         f.write(working_text)
@@ -79,7 +85,17 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
     # Coverts user attachments to desired type
     @commands.hybrid_command(name='convert', with_app_command=True, description='Converts user attached file from specified initial type to specified desired type.')
     @app_commands.describe(initial_file_type='Options are: [pdf | docx | jpg | jpeg | png]',
-                           desired_file_type='Options are: [pdf | docx | jpg | jpeg | png]')
+                           desired_file_type='Options are: [pdf | docx | jpg | jpeg | png]',
+                           attachment1='The attachment to convert.',
+                           attachment2='The attachment to convert.',
+                           attachment3='The attachment to convert.',
+                           attachment4='The attachment to convert.',
+                           attachment5='The attachment to convert.',
+                           attachment6='The attachment to convert.',
+                           attachment7='The attachment to convert.',
+                           attachment8='The attachment to convert.',
+                           attachment9='The attachment to convert.',
+                           attachment10='The attachment to convert.')
     async def _convert_files_(self, ctx: commands.Context,
                               initial_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]'),
                               desired_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]'),
@@ -183,7 +199,17 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
     # Coverts user audio attachments from allowed types
     @commands.hybrid_command(name='audio', with_app_command=True, description='Converts user attached audio or video file from specified initial type to specified desired type.')
     @app_commands.describe(initial_file_type='Options are: [mp4 | mp3 | wav]',
-                           desired_file_type='Options are: [mp4 | mp3 | wav]')
+                           desired_file_type='Options are: [mp4 | mp3 | wav]',
+                           attachment1='The attachment to convert.',
+                           attachment2='The attachment to convert.',
+                           attachment3='The attachment to convert.',
+                           attachment4='The attachment to convert.',
+                           attachment5='The attachment to convert.',
+                           attachment6='The attachment to convert.',
+                           attachment7='The attachment to convert.',
+                           attachment8='The attachment to convert.',
+                           attachment9='The attachment to convert.',
+                           attachment10='The attachment to convert.')
     async def _convert_audio_(self, ctx: commands.Context,
                               initial_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]'),
                               desired_file_type: str = parameter(description='- Options are: [mp4 | mp3 | wav]'),
@@ -284,6 +310,16 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
 
     # Makes and uploads files bases on user's decision
     @commands.hybrid_command(name='combine', with_app_command=True, description='Combines user attached PDF files.')
+    @app_commands.describe(attachment1='The attachment to combine.',
+                           attachment2='The attachment to combine.',
+                           attachment3='The attachment to combine.',
+                           attachment4='The attachment to combine.',
+                           attachment5='The attachment to combine.',
+                           attachment6='The attachment to combine.',
+                           attachment7='The attachment to combine.',
+                           attachment8='The attachment to combine.',
+                           attachment9='The attachment to combine.',
+                           attachment10='The attachment to combine.')
     async def _combine_files_(self, ctx: commands.Context,
                               attachment1: discord.Attachment,
                               attachment2: discord.Attachment,
