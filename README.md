@@ -64,10 +64,12 @@ Arguments:
 * role - The role to remove from the user
 
 ### File Commands
-### /create
+### /delimited
 Creates and uploads a file based on the user's descision.
 
-`/create <desired_file_type> <user_input>`
+`/delimited <desired_file_type> <where_to_split> <user_input>`
+
+###### where_to_split - Optional and defaults to splitting on spaces if nothing is provided.
 
 Desired File Types:
 * csv - Creates a csv delimited file based on user input 
