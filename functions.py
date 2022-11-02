@@ -147,5 +147,12 @@ def checkDirectoryExistsDelete(directory):
         shutil.rmtree(path)
 
 
+def ensureTicketingJSON_Exists():
+    filepath = 'WorkingFiles/Databases/TicketingJSON.json'
+    file_exists = os.path.exists(filepath)
+    if file_exists is False:
+        shutil.copyfile('Templates/TicketingJSON.json', filepath)
+
+
 def randomChar(amount: int):
     return ''.join(random.choice(string.ascii_letters) for x in range(amount))

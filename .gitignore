@@ -2,6 +2,7 @@
 /.idea
 __pycache__/
 /cogs/__pycache__/
+/ChetBot_Feedback.txt
 /ChetBot.log
 /apikeys.py
 /WorkingFiles/FilesToCreate/
@@ -9,4 +10,4 @@ __pycache__/
 /WorkingFiles/FilesToConvert/
 /WorkingFiles/AudioFilesToUse/
 /WorkingFiles/FilesToUpload/
-/ChetBot_Feedback.txt
+/WorkingFiles/Databases/TicketingJSON.json

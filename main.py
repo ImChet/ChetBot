@@ -6,7 +6,8 @@ import discord
 from discord.ext import commands
 
 from apikeys import discordBotAPIKey
-from functions import checkDirectoryExists
+from cogs.TicketingSystem import TicketLauncher, TicketInternals
+from functions import checkDirectoryExists, getCurrentDateTime, ensureTicketingJSON_Exists
 
 
 # ChetBot constructor class
@@ -24,6 +25,11 @@ class CreateBot(commands.Bot):
 
     async def setup_hook(self) -> None:
         print("ChetBot spinning up...\n-----")
+
+    async def on_ready(self):
+        self.add_view(TicketLauncher())
+        self.add_view(TicketInternals())
+        print(f'We have successfully logged in as {self.user} on {getCurrentDateTime()}.\n-----')
 
 
 ChetBot = CreateBot()
@@ -53,6 +59,8 @@ async def main():
     checkDirectoryExists('WorkingFiles/FilesToCombine/')
     checkDirectoryExists('WorkingFiles/AudioFilesToUse/')
     checkDirectoryExists('WorkingFiles/FilesToUpload/')
+    checkDirectoryExists('WorkingFiles/Databases/')
+    ensureTicketingJSON_Exists()
 
     # Loads all cogs
     for extension in initial_extensions:
