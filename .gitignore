@@ -5,6 +5,7 @@ __pycache__/
 /ChetBot_Feedback.txt
 /ChetBot.log
 /apikeys.py
+/cogs/Testing.py
 /WorkingFiles/FilesToCreate/
 /WorkingFiles/FilesToCombine/
 /WorkingFiles/FilesToConvert/
