@@ -188,17 +188,12 @@ Arguments:
 * query - What you want to search for on YouTube
 
 ### /search github
-Search for anything you want to on github and ChetBot returns a link to the search results.
+Search for anything you want to on GitHub and ChetBot returns a link to the search results.
 
 `/search github <query>`
 
 Arguments:
 * query - What you want to search for on Google
-
-### /date
-Gives the current date and time.
-
-`/date`
 
 ### /up
 Changes the input provided to uppercase.
@@ -232,26 +227,6 @@ Random number based on range given.
 Arguments:
 * bottom_of_range - Bottom of range for random value
 * top_of_range    - Top of range for random value
-
-### /calc a
-Performs basic math calculations. 
-###### (Addition)
-`/calc a <first_number> <second_number>`
-
-### /calc s
-Performs basic math calculations.
-###### (Subtraction)
-`/calc s <first_number> <second_number>`
-
-### /calc m
-Performs basic math calculations.
-###### (Multplication)
-`/calc m <first_number> <second_number>`
-
-### /calc d
-Performs basic math calculations.
-###### (Division)
-`/calc d <first_number> <second_number>`
 
 ### /feedback
 Submit feedback to the creator of ChetBot.
