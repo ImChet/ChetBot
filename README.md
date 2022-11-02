@@ -211,14 +211,6 @@ Changes the input provided to lowercase.
 Arguments:
 * user_input - Any input given by the user to be changed to lowercase
 
-### /count
-Counts the amount of input given.
-
-`/count <user_input>`
-
-Arguments:
-* user_input - Any amount of input given by the user to be counted
-
 ### /range
 Random number based on range given.
 
@@ -233,6 +225,57 @@ Submit feedback to the creator of ChetBot.
 
 `/feedback`
 
+### Ticketing System
+### /launch-ticketing
+Launches a persistent ticket creation embed with a 'Create Ticket' button. When the user clicks on the button, they are prompted with a modal asking for additional information that will support the Ticket Support role initially declared when the command was called, then a new ticket text channel is created for them.
+
+`/launch-ticketing <ticket_support_role>`
+
+###### (User must have manage_channels permission to run this as each ticket is a new channel)
+
+Arguments:
+* ticket_support_role - The role that you would like to assign as the dedicated Ticket Support
+
+### /ticket
+Manually creates a ticket for the desired member. After this command is called, the user is then prompted with a modal asking for additional information that will support the Ticket Support role initially declared when the command was called, then a new ticket text channel is created for the requested member.
+
+`/ticket <member> <ticket_support_role>`
+
+###### (User must have manage_channels permission to run this as each ticket is a new channel)
+
+Arguments:
+* member - The member that you would like to open a ticket for
+* ticket_support_role - The role that you would like to assign as the dedicated Ticket Support
+
+### /close
+When inside a ticket text channel, the user can choose to either click the "Close Ticket" button that spawns at the top of every new ticket, or call this command to close out the ticket.
+
+`/close`
+
+###### (User must be in a ticket text channel to call this)
+
+### /transcript
+When inside a ticket text channel, the user can choose to either click the "Generate Transcript" button that spawns at the top of every new ticket, or call this command to generate a `.log` file that contains the transcripts of the entire ticket.
+
+`/transcript`
+
+###### (User must be in a ticket text channel to call this)
+
+### /add
+When inside a ticket text channel, the user can call this command to add any users that they think should also be in the ticket.
+
+`/add`
+
+###### (User must be in a ticket text channel to call this)
+
+### /remove
+When inside a ticket text channel, the user can call this command to remove any users that they think should no longer be in the ticket.
+
+`/remove`
+
+###### (User must have manage_channels permission to run this. This is assuming that if the user can make a new ticket, they should be able to remove users from them also)
+
+### Syncing slash commands for ChetBot
 ### /sync
 Syncs slash commands based on choice.
 ###### (Must be the owner/creator of the API key that ChetBot is currently using to run this command)

@@ -24,12 +24,6 @@ class Miscellaneous(commands.Cog, name='Miscellaneous Commands', description='Mi
     async def _up_(self, ctx: commands.Context, *, user_input: to_upper = parameter(description='- Any input given by the user to be changed to uppercase')) -> None:
         await ctx.send(user_input)
 
-    # Wordcount of args
-    @commands.hybrid_command(name='count', with_app_command=True, description='Counts the amount of input given.')
-    @app_commands.describe(user_input='Any amount of input given by the user to be counted')
-    async def _count_(self, ctx: commands.Context, *, user_input: str = parameter(description='- Any amount of input given by the user to be counted')) -> None:
-        await ctx.send(f'Count: {len(user_input)}')
-
     # Random range based on two arguments
     @commands.hybrid_command(name='range', with_app_command=True, description='Random number based on range given.')
     @app_commands.describe(bottom_of_range='Bottom of range for random value', top_of_range='Top of range for random value')
