@@ -1,5 +1,5 @@
 # ChetBot
-###### (v1.0)
+###### (v1.1)
 
 ChetBot is a Discord bot that can handle file conversions, combine PDF files, create comma and tab delimited files, download YouTube videos, play songs in Voice Chat, and more.
 
