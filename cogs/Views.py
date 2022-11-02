@@ -20,6 +20,7 @@ class GitHubSearch(discord.ui.View):
         url = f'https://github.com/search?q={query_passable}'
         self.add_item(discord.ui.Button(label=f'GitHub Search for: {query}', url=url))
 
+
 class YouTubeSearch(discord.ui.View):
     def __init__(self, query: str):
         super().__init__()
