@@ -227,7 +227,7 @@ Submit feedback to the creator of ChetBot.
 
 ### Ticketing System
 ### /launch-ticketing
-Launches a persistent ticket creation embed with a 'Create Ticket' button. When the user clicks on the button, they are prompted with a modal asking for additional information that will support the Ticket Support role initially declared when the command was called, then a new ticket text channel is created for them.
+Launches a persistent ticket creation embed with a 'Create Ticket' button. When the user clicks on the button, they are prompted with a modal asking for additional information that will support the Ticket Support role initially declared when the command was called, then a new ticket text channel is created for them. The chosen `ticket_support_role` will get added to every ticket.
 
 `/launch-ticketing <ticket_support_role>`
 
@@ -237,7 +237,7 @@ Arguments:
 * ticket_support_role - The role that you would like to assign as the dedicated Ticket Support
 
 ### /ticket
-Manually creates a ticket for the desired member. After this command is called, the user is then prompted with a modal asking for additional information that will support the Ticket Support role initially declared when the command was called, then a new ticket text channel is created for the requested member.
+Manually creates a ticket for the desired member. After this command is called, the user is then prompted with a modal asking for additional information that will support the Ticket Support role initially declared when the command was called, then a new ticket text channel is created for the requested member. The chosen `ticket_support_role` will get added to every ticket.
 
 `/ticket <member> <ticket_support_role>`
 
