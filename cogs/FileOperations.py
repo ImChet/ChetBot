@@ -1,4 +1,5 @@
 import os
+import platform
 from typing import Optional
 
 import discord
@@ -313,10 +314,16 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
                         input_filepath = f'{temp_directory}/{attachment.filename}'
                         # Output file
                         output_filepath = f'{temp_directory}/{trimmed_filename}.{desired_file_type}'
-                        # Defining ff to FFmpeg
-                        ff = FFmpeg()
-                        # Setting the conversion as the downloaded user file, to the desired user file type
-                        out_file = ff.convert(input_filepath, output_filepath)
+                        operating_system = platform.system()
+                        # Checking OS as ffmpeg is called differently on each
+                        if operating_system == 'Windows':
+                            # Defining ff to FFmpeg
+                            ff = FFmpeg()
+                            # Setting the conversion as the downloaded user file, to the desired user file type
+                            out_file = ff.convert(input_filepath, output_filepath)
+                        elif operating_system == 'Linux':
+                            exec(f'ffmpeg -i {input_filepath} {output_filepath}')
+
                         await ctx.send(file=discord.File(out_file))
             else:
                 await ctx.send(
