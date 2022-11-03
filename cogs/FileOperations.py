@@ -324,7 +324,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
                             out_file = ff.convert(input_filepath, output_filepath)
                             await ctx.send(file=discord.File(out_file))
                         elif operating_system == 'Linux':
-                            subprocess.run(['ffmpeg', 'i', input_filepath, output_filepath], shell=False)
+                            subprocess.run(['ffmpeg', '-i', input_filepath, output_filepath], shell=False)
                             await ctx.send(file=discord.File(output_filepath))
             else:
                 await ctx.send(
