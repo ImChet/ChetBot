@@ -31,6 +31,10 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         parent_dir = 'WorkingFiles/FilesToCreate/'
         user_dir = str(ctx.author.id)
         temp_directory = os.path.join(parent_dir, user_dir)
+        exists_already = os.path.exists(temp_directory)
+        # Ensure no errors from file already exists
+        if exists_already:
+            os.rmdir(temp_directory)
         os.mkdir(temp_directory)
 
         working_file = f'{temp_directory}/ChetBot.csv'
@@ -51,6 +55,10 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         parent_dir = 'WorkingFiles/FilesToCreate/'
         user_dir = str(ctx.author.id)
         temp_directory = os.path.join(parent_dir, user_dir)
+        exists_already = os.path.exists(temp_directory)
+        # Ensure no errors from file already exists
+        if exists_already:
+            os.rmdir(temp_directory)
         os.mkdir(temp_directory)
 
         working_file = f'{temp_directory}/ChetBot.csv'
@@ -71,6 +79,10 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         parent_dir = 'WorkingFiles/FilesToCreate/'
         user_dir = str(ctx.author.id)
         temp_directory = os.path.join(parent_dir, user_dir)
+        exists_already = os.path.exists(temp_directory)
+        # Ensure no errors from file already exists
+        if exists_already:
+            os.rmdir(temp_directory)
         os.mkdir(temp_directory)
 
         working_file = f'{temp_directory}/ChetBot.csv'
@@ -160,6 +172,10 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
                 parent_dir = 'WorkingFiles/FilesToConvert/'
                 user_dir = str(ctx.author.id)
                 temp_directory = os.path.join(parent_dir, user_dir)
+                exists_already = os.path.exists(temp_directory)
+                # Ensure no errors from file already exists
+                if exists_already:
+                    os.rmdir(temp_directory)
                 os.mkdir(temp_directory)
 
                 # Prevents possible user error where user clicks wrong attachment number
@@ -272,6 +288,10 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
                 parent_dir = 'WorkingFiles/FilesToConvert/'
                 user_dir = str(ctx.author.id)
                 temp_directory = os.path.join(parent_dir, user_dir)
+                exists_already = os.path.exists(temp_directory)
+                # Ensure no errors from file already exists
+                if exists_already:
+                    os.rmdir(temp_directory)
                 os.mkdir(temp_directory)
 
                 # Prevents possible user error where user clicks wrong attachment number
@@ -344,6 +364,10 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
             parent_dir = 'WorkingFiles/FilesToCombine/'
             user_dir = str(ctx.author.id)
             temp_directory = os.path.join(parent_dir, user_dir)
+            exists_already = os.path.exists(temp_directory)
+            # Ensure no errors from file already exists
+            if exists_already:
+                os.rmdir(temp_directory)
             os.mkdir(temp_directory)
 
             merger = PdfFileMerger()
@@ -400,6 +424,10 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         user_dir = str(ctx.author.id)
 
         temp_directory = os.path.join(parent_dir, user_dir)
+        exists_already = os.path.exists(temp_directory)
+        # Ensure no errors from file already exists
+        if exists_already:
+            os.rmdir(temp_directory)
         os.mkdir(temp_directory)
 
         ydl_opts = {
@@ -433,6 +461,10 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         user_dir = str(ctx.author.id)
 
         temp_directory = os.path.join(parent_dir, user_dir)
+        exists_already = os.path.exists(temp_directory)
+        # Ensure no errors from file already exists
+        if exists_already:
+            os.rmdir(temp_directory)
         os.mkdir(temp_directory)
 
         ydl_opts = {
