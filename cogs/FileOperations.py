@@ -1,5 +1,6 @@
 import os
 import platform
+import subprocess
 from typing import Optional
 
 import discord
@@ -321,10 +322,10 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
                             ff = FFmpeg()
                             # Setting the conversion as the downloaded user file, to the desired user file type
                             out_file = ff.convert(input_filepath, output_filepath)
+                            await ctx.send(file=discord.File(out_file))
                         elif operating_system == 'Linux':
-                            exec(f'ffmpeg -i {input_filepath} {output_filepath}')
-
-                        await ctx.send(file=discord.File(out_file))
+                            subprocess.run(['ffmpeg', 'i', input_filepath, output_filepath], shell=False)
+                            await ctx.send(file=discord.File(output_filepath))
             else:
                 await ctx.send(
                     f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of the attachment.',
