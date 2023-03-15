@@ -40,6 +40,17 @@ Clears a specified backlog of messages in channel where command was invoked.
 Arguments:
 * amount - Number of previous messages to clear (default: 1)
 
+### AI-based Commands
+### /transcribe
+###### Read more about Open AI's General Speech Recognition Model here: [READ](https://github.com/openai/whisper)
+Transcribes the attached audio file using Open AI's Whisper Speech Recognition Model.
+
+`/transcribe <attachment>`
+
+Arguments:
+* attachment - Audio file to transcribe
+
+
 ### Role Commands
 ###### (If ChetBot and the user running the command have proper manage roles permissions and this command still doesn't work, make sure to place ChetBot's role in the Role Hierarchy of the guild at the top)
 
