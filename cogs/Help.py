@@ -44,6 +44,12 @@ class HelpButtonTicketingSystem(discord.ui.View):
         url = 'https://github.com/ImChet/ChetBot#ticketing-system'
         self.add_item(discord.ui.Button(label='Ticketing System Help', url=url))
 
+class HelpButtonAI(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+        url = 'https://github.com/ImChet/ChetBot#ai-based-commands'
+        self.add_item(discord.ui.Button(label='AI Command Help', url=url))
+
 
 class HelpDropdown(discord.ui.Select):
     def __init__(self):
@@ -53,7 +59,8 @@ class HelpDropdown(discord.ui.Select):
             discord.SelectOption(label='Role Commands', description='You need help with Role Commands'),
             discord.SelectOption(label='Voice Channel Commands', description='You need help with Voice Channel Commands'),
             discord.SelectOption(label='Miscellaneous Commands', description='You need help with Miscellaneous Commands'),
-            discord.SelectOption(label='Ticketing System', description='You need help with the Ticketing System')
+            discord.SelectOption(label='Ticketing System', description='You need help with the Ticketing System'),
+            discord.SelectOption(label='AI Commands', description='You need help with the AI Commands')
         ]
         super().__init__(placeholder='Pick what topic you need help with...', min_values=1, max_values=1, options=options)
 
@@ -70,6 +77,8 @@ class HelpDropdown(discord.ui.Select):
             await interaction.response.send_message(view=HelpButtonMisc())
         elif self.values == ['Ticketing System']:
             await interaction.response.send_message(view=HelpButtonTicketingSystem())
+        elif self.values == ['AI Commands']:
+            await interaction.response.send_message(view=HelpButtonAI())
 
 
 class HelpDropdownView(discord.ui.View):
