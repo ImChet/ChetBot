@@ -9,11 +9,193 @@ from discord.ext import commands
 from discord.ext.commands import parameter
 from yt_dlp import YoutubeDL
 
-from functions import file_conversion, getTime, removeDirectory
+from functions import removeDirectory
 
 
+# The Custom Button for the Audio Conversion Options
+class AudioConversionOptionButton(discord.ui.Button):
+    def __init__(self, **kwargs):
+        self.clicked = False
+        super().__init__(**kwargs)
+
+    async def callback(self, interaction: discord.Interaction):
+        view: AudioConversionOptionsButtonView = self.view
+        # Append each chosen option to the 'ordered_list' variable
+        view.chosen_option = self.label
+        for button in view.killable_buttons_list:
+            button.clicked = True
+            button.disabled = True
+            button.style = discord.ButtonStyle.grey
+        await interaction.response.edit_message(view=view)
+
+
+# The Confirm Selection Custom Button for the Audio Conversion Options
+class ConfirmAudioSelectionButton(discord.ui.Button):
+    def __init__(self, **kwargs):
+        self.clicked = False
+        super().__init__(**kwargs)
+
+    async def callback(self, interaction: discord.Interaction):
+        view: AudioConversionOptionsButtonView = self.view
+        # Set each button to be disabled as the results are now confirmed but the user
+        for child in view.children:
+            child.clicked = True
+            child.disabled = True
+            child.style = discord.ButtonStyle.grey
+        await interaction.response.edit_message(view=view)
+
+        # Input filepath(s) list
+        input_local_filepaths_list = view.local_filepaths_list
+        # Output filepath(s) list
+        output_local_filepaths_list = []
+
+        for filepath in input_local_filepaths_list:
+            clean_filename = (os.path.splitext(str(filepath))[0]).replace(f'{view.temp_directory}/', '')
+            print(f'clean_filename: {clean_filename}')
+            output_local_filepaths_list.append(f'{view.temp_directory}/{clean_filename}{view.chosen_option}')
+            print(f'output_local_filepaths_list: {output_local_filepaths_list}')
+
+        if len(input_local_filepaths_list) == len(output_local_filepaths_list):
+            for i in range(len(input_local_filepaths_list)):
+                # Input file
+                input_filepath = input_local_filepaths_list[i]
+                # Output file
+                output_filepath = output_local_filepaths_list[i]
+                # Run ffmpeg conversion through subprocess
+                subprocess.run(['ffmpeg', '-i', input_filepath, output_filepath], shell=False)
+
+            for item in output_local_filepaths_list:
+                await interaction.followup.send(file=discord.File(item), ephemeral=True)
+
+        exists_already = os.path.exists(view.temp_directory)
+        if exists_already:
+            removeDirectory(view.temp_directory)
+
+
+# The view for all the Audio Conversion Options
+class AudioConversionOptionsButtonView(discord.ui.View):
+    def __init__(self, temp_directory, local_filepaths_list):
+        self.chosen_option = None
+        self.audio_options_list = ['.flac', '.wav', '.mp3', '.avi', '.aac', '.ac3']
+        self.killable_buttons_list = []
+        self.temp_directory = temp_directory
+        self.local_filepaths_list = local_filepaths_list
+        super().__init__()
+        self.value = None
+
+        # Create the Confirm Selection
+        confirm_button = ConfirmAudioSelectionButton(label='Confirm Selection', custom_id='Confirm Selection', style=discord.ButtonStyle.green)
+        self.add_item(confirm_button)
+
+        for item in self.audio_options_list:
+            button = AudioConversionOptionButton(style=discord.ButtonStyle.blurple, label=item, custom_id=item)
+            self.killable_buttons_list.append(button)
+            self.add_item(button)
+
+    # Reset Selection button to allow for potential user error
+    @discord.ui.button(label='Reset Selection', style=discord.ButtonStyle.red)
+    async def _reset_button_(self, interaction: discord.Interaction, button: discord.ui.Button):
+        # Resets the chosen_option
+        self.chosen_option = None
+        # Through a list go and re-enable the buttons for the user to click on again
+        for child in self.killable_buttons_list:
+            child.disabled = False
+            child.clicked = False
+            child.style = discord.ButtonStyle.blurple
+        await interaction.response.edit_message(view=self)
+
+
+# Need custom callback operation for File Order Buttons // For PDFCombiner
+class FileOrderPDFCombinerButton(discord.ui.Button):
+    def __init__(self, **kwargs):
+        self.clicked = False
+        super().__init__(**kwargs)
+
+    async def callback(self, interaction: discord.Interaction):
+        view: FileOrderButtonPDFCombinerView = self.view
+        # Append each chosen option to the 'ordered_list' variable
+        view.ordered_list.append(self.label)
+        # Set each button to be disabled as the results are now confirmed but the user
+        self.clicked = True
+        self.disabled = True
+        self.style = discord.ButtonStyle.grey
+        await interaction.response.edit_message(view=view)
+
+
+# Need custom callback operation for Confirm Selection Button // For PDFCombiner
+class ConfirmSelectionPDFCombinerButton(discord.ui.Button):
+    def __init__(self, **kwargs):
+        self.clicked = False
+        super().__init__(**kwargs)
+
+    async def callback(self, interaction: discord.Interaction):
+        view: FileOrderButtonPDFCombinerView = self.view
+        # Set each button to be disabled as the results are now confirmed but the user
+        for child in view.children:
+            child.clicked = True
+            child.disabled = True
+            child.style = discord.ButtonStyle.grey
+        await interaction.response.edit_message(view=view)
+
+        # Start the PDF merger
+        merger = PdfMerger()
+        # Append each file to the new combined PDF
+        for file in view.local_file_paths:
+            merger.append(file)
+        # Output file
+        out_file = f'{view.temp_directory}/ChetBotCombined.pdf'
+        # The PDF merger takes all appended files and writes them to the outfile
+        merger.write(out_file)
+        # Close the merger
+        merger.close()
+
+        # Send user the combined file via a followup otherwise interaction gets too many responses
+        await interaction.followup.send(file=discord.File(out_file), ephemeral=True)
+
+        # Remove temporary user directory
+        removeDirectory(view.temp_directory)
+
+
+# Defines the File Order Button Schema View // For PDFCombiner
+class FileOrderButtonPDFCombinerView(discord.ui.View):
+    def __init__(self, temp_directory, local_file_paths):
+        self.temp_directory = temp_directory
+        self.local_file_paths = local_file_paths
+        # Assign each user submitted attachment as a self.file{i} variable
+        for i, arg in enumerate(local_file_paths):
+            setattr(self, f'file_{i}', arg)
+        super().__init__()
+        # Empty lists to use
+        self.ordered_list = []
+        self.resettable_button_list = []
+
+        # Create the Confirm Selection
+        confirm_button = ConfirmSelectionPDFCombinerButton(label='Confirm Selection', custom_id='Confirm Selection', style=discord.ButtonStyle.blurple)
+        self.add_item(confirm_button)
+
+        # Create and add the file-specific buttons with cleaned names
+        for i in range(len(local_file_paths)):
+            button_label = f'{getattr(self, f"file_{i}")}'
+            button_label_cleaned = button_label.replace(f'{temp_directory}/', '')
+            button = FileOrderPDFCombinerButton(style=discord.ButtonStyle.green, label=button_label_cleaned, custom_id=f'{getattr(self, f"file_{i}")}')
+            self.resettable_button_list.append(button)
+            self.add_item(button)
+
+    # Reset Selection button to allow for potential user error
+    @discord.ui.button(label='Reset Selection', style=discord.ButtonStyle.red)
+    async def _reset_button_(self, interaction: discord.Interaction, button: discord.ui.Button):
+        # Resets the ordered list
+        self.ordered_list = []
+        # Through a list go and re-enable the buttons for the user to click on again
+        for child in self.resettable_button_list:
+            child.disabled = False
+            child.clicked = False
+            child.style = discord.ButtonStyle.green
+        await interaction.response.edit_message(view=self)
+
+
+# Main FileOperations Cog
 class FileOperations(commands.Cog, name='File Commands', description='File Commands'):
-
     def __init__(self, ChetBot):
         self.ChetBot = ChetBot
 
@@ -94,214 +276,135 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         await ctx.send(file=discord.File(working_file))
         removeDirectory(temp_directory)
 
-    # Coverts user attachments to desired type
-    @commands.hybrid_command(name='convert', with_app_command=True, description='Converts user attached file from specified initial type to specified desired type.')
-    @app_commands.describe(initial_file_type='Options are: [pdf | docx | jpg | jpeg | png]',
-                           desired_file_type='Options are: [pdf | docx | jpg | jpeg | png]',
-                           attachment1='The attachment to convert.',
-                           attachment2='The attachment to convert.',
-                           attachment3='The attachment to convert.',
-                           attachment4='The attachment to convert.',
-                           attachment5='The attachment to convert.',
-                           attachment6='The attachment to convert.',
-                           attachment7='The attachment to convert.',
-                           attachment8='The attachment to convert.',
-                           attachment9='The attachment to convert.',
-                           attachment10='The attachment to convert.')
-    async def _convert_files_(self, ctx: commands.Context,
-                              initial_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]'),
-                              desired_file_type: str = parameter(description='- Options are: [pdf | docx | jpg | jpeg | png]'),
-                              attachment1: discord.Attachment = parameter(description=' - The attachment to convert.'),
-                              attachment2: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
-                              attachment3: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
-                              attachment4: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
-                              attachment5: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
-                              attachment6: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
-                              attachment7: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
-                              attachment8: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
-                              attachment9: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.'),
-                              attachment10: Optional[discord.Attachment] = parameter(default=None, description=' - The attachment to convert.')) -> None:
-        await ctx.typing()
-        if ctx.message.attachments:
-
-            # Defining variables in use
-            initial_check = f'/{initial_file_type}'
-            allowed_files = ['/pdf', '/jpeg', '/jpg', '/docx', '/png']
-            jpg_files = ['/jpeg', '/jpg']
-            pdf_file = ['/pdf']
-            docx_file = ['/docx']
-            png_file = ['/png']
-            check_counter = 0
-            limit = len(ctx.message.attachments)
-
-            # Conditional variable definitions
-            supported_file_check = initial_check in allowed_files
-            jpg_check = initial_check in jpg_files
-            pdf_check = initial_check in pdf_file
-            docx_check = initial_check in docx_file
-            png_check = initial_check in png_file
-
-            # Cleaning up user input
-            if supported_file_check:
-                if jpg_check:
-                    initial_check = 'image/jpeg'  # .jpg/.jpeg
-                elif pdf_check:
-                    initial_check = 'application/pdf'  # .pdf
-                elif docx_check:
-                    initial_check = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'  # .docx
-                elif png_check:
-                    initial_check = 'image/png'  # .png
-                else:
-                    await ctx.send(f'{ctx.author.mention}, the type of file attached is not currently supported.', delete_after=10)
-                # Checks if the initial declared value matched actual uploaded attachment file type
-                for working_file in range(0, limit + 1):
-                    working_file_attachment = str(ctx.message.attachments[working_file].content_type)
-                    if initial_check in working_file_attachment:
-                        type_check = initial_check in working_file_attachment
-                        check_counter = check_counter + 1
-
-                    elif initial_check not in working_file_attachment:
-                        await ctx.send(
-                            f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of the attachment.', delete_after=10)
-                        break
-
-                    if check_counter == limit:
-                        break
-
-                # Make unique temporary directory to use for each user
-                parent_dir = 'WorkingFiles/FilesToConvert/'
-                user_dir = str(ctx.author.id)
-                temp_directory = os.path.join(parent_dir, user_dir)
-                exists_already = os.path.exists(temp_directory)
-                # Ensure no errors from file already exists
-                if exists_already:
-                    os.rmdir(temp_directory)
-                os.mkdir(temp_directory)
-
-                # Prevents possible user error where user clicks wrong attachment number
-                default_attachment_list = [attachment1, attachment2, attachment3, attachment4, attachment5,
-                                           attachment6, attachment7, attachment8, attachment9, attachment10]
-                actual_attachment_list = []
-                for x in (range(0, len(default_attachment_list))):
-                    if default_attachment_list[x] is not None:
-                        actual_attachment_list.append(default_attachment_list[x])
-
-                if type_check:
-                    await ctx.send(f'{ctx.author.mention}, I am processing your request...', delete_after=3)
-                    for attachment in tuple(actual_attachment_list):
-                        # Download the user attachments on iterator through list
-                        await attachment.save(f'{temp_directory}/{attachment.filename}')
-                        # Input file
-                        input_filepath = f'{temp_directory}/{attachment.filename}'
-                        # Output file
-                        outfile = file_conversion(input_filepath, desired_file_type)
-                        if outfile is None:
-                            await ctx.send(
-                                f'{ctx.author.mention}, the file conversion you attempted is not currently supported.',
-                                delete_after=10)
-                            break
-                        elif outfile is not None:
-                            await ctx.send(file=discord.File(outfile))
-            else:
-                await ctx.send(
-                    f'{ctx.author.mention}, the initial file type you declared doesn\'t match the file type of the attachment.',
-                    delete_after=10)
-        else:
-            await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=10)
-
-        # Remove temporary user directory
-        removeDirectory(temp_directory)
-
     # Coverts user audio attachments from allowed types // Changed back to non-slash command to allow more enhanced features in the future
-    @commands.command(name='audio', description='Converts user attached audio or video file(s) to the desired audio file type.')
-    async def _convert_audio_(self, ctx: commands.Context, desired_file_type: str, *attachments: discord.Attachment) -> None:
-        if ctx.message.attachments:
-            if desired_file_type in ['flac', 'wav', 'mp3', 'avi', 'ogg', 'aac', 'ac3']:
-                # Make unique temporary directory to use for each user
-                parent_dir = 'WorkingFiles/FilesToConvert/'
-                user_dir = str(ctx.author.id)
-                temp_directory = os.path.join(parent_dir, user_dir)
-                exists_already = os.path.exists(temp_directory)
-                # Ensure no errors from file already exists
-                if exists_already:
-                    os.rmdir(temp_directory)
-                os.mkdir(temp_directory)
+    @app_commands.command(name='convert-audio', description='Converts user attached video/audio file(s) to the desired audio file type.')
+    @app_commands.describe(attachment1='The video/audio file to convert.',
+                           attachment2='The video/audio file to convert.',
+                           attachment3='The video/audio file to convert.',
+                           attachment4='The video/audio file to convert.',
+                           attachment5='The video/audio file to convert.',
+                           attachment6='The video/audio file to convert.',
+                           attachment7='The video/audio file to convert.',
+                           attachment8='The video/audio file to convert.',
+                           attachment9='The video/audio file to convert.',
+                           attachment10='The video/audio file to convert.')
+    async def _convert_audio_(self, interaction: discord.Interaction,
+                              attachment1: discord.Attachment,
+                              attachment2: Optional[discord.Attachment] = None,
+                              attachment3: Optional[discord.Attachment] = None,
+                              attachment4: Optional[discord.Attachment] = None,
+                              attachment5: Optional[discord.Attachment] = None,
+                              attachment6: Optional[discord.Attachment] = None,
+                              attachment7: Optional[discord.Attachment] = None,
+                              attachment8: Optional[discord.Attachment] = None,
+                              attachment9: Optional[discord.Attachment] = None,
+                              attachment10: Optional[discord.Attachment] = None) -> None:
+        default_attachment_list = [attachment1, attachment2, attachment3, attachment4, attachment5, attachment6, attachment7, attachment8, attachment9, attachment10]
+        actual_attachment_list = []
+        # Get the actual attachments submitted by the user, fixes possible user error
+        for x in (range(0, len(default_attachment_list))):
+            if default_attachment_list[x] is not None:
+                actual_attachment_list.append(default_attachment_list[x])
+        # Assure that there are >=1 attachments submitted
+        if len(actual_attachment_list) >= 1:
 
-                for attachment in ctx.message.attachments:
-                    # Download the user attachments on iterator through list
-                    await attachment.save(f'{temp_directory}/{attachment.filename}')
-                    # Keeping the file name uploaded by the user without the previous unconverted extension
-                    trimmed_filename = (os.path.splitext(str(attachment.filename))[0])
-                    # Input file
-                    input_filepath = f'{temp_directory}/{attachment.filename}'
-                    # Output file
-                    output_filepath = f'{temp_directory}/{trimmed_filename}.{str(desired_file_type)}'
-                    # Run ffmpeg conversion through subprocess
-                    subprocess.run(['ffmpeg', '-i', input_filepath, output_filepath], shell=False)
-                    await ctx.send(file=discord.File(output_filepath))
-                    # Remove the temp directory
-                    removeDirectory(temp_directory)
-            else:
-                await ctx.send(
-                    f'{ctx.author.mention}, your desired file output type is either incorrect or currently unsupported. Please try again.',
-                    delete_after=10)
-        else:
-            await ctx.send(f'{ctx.author.mention}, no attachments were found to convert.', delete_after=10)
-
-    # Makes and uploads files bases on user's decision
-    # Changed back to non-slash command as it will allow me to further enhance this feature
-    @commands.command(name='combine', description='Combines user attached PDF files.')
-    async def combine_files(self, ctx: commands.Context) -> None:
-        if len(ctx.message.attachments) >= 2:
-            await ctx.send(f'{ctx.author.mention}, I am processing your request...', delete_after=5)
-            # Check if attached file is .pdf
-            for attachment in ctx.message.attachments:
+            supported_check = True
+            for attachment in actual_attachment_list:
                 attached_file_type = (os.path.splitext(str(attachment))[1])
-                if attached_file_type not in ['.pdf']:
-                    await ctx.send(
-                        f'{ctx.author.mention}, one or more of the files attached is not a PDF. Currently only PDF combinations are supported.',
-                        delete_after=10)
+                if attached_file_type not in ['.flac', '.wav', '.mp3', '.avi', '.aac', '.ac3', 'mp4', 'oog']:
+                    supported_check = False
                     break
 
-            # Make unique temporary directory to use for each user
-            parent_dir = 'WorkingFiles/FilesToCombine/'
-            user_dir = str(ctx.author.id)
-            temp_directory = os.path.join(parent_dir, user_dir)
-            exists_already = os.path.exists(temp_directory)
-            # Ensure no errors from file already exists
-            if exists_already:
-                os.rmdir(temp_directory)
-            os.mkdir(temp_directory)
+            if supported_check is True:
+                # Make unique temporary directory to use for each user
+                parent_dir = 'WorkingFiles/FilesToConvert/'
+                user_dir = str(interaction.user.id)
+                temp_directory = os.path.join(parent_dir, user_dir)
+                exists_already = os.path.exists(temp_directory)
+                # Ensure no errors from file already exists
+                if exists_already:
+                    os.rmdir(temp_directory)
+                os.mkdir(temp_directory)
 
-            merger = PdfMerger()
+                # Local filepath of downloaded file(s) list
+                local_filepaths_list = []
 
-            for pdf in ctx.message.attachments:
-                # Download the user attachments on iterator through the attachment list
-                await pdf.save(f'{temp_directory}/{pdf.filename}')
-                # Input file
-                input_filepath = f'{temp_directory}/{pdf.filename}'
-                # Appends each file attached to the PDF merger
-                merger.append(input_filepath)
+                # Download the user attachments on iterator through list
+                for attachment in actual_attachment_list:
+                    filepath = f'{temp_directory}/{attachment.filename}'
+                    local_filepaths_list.append(filepath)
+                    await attachment.save(filepath)
 
-            # Output file
-            out_file = f'{temp_directory}/ChetBotCombined.pdf'
+                await interaction.response.send_message(f'{interaction.user.mention}, choose what file type that you would like your uploaded file(s) to be converted to, then confirm your selection...', view=AudioConversionOptionsButtonView(temp_directory, local_filepaths_list), ephemeral=True)
+            else:
+                await interaction.response.send_message(f'{interaction.user.mention}, disallowed input file type detected.\nCurrently only `.flac`, `.wav`, `.mp3`, `.avi`, `.aac`, `.ac3`, `.mp4`, and `.oog` input file types are supported. Please try again.', ephemeral=True)
 
-            # Check if uploaded file name is already that of the outfile to avoid errors
-            if os.path.isfile(out_file):
-                current_time = getTime('-')
-                out_file = f'{temp_directory}/ChetBotCombined-{current_time}.pdf'
+    # Combines user attached PDFs
+    @app_commands.command(name='pdf-combine', description='Combines user attached PDF files.')
+    @app_commands.describe(attachment1='The pdf to combine.',
+                           attachment2='The pdf to combine.',
+                           attachment3='The pdf to combine.',
+                           attachment4='The pdf to combine.',
+                           attachment5='The pdf to combine.',
+                           attachment6='The pdf to combine.',
+                           attachment7='The pdf to combine.',
+                           attachment8='The pdf to combine.',
+                           attachment9='The pdf to combine.',
+                           attachment10='The pdf to combine.')
+    async def _pdf_file_combine_(self, interaction: discord.Interaction,
+                                 attachment1: discord.Attachment,
+                                 attachment2: discord.Attachment,
+                                 attachment3: Optional[discord.Attachment] = None,
+                                 attachment4: Optional[discord.Attachment] = None,
+                                 attachment5: Optional[discord.Attachment] = None,
+                                 attachment6: Optional[discord.Attachment] = None,
+                                 attachment7: Optional[discord.Attachment] = None,
+                                 attachment8: Optional[discord.Attachment] = None,
+                                 attachment9: Optional[discord.Attachment] = None,
+                                 attachment10: Optional[discord.Attachment] = None) -> None:
+        default_attachment_list = [attachment1, attachment2, attachment3, attachment4, attachment5, attachment6,
+                                   attachment7, attachment8, attachment9, attachment10]
 
-            # The PDF merger takes all appended files and writes them to the outfile
-            merger.write(out_file)
-            # Need to close merger or files won't get deleted in WorkingFiles/FilesToCombine/
-            merger.close()
-            # Send combined file
-            await ctx.author.send(file=discord.File(out_file))
+        actual_attachment_list = []
+        # Get the actual attachments submitted by the user, fixes possible user error
+        for x in (range(0, len(default_attachment_list))):
+            if default_attachment_list[x] is not None:
+                actual_attachment_list.append(default_attachment_list[x])
 
-            # Remove temporary user directory
-            removeDirectory(temp_directory)
+        # Assure that there are >2 attachments submitted
+        if len(actual_attachment_list) >= 2:
+            # Check if attached file is .pdf
+            supported_check = True
+            for attachment in actual_attachment_list:
+                attached_file_type = (os.path.splitext(str(attachment))[1])
+                if attached_file_type not in ['.pdf']:
+                    supported_check = False
+                    break
+            if supported_check is True:
+                # Make unique temporary directory to use for each user
+                parent_dir = 'WorkingFiles/FilesToCombine/'
+                user_dir = str(interaction.user.id)
+                temp_directory = os.path.join(parent_dir, user_dir)
+                exists_already = os.path.exists(temp_directory)
+                # Ensure no errors from file already exists
+                if exists_already:
+                    removeDirectory(temp_directory)
+                os.mkdir(temp_directory)
+                # Declare relative local filepaths to use
+                file_paths_to_use_list = []
+                # Get filepaths from discord and download them
+                for file in actual_attachment_list:
+                    current_file = f'{temp_directory}/{file.filename}'
+                    await file.save(current_file)
+                    file_paths_to_use_list.append(str(current_file))
+                # Send 'file_paths_to_use_list' to the FileOrderButtonPDFCombinerView
+                view = FileOrderButtonPDFCombinerView(temp_directory, file_paths_to_use_list)
+                await interaction.response.send_message(f'{interaction.user.mention}, please click the order in which you would like your attachments combined, then confirm your selection...', view=view, ephemeral=True)
+                await view.wait()
+            else:
+                await interaction.response.send_message(f'{interaction.user.mention}, one or more of the files attached is not a `.pdf`. Currently only `.pdf` combinations are supported.', ephemeral=True)
         else:
-            await ctx.send(f'{ctx.author.mention}, you must attach 2 or more pdf files for me to combine them.', delete_after=10)
+            await interaction.response.send_message(f'{interaction.user.mention}, you must attach 2 or more `.pdf` files for me to combine them.', ephemeral=True)
 
     # Downloads a YouTube Video to desired output
     @commands.hybrid_group(name='youtube', with_app_command=True, description='Downloads and/or converts a YouTube video from the URL given to the requested type.')
