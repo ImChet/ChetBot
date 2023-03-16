@@ -19,6 +19,7 @@ class AI(commands.Cog):
     @app_commands.describe(attachment='Audio file to transcribe.')
     async def _transcribe_audio_(self, interaction: discord.Interaction, attachment: discord.Attachment) -> None:
         if attachment:
+            await interaction.response.send_message(f'{interaction.user.mention}, I am processing your transcription request, sit tight...', ephemeral=True)
             # Make unique temporary directory to use for each user
             parent_dir = 'WorkingFiles/FilesToConvert/'
             user_dir = str(interaction.user.id)
@@ -51,15 +52,16 @@ class AI(commands.Cog):
             mel = whisper.log_mel_spectrogram(audio).to(model.device)
 
             with open(output_file, 'w') as file:
+                file.write(f'Audio transcription may have some inaccuracies, read more about the general speech recognition model, Whisper, here: [https://github.com/openai/whisper]\n\n')
                 # detect the spoken language
                 _, probs = model.detect_language(mel)
-                file.write(f'Detected language of speaker in audio file provided:\n[{max(probs, key=probs.get)}]\n\n')
+                file.write(f'Detected language of speaker in audio file provided: [{max(probs, key=probs.get)}]\n\n')
                 # decode the audio
                 options = whisper.DecodingOptions(fp16=False)
                 result = whisper.decode(model, mel, options)
-                file.write(f'Transcription:\n[{result.text}]')
+                file.write(f'Transcription: [{result.text}]')
 
-            await interaction.response.send_message(f'{interaction.user.mention}, here is the transcription I generated for you from the provided input file [{attachment.filename}]:', file=discord.File(output_file), ephemeral=True)
+            await interaction.followup.send(f'{interaction.user.mention}, here is the transcription I generated for you from the provided input file [{attachment.filename}]:', file=discord.File(output_file), ephemeral=True)
 
             # Remove temporary user directory
             removeDirectory(temp_directory)
