@@ -41,11 +41,11 @@ Arguments:
 * amount - Number of previous messages to clear (default: 1)
 
 ### AI-based Commands
-### /transcribe
+### /transcribe-audio
 ###### More about Open AI's general speech recognition model here: [LINK](https://github.com/openai/whisper)
 Transcribes the attached audio file using Open AI's Whisper Speech Recognition Model.
 
-`/transcribe <attachment>`
+`/transcribe-audio <attachment>`
 
 Arguments:
 * attachment - Audio file to transcribe
