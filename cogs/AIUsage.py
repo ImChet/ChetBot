@@ -15,15 +15,13 @@ class AI(commands.Cog):
         self.ChetBot = ChetBot
 
     # To lowercase
-    @commands.hybrid_command(name='transcribe', with_app_command=True, description='Transcribes the attached audio file.')
+    @app_commands.command(name='transcribe-audio', description='Transcribes the attached audio file.')
     @app_commands.describe(attachment='Audio file to transcribe.')
-    async def _low_(self, ctx: commands.Context, attachment: discord.Attachment = parameter(description='Attach your audio file that you wish to be transcribed.')) -> None:
-        if len(ctx.message.attachments) == 1:
-            await ctx.send(f'{ctx.author.mention}, I am processing your request and I will direct message you the result when I am finished...', ephemeral=True)
-
+    async def _transcribe_audio_(self, interaction: discord.Interaction, attachment: discord.Attachment) -> None:
+        if attachment:
             # Make unique temporary directory to use for each user
             parent_dir = 'WorkingFiles/FilesToConvert/'
-            user_dir = str(ctx.author.id)
+            user_dir = str(interaction.user.id)
             temp_directory = os.path.join(parent_dir, user_dir)
 
             exists_already = os.path.exists(temp_directory)
@@ -53,7 +51,6 @@ class AI(commands.Cog):
             mel = whisper.log_mel_spectrogram(audio).to(model.device)
 
             with open(output_file, 'w') as file:
-                file.write(f'ChetBot\'s generated audio transcription utilizing OpenAI\'s Whisper speech recognition model:\n-----\n\n')
                 # detect the spoken language
                 _, probs = model.detect_language(mel)
                 file.write(f'Detected language of speaker in audio file provided:\n[{max(probs, key=probs.get)}]\n\n')
@@ -62,10 +59,12 @@ class AI(commands.Cog):
                 result = whisper.decode(model, mel, options)
                 file.write(f'Transcription:\n[{result.text}]')
 
-            await ctx.author.send(file=discord.File(output_file))
+            await interaction.response.send_message(f'{interaction.user.mention}, here is the transcription I generated for you from the provided input file [{attachment.filename}]:', file=discord.File(output_file), ephemeral=True)
 
             # Remove temporary user directory
             removeDirectory(temp_directory)
+        else:
+            await interaction.response.send_message(f'{interaction.user.mention}, you did not attach a file. Please ensure that you add a file to your `/transcribe` command.')
 
 
 async def setup(ChetBot):
