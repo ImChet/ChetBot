@@ -1,7 +1,7 @@
 # ChetBot
-###### (v1.1)
+###### (v1.3)
 
-ChetBot is a Discord bot that can handle file conversions, combine PDF files, create comma and tab delimited files, download YouTube videos, play songs in Voice Chat, and more.
+ChetBot is a Discord bot that can handle audio file conversions, speech transcription using machine learning, combine pdf files, download YouTube videos, play songs in Voice Chat, and more.
 
 ###### [Invite ChetBot to your Discord server...](https://discord.com/api/oauth2/authorize?client_id=1015360860719419602&permissions=8&scope=bot%20applications.commands)
 
@@ -42,7 +42,7 @@ Arguments:
 
 ### AI-based Commands
 ### /transcribe
-###### Read more about Open AI's General Speech Recognition Model here: [READ](https://github.com/openai/whisper)
+###### More about Open AI's general speech recognition model here: [LINK](https://github.com/openai/whisper)
 Transcribes the attached audio file using Open AI's Whisper Speech Recognition Model.
 
 `/transcribe <attachment>`
@@ -87,34 +87,21 @@ Desired File Types:
 * line - Creates a line delimited file based on user input
 * tab - Creates a tab delimited file based on user input
 
-### /convert
-Converts user attached file from specified initial type to specified desired type.
+### /pdf-combine
+Combines user attached pdf files via a slash command. This command spawns a button grid for the user to choose the combination order of their new file.
+###### (Supports up to 10 attachments at once)
+`/pdf-combine <attachments>`
+
+* attachments - The pdf files that you wish to combine
+
+### /convert-audio
+Converts user attached video/audio files to the desired file type via a slash command. This command spawns a button grid for the user to choose the desired file type of their new file.
 ###### (Supports up to 10 attachments at once)
 
-`/convert <initial_file_type> <desired_file_type> <attachment>`
+`/audio <attachments>`
 
 Arguments:
-* initial_file_type - Options are: [pdf | docx | jpg | jpeg | png]
-* desired_file_type - Options are: [pdf | docx | jpg | jpeg | png]
-* attachment - The attachment(s) you wish to convert
-
-### /combine
-Combines user attached PDF files.
-###### (Supports up to 10 attachments at once)
-`/combine <attachments>`
-
-* attachments - The attachments you wish to convert
-
-### /audio
-Converts user attached audio or video file from specified initial type to specified desired type.
-###### (Supports up to 10 attachments at once)
-
-`/audio <initial_file_type> <desired_file_type> <attachment>`
-
-Arguments:
-* initial_file_type - Options are: [mp4 | mp3 | wav]
-* desired_file_type - Options are: [mp4 | mp3 | wav]
-* attachment - The attachment(s) you wish to convert
+* attachments - The attachment(s) you wish to convert
 
 ### /youtube mp3
 Downloads and converts a YouTube video from the URL given and uploads the mp3 file it converted.
