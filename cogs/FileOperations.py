@@ -392,15 +392,29 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
                 os.mkdir(temp_directory)
                 # Declare relative local filepaths to use
                 file_paths_to_use_list = []
+                # Ensure no duplicate file names with set()
+                filename_set = set()
+                # Duplicate flag
+                duplicate_filename = False
                 # Get filepaths from discord and download them
                 for file in actual_attachment_list:
                     current_file = f'{temp_directory}/{file.filename}'
-                    await file.save(current_file)
-                    file_paths_to_use_list.append(str(current_file))
-                # Send 'file_paths_to_use_list' to the FileOrderButtonPDFCombinerView
-                view = FileOrderButtonPDFCombinerView(temp_directory, file_paths_to_use_list)
-                await interaction.response.send_message(f'{interaction.user.mention}, please click the order in which you would like your attachments combined, then confirm your selection...', view=view, ephemeral=True)
-                await view.wait()
+                    # Check if filename is already in the set
+                    if file.filename in filename_set:
+                        duplicate_filename = True
+                        break
+                    else:
+                        filename_set.add(file.filename)
+                        await file.save(current_file)
+                        file_paths_to_use_list.append(str(current_file))
+                if duplicate_filename:
+                    removeDirectory(temp_directory)
+                    await interaction.response.send_message(f'{interaction.user.mention}, duplicate file names were detected. Please ensure that each filename is unique and try again.', ephemeral=True)
+                else:
+                    # Send 'file_paths_to_use_list' to the FileOrderButtonPDFCombinerView
+                    view = FileOrderButtonPDFCombinerView(temp_directory, file_paths_to_use_list)
+                    await interaction.response.send_message(f'{interaction.user.mention}, please click the order in which you would like your attachments combined, then confirm your selection...', view=view, ephemeral=True)
+                    await view.wait()
             else:
                 await interaction.response.send_message(f'{interaction.user.mention}, one or more of the files attached is not a `.pdf`. Currently only `.pdf` combinations are supported.', ephemeral=True)
         else:
