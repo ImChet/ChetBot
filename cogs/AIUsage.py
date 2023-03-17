@@ -4,7 +4,6 @@ import discord
 import whisper
 from discord import app_commands
 from discord.ext import commands
-from discord.ext.commands import parameter
 
 from functions import removeDirectory
 
@@ -28,7 +27,7 @@ class AI(commands.Cog):
             exists_already = os.path.exists(temp_directory)
             # Ensure no errors from file already exists
             if exists_already:
-                os.rmdir(temp_directory)
+                removeDirectory(temp_directory)
             os.mkdir(temp_directory)
 
             # Input file

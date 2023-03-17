@@ -297,14 +297,11 @@ Syncs slash commands based on choice.
 For additional information on the packages that ChetBot utilizes, be sure to take a look at the linked PyPi documentation on each:
 
 * [discord.py](https://pypi.org/project/discord.py/)
+* [openai-whisper](https://pypi.org/project/openai-whisper/)
 * [Pillow](https://pypi.org/project/Pillow/)
-* [pyffmpeg](https://pypi.org/project/pyffmpeg/)
+* [ffmpeg-python](https://pypi.org/project/ffmpeg-python/)
 * [PyPDF2](https://pypi.org/project/PyPDF2/)
-* [pdf2docx](https://pypi.org/project/pdf2docx/)
-* [docx2pdf](https://pypi.org/project/docx2pdf/)
 * [yt-dlp](https://pypi.org/project/yt-dlp/)
-
-###### (docx2pdf requires Microsoft Word to be installed)
 
 ### FFmpeg installation to use Voice Channel commands
 

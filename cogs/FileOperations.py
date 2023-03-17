@@ -216,7 +216,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         exists_already = os.path.exists(temp_directory)
         # Ensure no errors from file already exists
         if exists_already:
-            os.rmdir(temp_directory)
+            removeDirectory(temp_directory)
         os.mkdir(temp_directory)
 
         working_file = f'{temp_directory}/ChetBot.csv'
@@ -240,7 +240,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         exists_already = os.path.exists(temp_directory)
         # Ensure no errors from file already exists
         if exists_already:
-            os.rmdir(temp_directory)
+            removeDirectory(temp_directory)
         os.mkdir(temp_directory)
 
         working_file = f'{temp_directory}/ChetBot.csv'
@@ -264,7 +264,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         exists_already = os.path.exists(temp_directory)
         # Ensure no errors from file already exists
         if exists_already:
-            os.rmdir(temp_directory)
+            removeDirectory(temp_directory)
         os.mkdir(temp_directory)
 
         working_file = f'{temp_directory}/ChetBot.csv'
@@ -323,7 +323,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
                 exists_already = os.path.exists(temp_directory)
                 # Ensure no errors from file already exists
                 if exists_already:
-                    os.rmdir(temp_directory)
+                    removeDirectory(temp_directory)
                 os.mkdir(temp_directory)
 
                 # Local filepath of downloaded file(s) list
@@ -425,7 +425,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         exists_already = os.path.exists(temp_directory)
         # Ensure no errors from file already exists
         if exists_already:
-            os.rmdir(temp_directory)
+            removeDirectory(temp_directory)
         os.mkdir(temp_directory)
 
         ydl_opts = {
@@ -462,7 +462,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
         exists_already = os.path.exists(temp_directory)
         # Ensure no errors from file already exists
         if exists_already:
-            os.rmdir(temp_directory)
+            removeDirectory(temp_directory)
         os.mkdir(temp_directory)
 
         ydl_opts = {
