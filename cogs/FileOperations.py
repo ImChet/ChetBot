@@ -311,7 +311,7 @@ class FileOperations(commands.Cog, name='File Commands', description='File Comma
             supported_check = True
             for attachment in actual_attachment_list:
                 attached_file_type = (os.path.splitext(str(attachment))[1])
-                if attached_file_type not in ['.flac', '.wav', '.mp3', '.avi', '.aac', '.ac3', 'mp4', 'oog']:
+                if attached_file_type not in ['.flac', '.wav', '.mp3', '.avi', '.aac', '.ac3', '.mp4', '.oog']:
                     supported_check = False
                     break
 
